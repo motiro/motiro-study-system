@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose'
+import isEmail from 'validator/lib/isEmail'
 
 const InstructorSchema = new Schema(
   {
@@ -8,6 +9,12 @@ const InstructorSchema = new Schema(
       trim: true,
       minlength: 3,
       maxlength: 30
+    },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      validate: isEmail
     },
     specialty: [
       {
