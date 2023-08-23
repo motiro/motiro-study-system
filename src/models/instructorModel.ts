@@ -59,6 +59,13 @@ InstructorSchema.pre('save', function (next) {
   }
 })
 
-const instructorModel = model('Instructor', InstructorSchema)
+InstructorSchema.pre(/delete/i, async function () {
+  try {
+    // @ts-ignore
+    await model('Class').deleteMany({ instructor: this._conditions._id })
+  } catch (error) {
+    console.log(error)
+  }
+})
 
-export { instructorModel }
+export const instructorModel = model('Instructor', InstructorSchema)
