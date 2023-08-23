@@ -15,6 +15,10 @@ const StudentSchema = new Schema(
       required: true,
       unique: true,
       validate: isEmail
+    },
+    password: {
+      type: String,
+      required: true
     }
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
