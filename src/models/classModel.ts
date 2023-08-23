@@ -14,18 +14,16 @@ const ClassSchema = new Schema(
       required: true
     },
     // TODO: find a proper way to store and check date
-    startsAt: {
+    date: {
       type: Date,
-      required: true
+      required: [true, 'YYYY-MM-DD HH:mm']
     },
-    endsAt: {
-      type: Date,
-      required: true
-    }
+    day: String,
+    time: String
   },
   { timestamps: true }
 )
 
 const classModel = model('Class', ClassSchema)
 
-export { classModel }
+export const classModel = model('Class', ClassSchema)
