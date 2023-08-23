@@ -24,6 +24,13 @@ const ClassSchema = new Schema(
   { timestamps: true }
 )
 
-const classModel = model('Class', ClassSchema)
+// Perhaps this should be moved to a controller
+// This was supposed to make it easier to match queries by day or time,
+// but maybe it's not necessary to store it in DB
+ClassSchema.pre('save', function (next) {
+  this.day = this.date!.toISOString().split('T')[0]
+  this.time = this.date!.toLocaleTimeString('pt-BR', { timeStyle: 'short' })
+  next()
+})
 
 export const classModel = model('Class', ClassSchema)
