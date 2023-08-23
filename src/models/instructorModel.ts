@@ -16,6 +16,11 @@ const InstructorSchema = new Schema(
       unique: true,
       validate: isEmail
     },
+    password: {
+      type: String,
+      required: true,
+      minlength: 6
+    },
     specialty: [
       {
         type: String,
