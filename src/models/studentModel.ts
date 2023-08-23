@@ -24,8 +24,8 @@ const StudentSchema = new Schema(
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 )
 
-StudentSchema.virtual('classes', {
-  ref: 'Class',
+StudentSchema.virtual('lessons', {
+  ref: 'Lessons',
   localField: '_id',
   foreignField: 'student',
   justOne: false
