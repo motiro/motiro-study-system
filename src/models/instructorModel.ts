@@ -18,6 +18,20 @@ const InstructorSchema = new Schema(
         maxlength: 20
       }
     ],
+    schedule: [
+      {
+        date: {
+          type: Date,
+          required: [true, 'YYYY-MM-DD HH:mm']
+        },
+        busy: {
+          type: Boolean,
+          default: false
+        },
+        day: String,
+        time: String
+      }
+    ]
   },
   specialty: {
     type: String,
