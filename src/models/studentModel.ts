@@ -1,4 +1,5 @@
 import { Schema, model } from 'mongoose'
+import isEmail from 'validator/lib/isEmail'
 
 const StudentSchema = new Schema(
   {
@@ -9,11 +10,11 @@ const StudentSchema = new Schema(
       minlength: 3,
       maxlength: 30
     },
-    // TODO: check if email is valid
     email: {
       type: String,
       required: true,
-      trim: true
+      unique: true,
+      validate: isEmail
     }
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
