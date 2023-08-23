@@ -41,8 +41,8 @@ const InstructorSchema = new Schema(
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 )
 
-InstructorSchema.virtual('classes', {
-  ref: 'Class',
+InstructorSchema.virtual('lessons', {
+  ref: 'Lessons',
   localField: '_id',
   foreignField: 'instructor',
   justOne: false
