@@ -33,12 +33,16 @@ const InstructorSchema = new Schema(
       }
     ]
   },
-  specialty: {
-    type: String,
-    required: true,
-    trim: true,
-    minlength: 3,
-    maxlength: 20
+  { toJSON: { virtuals: true }, toObject: { virtuals: true } }
+)
+
+InstructorSchema.virtual('classes', {
+  ref: 'Class',
+  localField: '_id',
+  foreignField: 'instructor',
+  justOne: false
+})
+
   }
 })
 
