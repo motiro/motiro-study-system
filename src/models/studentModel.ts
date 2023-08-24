@@ -31,9 +31,4 @@ StudentSchema.virtual('lessons', {
   justOne: false
 })
 
-StudentSchema.pre(/delete/i, async function () {
-  // @ts-ignore
-  await model('Lessons').deleteMany({ student: this._conditions._id })
-})
-
 export const studentModel = model('Student', StudentSchema)
