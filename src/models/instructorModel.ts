@@ -53,9 +53,4 @@ InstructorSchema.virtual('lessons', {
   justOne: false
 })
 
-InstructorSchema.pre(/delete/i, async function () {
-  // @ts-ignore
-  await model('Lessons').deleteMany({ instructor: this._conditions._id })
-})
-
 export const instructorModel = model('Instructor', InstructorSchema)
