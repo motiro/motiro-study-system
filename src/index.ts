@@ -1,5 +1,6 @@
 import express from 'express'
 import 'dotenv/config'
+import './infrastructure/persistence/mongo/connections'
 
 const app = express()
 
