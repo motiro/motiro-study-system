@@ -12,14 +12,14 @@ const InstructorSchema = new Schema(
     },
     email: {
       type: String,
+      trim: true,
       required: true,
       unique: true,
       validate: isEmail
     },
     password: {
       type: String,
-      required: true,
-      minlength: 6
+      required: true
     },
     specialty: [
       {
