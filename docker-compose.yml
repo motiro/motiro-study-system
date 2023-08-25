@@ -19,9 +19,9 @@ services:
     healthcheck:
       test: echo 'db.runCommand("ping").ok' | mongosh localhost:${DB_PORT}/test --quiet
       interval: 2s
-      timeout: 2s
+      timeout: 5s
       retries: 5
-      start_period: 1s
+      start_period: 2s
     command: mongod --port ${DB_PORT} --logpath /data/db/logs
     restart: always
 
