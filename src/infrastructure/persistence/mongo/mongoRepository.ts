@@ -25,6 +25,10 @@ export class MongoRepository
   async deleteInstructor(id: string): Promise<void> {
     await instructorModel.deleteOne().where({ _id: id })
   }
+  async getAllInstructors(): Promise<Instructor[]> {
+    const result = await instructorModel.find().select('-password')
+    return result
+  }
 
   // Student methods
 
@@ -41,5 +45,9 @@ export class MongoRepository
   }
   async deleteStudent(id: string): Promise<void> {
     await instructorModel.deleteOne().where({ _id: id })
+  }
+  async getAllStudents(): Promise<Student[]> {
+    const result = await studentModel.find().select('-password')
+    return result
   }
 }
