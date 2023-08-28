@@ -28,7 +28,7 @@ class AuthMiddleware {
     }
   }
 
-  chechUserPermissions(
+  checkUserPermissions(
     requestUser: { user: { role: string; userId: string } },
     resourceUserId: Types.ObjectId | string
   ) {
