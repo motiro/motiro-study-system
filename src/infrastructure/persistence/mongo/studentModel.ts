@@ -22,6 +22,12 @@ const StudentSchema = new Schema(
     password: {
       type: String,
       required: true
+    },
+    role: {
+      type: String,
+      required: true,
+      enum: ['student'],
+      default: 'student'
     }
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
