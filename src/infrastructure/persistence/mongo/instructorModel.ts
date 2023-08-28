@@ -43,7 +43,13 @@ const InstructorSchema = new Schema(
           default: false
         }
       }
-    ]
+    ],
+    role: {
+      type: String,
+      required: true,
+      enum: ['instructor'],
+      default: 'instructor'
+    }
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 )
