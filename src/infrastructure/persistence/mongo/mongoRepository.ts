@@ -12,7 +12,7 @@ export class MongoRepository
   // Insctuctor methods
 
   async findInstructorById(id: string): Promise<Instructor | null> {
-    const result = await instructorModel.findById(id)
+    const result = await instructorModel.findById(id).select('-password')
     return result
   }
   async saveInstructor(instructor: Instructor): Promise<Instructor> {
@@ -29,7 +29,7 @@ export class MongoRepository
   // Student methods
 
   async findStudentById(id: string): Promise<Student | null> {
-    const result = await studentModel.findById(id)
+    const result = await studentModel.findById(id).select('-password')
     return result
   }
   async saveStudent(student: Student): Promise<Student> {
