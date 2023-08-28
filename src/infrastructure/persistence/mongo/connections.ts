@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 
 mongoose.set('strictQuery', true)
 
-const url = `mongodb://${process.env.DB_HOST}/${process.env.DB_NAME}`
+const url = `mongodb://${process.env.DB_HOST}:${process.env.DB_PORT}/${process.env.DB_NAME}`
 
 mongoose
   .connect(url)
