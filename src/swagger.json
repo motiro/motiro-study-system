@@ -15,7 +15,7 @@
         "/instructor": {
             "post": {
                 "summary": "Create a instructor",
-                "description": "This route creates a new intructor",
+                "description": "This route creates a new instructor",
                 "tags": ["Instructor"],
                 "requestBody": {
                     "content": {
@@ -24,7 +24,7 @@
                                 "$ref": "#/components/schemas/Instructor"
                             },
                             "examples": {
-                                "intructor": {
+                                "instructor": {
                                     "value": {
                                         "name": "Peter Doe",
                                         "email": "peter@gmail.com",
@@ -39,7 +39,8 @@
                                                 "date": "2023-10-28 19:00",
                                                 "busy": true
                                             }
-                                        ]
+                                        ],
+                                        "role": ["instructor"]
                                     }
                                 }
                             }
@@ -52,7 +53,9 @@
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "error": "string"
+                                    "error": {
+                                        "type": "string"
+                                    }
                                 },
                                 "examples": {
                                     "Unauthorized": {
@@ -69,7 +72,9 @@
                         "content": {
                           "application/json": {
                             "schema": {
-                              "error": "string"
+                              "error": {
+                                "type": "string"
+                              }
                             },
                             "examples": {
                               "Not found": {
@@ -96,7 +101,7 @@
             },
             "get": {
                 "summary": "Get all instructors",
-                "description": "This route get all intructors",
+                "description": "This route get all instructors",
                 "tags": ["Instructor"],
                 "responses": {
                     "200": {
@@ -106,6 +111,25 @@
                                 "schema": {
                                 "type": "object",
                                 "$ref": "#/components/schemas/Instructor"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "error": {
+                                        "type": "string"
+                                    }
+                                },
+                                "examples": {
+                                    "Unauthorized": {
+                                        "value": {
+                                            "error": "Unauthorized, please authenticate"
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -143,7 +167,9 @@
                         "content": {
                           "application/json": {
                             "schema": {
-                              "error": "string"
+                              "error": {
+                                "type": "string"
+                              }
                             },
                             "examples": {
                               "Instructor not found": {
@@ -154,6 +180,25 @@
                             }
                           }
                         }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "error": {
+                                        "type": "string"
+                                    }
+                                },
+                                "examples": {
+                                    "Unauthorized": {
+                                        "value": {
+                                            "error": "Unauthorized, please authenticate"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -163,7 +208,7 @@
                 "tags": ["Instructor"],
                 "parameters": [
                     {
-                       "name" : "id",
+                       "name": "id",
                        "in": "path",
                        "description": "Instructor id for update",
                        "required": true
@@ -176,7 +221,7 @@
                                 "$ref": "#/components/schemas/Instructor"
                             },
                             "examples": {
-                                "intructor": {
+                                "instructor": {
                                     "value": {
                                         "name": "Peter Doe",
                                         "email": "peter@gmail.com",
@@ -191,7 +236,8 @@
                                                 "date": "2023-10-28 19:00",
                                                 "busy": true
                                             }
-                                        ]
+                                        ],
+                                        "role": ["instructor"]
                                     }
                                 }
                             }
@@ -215,7 +261,9 @@
                         "content": {
                           "application/json": {
                             "schema": {
-                              "error": "string"
+                              "error": {
+                                "type": "string"
+                              }
                             },
                             "examples": {
                               "Instructor not found": {
@@ -226,16 +274,35 @@
                             }
                           }
                         }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "error": {
+                                        "type": "string"
+                                    }
+                                },
+                                "examples": {
+                                    "Unauthorized": {
+                                        "value": {
+                                            "error": "Unauthorized, please authenticate"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             },
             "delete": {
                 "summary": "Delete a instructor",
-                "description": "This route deletes a tutor",
+                "description": "This route deletes a instructor",
                 "tags": ["Instructor"],
                 "parameters": [
                     {
-                       "name" : "id",
+                       "name": "id",
                        "in": "path",
                        "description": "Instructor id to be deleted",
                        "required": true
@@ -258,7 +325,9 @@
                         "content": {
                           "application/json": {
                             "schema": {
-                              "error": "string"
+                              "error": {
+                                "type": "string"
+                              }
                             },
                             "examples": {
                               "Instructor not found": {
@@ -269,9 +338,355 @@
                             }
                           }
                         }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "error": {
+                                        "type": "string"
+                                    }
+                                },
+                                "examples": {
+                                    "Unauthorized": {
+                                        "value": {
+                                            "error": "Unauthorized, please authenticate"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             }
+        },
+        "/student": {
+            "post": {
+                "summary": "Create a student",
+                "description": "This route creates a student",
+                "tags": ["Student"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref":"#/components/schemas/Student"
+                            },
+                            "examples": {
+                                "student": {
+                                    "value": {
+                                        "name": "Lucas Dionizio",
+                                        "email": "lucas@gmail.com",
+                                        "password":"1S2G4Jds98",
+                                        "role": ["student"]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "error": {
+                                        "type": "string"
+                                      }
+                                },
+                                "examples": {
+                                    "Unauthorized": {
+                                        "value": {
+                                            "error": "Unauthorized, please authenticate"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                          "application/json": {
+                            "schema": {
+                              "error": {
+                                "type": "string"
+                              }
+                            },
+                            "examples": {
+                              "Not found": {
+                                "value": {
+                                  "error": "Student already exists or unfilled fields"
+                                }
+                              }
+                            }
+                          }
+                        }
+                    },
+                    "201": {
+                        "description": "Student created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                        "$ref":"#/components/schemas/Student"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "summary": "Get all students",
+                "description": "This route get all students",
+                "tags": ["Student"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                "type": "object",
+                                "$ref": "#/components/schemas/Student"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "error": {
+                                        "type": "string"
+                                      }
+                                },
+                                "examples": {
+                                    "Unauthorized": {
+                                        "value": {
+                                            "error": "Unauthorized, please authenticate"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/student/{id}": {
+            "get": {
+                "summary": "Get one student by id",
+                "description": "This route get one student by id",
+                "tags": ["Student"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Student id for the search",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Student received",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type:": "object",
+                                    "$ref":"#/components/schemas/Student"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                          "application/json": {
+                            "schema": {
+                              "error": {
+                                "type": "string"
+                              }
+                            },
+                            "examples": {
+                              "Student not found": {
+                                "value": {
+                                  "error": "No student with this id"
+                                }
+                              }
+                            }
+                          }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "error": {
+                                        "type": "string"
+                                    }
+                                },
+                                "examples": {
+                                    "Unauthorized": {
+                                        "value": {
+                                            "error": "Unauthorized, please authenticate"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "summary": "Updates a student",
+                "description": "This route updates a student by id",
+                "tags": ["Student"],
+                "parameters": [
+                    {
+                       "name": "id",
+                       "in": "path",
+                       "description": "Student id for update",
+                       "required": true
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Student"
+                            },
+                            "examples": {
+                                "instructor": {
+                                    "value": {
+                                        "name": "Lucas Dionizio",
+                                        "email": "lucas@gmail.com",
+                                        "password":"1S2G4Jds98",
+                                        "role": ["student"]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Student updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type:": "object",
+                                    "$ref":"#/components/schemas/Student"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                          "application/json": {
+                            "schema": {
+                              "error": {
+                                "type": "string"
+                              }
+                            },
+                            "examples": {
+                              "Student not found": {
+                                "value": {
+                                  "error": "No student with this id"
+                                }
+                              }
+                            }
+                          }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "error": {
+                                        "type": "string"
+                                      }
+                                },
+                                "examples": {
+                                    "Unauthorized": {
+                                        "value": {
+                                            "error": "Unauthorized, please authenticate"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete a student",
+                "description": "This route deletes a student",
+                "tags": ["Student"],
+                "parameters": [
+                    {
+                       "name": "id",
+                       "in": "path",
+                       "description": "Student id to be deleted",
+                       "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Student deleted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type:": "object",
+                                    "$ref":"#/components/schemas/Student"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                          "application/json": {
+                            "schema": {
+                              "error": {
+                                "type": "string"
+                              }
+                            },
+                            "examples": {
+                              "Student not found": {
+                                "value": {
+                                  "error": "No student with this id"
+                                }
+                              }
+                            }
+                          }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "error": {
+                                        "type": "string"
+                                      }
+                                },
+                                "examples": {
+                                    "Unauthorized": {
+                                        "value": {
+                                            "error": "Unauthorized, please authenticate"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }  
         }  
     },
     "components": {
@@ -307,6 +722,10 @@
                                 }
                             }
                         }
+                    },
+                    "role": {
+                        "type":"string",
+                        "enum": ["instructor"]
                     }
                 }
             },
@@ -321,6 +740,10 @@
                     },
                     "password": {
                         "type": "string"
+                    },
+                    "role": {
+                        "type":"string",
+                        "enum": ["student"]
                     }
                 }
             },
@@ -328,10 +751,10 @@
                 "type": "object",
                 "properties": {
                     "instructor": {
-                        "type": "Instructor ID"
+                        "type": "string"
                     },
                     "student": {
-                        "type": "Student ID"
+                        "type": "string"
                     },
                     "date": {
                         "type": "string"
