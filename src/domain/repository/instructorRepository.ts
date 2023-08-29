@@ -5,4 +5,5 @@ export interface InstructorRepository {
   saveInstructor(instructor: Instructor): Promise<Instructor>
   updateInstructor(instructor: Instructor): Promise<void>
   deleteInstructor(id: string): Promise<void>
+  getAllInstructors(): Promise<Instructor[]>
 }
