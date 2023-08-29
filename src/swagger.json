@@ -48,10 +48,38 @@
                 },
                 "responses": {
                     "401": {
-                        "description": "Unauthorized"
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "error": "string"
+                                },
+                                "examples": {
+                                    "Unauthorized": {
+                                        "value": {
+                                            "error": "Unauthorized, please authenticate"
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     },
                     "400": {
-                        "description": "Instructor already exists or unfilled fields"
+                        "description": "Bad request",
+                        "content": {
+                          "application/json": {
+                            "schema": {
+                              "error": "string"
+                            },
+                            "examples": {
+                              "Not found": {
+                                "value": {
+                                  "error": "Instructor already exists or unfilled fields"
+                                }
+                              }
+                            }
+                          }
+                        }
                     },
                     "201": {
                         "description": "Instructor created",
@@ -137,7 +165,7 @@
                     {
                        "name" : "id",
                        "in": "path",
-                       "description": "Instructor id for the search",
+                       "description": "Instructor id for update",
                        "required": true
                     }
                 ],
@@ -260,19 +288,26 @@
                     "password": {
                         "type": "string"
                     },
-                    "specialty": [{
-                        "type": "string"
-                    }],
-                    "schedule": [
-                        {
-                            "date": {
-                                "type": "string"
-                            },
-                            "busy": {
-                                "type": "Boolean"
+                    "specialty": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "schedule": {
+                        "type": "array",
+                        "items": {
+                            "type": "object",
+                            "properties": {
+                                "date": {
+                                    "type": "string"
+                                },
+                                "busy": {
+                                    "type": "boolean"
+                                }
                             }
                         }
-                    ]    
+                    }
                 }
             },
             "Student": {
