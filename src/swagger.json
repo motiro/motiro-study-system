@@ -2,8 +2,307 @@
     "openapi": "3.1.0",
     "info":{
         "title": "Motirõ Study System - MSS",
-        "description": "Sistema de agendamento de aulas.",
+        "description": "Class scheduling system.",
         "version": "1.0.0"
+    },
+    "servers": [
+        {
+          "url": "http://localhost:5000",
+          "description": "API"
+        }
+    ],
+    "paths": {
+        "/instructor": {
+            "post": {
+                "summary": "Create a instructor",
+                "description": "This route creates a new intructor",
+                "tags": ["Instructor"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Instructor"
+                            },
+                            "examples": {
+                                "intructor": {
+                                    "value": {
+                                        "name": "Peter Doe",
+                                        "email": "peter@gmail.com",
+                                        "password": "1S2G4Jds98",
+                                        "specialty": ["Sciences", "Philosophy"],
+                                        "schedule": [
+                                            {
+                                                "date": "2023-08-28 15:00",
+                                                "busy": false
+                                            },
+                                            {
+                                                "date": "2023-10-28 19:00",
+                                                "busy": true
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "400": {
+                        "description": "Instructor already exists or unfilled fields"
+                    },
+                    "201": {
+                        "description": "Instructor created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object",
+                                        "$ref":"#/components/schemas/Instructor"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "get": {
+                "summary": "Get all instructors",
+                "description": "This route get all intructors",
+                "tags": ["Instructor"],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                "type": "object",
+                                "$ref": "#/components/schemas/Instructor"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/instructor/{id}": {
+            "get": {
+                "summary": "Get one instructor by id",
+                "description": "This route get one instructor by id",
+                "tags": ["Instructor"],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Instructor id for the search",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Instructor received",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type:": "object",
+                                    "$ref":"#/components/schemas/Instructor"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                          "application/json": {
+                            "schema": {
+                              "error": "string"
+                            },
+                            "examples": {
+                              "Instructor not found": {
+                                "value": {
+                                  "error": "No instructor with this id"
+                                }
+                              }
+                            }
+                          }
+                        }
+                    }
+                }
+            },
+            "patch": {
+                "summary": "Updates a instructor",
+                "description": "This route updates a instructor by id",
+                "tags": ["Instructor"],
+                "parameters": [
+                    {
+                       "name" : "id",
+                       "in": "path",
+                       "description": "Instructor id for the search",
+                       "required": true
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Instructor"
+                            },
+                            "examples": {
+                                "intructor": {
+                                    "value": {
+                                        "name": "Peter Doe",
+                                        "email": "peter@gmail.com",
+                                        "password": "1S2G4Jds98",
+                                        "specialty": ["Sciences", "Philosophy"],
+                                        "schedule": [
+                                            {
+                                                "date": "2023-08-28 15:00",
+                                                "busy": false
+                                            },
+                                            {
+                                                "date": "2023-10-28 19:00",
+                                                "busy": true
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Instructor updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type:": "object",
+                                    "$ref":"#/components/schemas/Instructor"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                          "application/json": {
+                            "schema": {
+                              "error": "string"
+                            },
+                            "examples": {
+                              "Instructor not found": {
+                                "value": {
+                                  "error": "No instructor with this id"
+                                }
+                              }
+                            }
+                          }
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "summary": "Delete a instructor",
+                "description": "This route deletes a tutor",
+                "tags": ["Instructor"],
+                "parameters": [
+                    {
+                       "name" : "id",
+                       "in": "path",
+                       "description": "Instructor id to be deleted",
+                       "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Instructor deleted",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type:": "object",
+                                    "$ref":"#/components/schemas/Instructor"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not found",
+                        "content": {
+                          "application/json": {
+                            "schema": {
+                              "error": "string"
+                            },
+                            "examples": {
+                              "Instructor not found": {
+                                "value": {
+                                  "error": "No instructor with this id"
+                                }
+                              }
+                            }
+                          }
+                        }
+                    }
+                }
+            }
+        }  
+    },
+    "components": {
+        "schemas": {
+            "Instructor": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    },
+                    "specialty": [{
+                        "type": "string"
+                    }],
+                    "schedule": [
+                        {
+                            "date": {
+                                "type": "string"
+                            },
+                            "busy": {
+                                "type": "Boolean"
+                            }
+                        }
+                    ]    
+                }
+            },
+            "Student": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Lesson": {
+                "type": "object",
+                "properties": {
+                    "instructor": {
+                        "type": "Instructor ID"
+                    },
+                    "student": {
+                        "type": "Student ID"
+                    },
+                    "date": {
+                        "type": "string"
+                    }
+                }
+            }
+        }
     }
-  
 }
