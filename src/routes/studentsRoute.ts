@@ -1,11 +1,11 @@
 import express from 'express';
 import studentController from '../controllers/studentsController';
 
-const router = express.Router();
+const path = express.Router();
 
-router.post('/', studentController.create);
-router.put('/:id', studentController.update);
-router.get('/', studentController.list);
-router.delete('/:id', studentController.delete);
+path.post('/', studentController.create);
+path.put('/:id', studentController.update);
+path.get('/', studentController.list);
+path.delete('/:id', studentController.delete);
 
-export default router;
+export default path;
