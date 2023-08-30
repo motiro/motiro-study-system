@@ -1,5 +1,7 @@
 import { Schema, model } from 'mongoose'
+import { UserSchema } from '.'
 import isEmail from 'validator/lib/isEmail'
+import bcrypt from 'bcrypt'
 
 const StudentSchema = new Schema(
   {
@@ -25,6 +27,12 @@ const StudentSchema = new Schema(
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 )
 
+StudentSchema.methods.comparePassword = async function (
+  canditatePassword: string
+) {
+  return await bcrypt.compare(canditatePassword, this.password)
+}
+
 StudentSchema.virtual('lessons', {
   ref: 'Lessons',
   localField: '_id',
@@ -32,4 +40,11 @@ StudentSchema.virtual('lessons', {
   justOne: false
 })
 
-export const studentModel = model('Student', StudentSchema)
+StudentSchema.pre('save', async function () {
+  if (!this.isModified('password')) return
+  const { BCRYPT_SALT } = process.env
+  const salt = await bcrypt.genSalt(parseInt(BCRYPT_SALT as string))
+  this.password = await bcrypt.hash(this.password, salt)
+})
+
+export const studentModel = model<UserSchema>('Student', StudentSchema)
