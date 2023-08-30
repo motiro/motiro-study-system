@@ -9,7 +9,7 @@ export class Student {
     this.name = props.name
     this.email = props.email
     this.password = props.password
-    this.role = props.role
+    this.role = 'student'
 
     if (id) {
       this.id = id

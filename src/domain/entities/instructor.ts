@@ -13,7 +13,7 @@ export class Instructor {
     this.password = props.password
     this.specialty = props.specialty
     this.schedule = props.schedule
-    this.role = props.role
+    this.role = 'instructor'
 
     if (id) {
       this.id = id
