@@ -1,8 +1,9 @@
+import instructorRoute from './instructorRoute'
+import studentRoutes from './studentsRoute'
 import express from 'express'
-import studentRoutes from './studentsRoute';
 
-const router = express.Router();
+const routes = express()
+routes.use('/api/v1/instructor', instructorRoute)
+routes.use('/api/v1/student', studentRoute)
 
-router.use('/students', studentRoutes);
-
-export default router
+export default routes
