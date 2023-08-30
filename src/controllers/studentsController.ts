@@ -40,6 +40,19 @@ class StudentController {
     }
   }
 
+  async listStudent(req: Request, res: Response) {
+    try {
+      const { id } = req.params;
+      const student = await studentModel.findById(id);
+      if (!student) {
+        return res.status(404).json({ error: 'Student not found' });
+      }
+      return res.json(student);
+    } catch (error) {
+      return res.status(500).json({ error: 'Failed to fetch student' });
+    }
+  }
+
   async delete(req: Request, res: Response) {
     try {
       const { id } = req.params;
