@@ -3,7 +3,7 @@ export class Student {
   public name: string
   public email: string
   public password: string
-  public role: string
+  public role?: string
 
   constructor(props: Omit<Student, 'id'>, id?: string) {
     this.name = props.name

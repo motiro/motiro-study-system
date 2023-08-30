@@ -5,7 +5,7 @@ export class Instructor {
   public password: string
   public specialty: string[]
   public schedule: Schedule[]
-  public role: string
+  public role?: string
 
   constructor(props: Omit<Instructor, 'id'>, id?: string) {
     this.name = props.name
