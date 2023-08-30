@@ -1,5 +1,6 @@
 import { Request, Response } from 'express'
 import { InstructorUseCase } from 'applications/usecases/InstructorUseCase'
+import { authMiddleware } from 'applications/middlewares'
 
 export class InstructorController {
   constructor(private useCase: InstructorUseCase) {}
@@ -43,9 +44,9 @@ export class InstructorController {
   getInstructor = async (req: Request, res: Response) => {
     try {
       const { id } = req.params
-
       const result = await this.useCase.listOne(id)
 
+      authMiddleware.checkUserPermissions(req.body, id)
       return res.status(200).send(result)
     } catch (err) {
       if (err instanceof Error) {
@@ -60,6 +61,8 @@ export class InstructorController {
     try {
       const { name, email, password, specialty, schedule } = req.body
       const { id } = req.params
+
+      authMiddleware.checkUserPermissions(req.body, id)
       const result = await this.useCase.update(id, {
         name,
         email,
@@ -82,6 +85,7 @@ export class InstructorController {
     try {
       const { id } = req.params
 
+      authMiddleware.checkUserPermissions(req.body, id)
       await this.useCase.delete(id)
 
       return res.status(200).send()
