@@ -12,7 +12,7 @@ export class MongoRepository
   // Insctuctor methods
 
   async findInstructorById(id: string): Promise<Instructor | null> {
-    const result = await instructorModel.findById(id)
+    const result = await instructorModel.findById(id).select('-password')
     return result
   }
   async saveInstructor(instructor: Instructor): Promise<Instructor> {
@@ -25,11 +25,15 @@ export class MongoRepository
   async deleteInstructor(id: string): Promise<void> {
     await instructorModel.deleteOne().where({ _id: id })
   }
+  async getAllInstructors(): Promise<Instructor[]> {
+    const result = await instructorModel.find().select('-password')
+    return result
+  }
 
   // Student methods
 
   async findStudentById(id: string): Promise<Student | null> {
-    const result = await studentModel.findById(id)
+    const result = await studentModel.findById(id).select('-password')
     return result
   }
   async saveStudent(student: Student): Promise<Student> {
@@ -41,5 +45,9 @@ export class MongoRepository
   }
   async deleteStudent(id: string): Promise<void> {
     await instructorModel.deleteOne().where({ _id: id })
+  }
+  async getAllStudents(): Promise<Student[]> {
+    const result = await studentModel.find().select('-password')
+    return result
   }
 }
