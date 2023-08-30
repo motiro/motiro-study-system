@@ -1,5 +1,5 @@
 import instructorRoute from './instructorRoute'
-import studentRoutes from './studentsRoute'
+import studentRoutes from './studentRoute'
 import express from 'express'
 
 const routes = express()
