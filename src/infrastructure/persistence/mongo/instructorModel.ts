@@ -21,7 +21,8 @@ const InstructorSchema = new Schema(
     },
     password: {
       type: String,
-      required: true
+      required: true,
+      select: false
     },
     specialty: [
       {
@@ -43,7 +44,13 @@ const InstructorSchema = new Schema(
           default: false
         }
       }
-    ]
+    ],
+    role: {
+      type: String,
+      required: true,
+      enum: ['instructor'],
+      default: 'instructor'
+    }
   },
   { toJSON: { virtuals: true }, toObject: { virtuals: true } }
 )
