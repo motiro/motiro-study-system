@@ -5,4 +5,5 @@ export interface StudentRepository {
   saveStudent(student: Student): Promise<Student>
   updateStudent(student: Student): Promise<void>
   deleteStudent(id: string): Promise<void>
+  getAllStudents(): Promise<Student[]>
 }
