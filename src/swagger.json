@@ -12,6 +12,201 @@
         }
     ],
     "paths": {
+        "/auth/register": {
+            "post": {
+                "summary": "Register",
+                "description": "This route register a new user",
+                "tags": ["Register"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref":"#/components/schemas/Register"
+                            },
+                            "examples": {
+                                "register": {
+                                    "value": {
+                                        "name": "Noah Doe",
+                                        "email": "noah@gmail.com",
+                                        "password":"1S2G4Jds98",
+                                        "role":["admin"]
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                          "application/json": {
+                            "schema": {
+                              "error": {
+                                "type": "string"
+                              }
+                            },
+                            "examples": {
+                              "Not found": {
+                                "value": {
+                                  "error": "E-mail already registered"
+                                }
+                              }
+                            }
+                          }
+                        }
+                    },
+                    "201": {
+                        "description": "Token created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                    
+                                },
+                                "examples": {
+                                    "register": {
+                                        "value": {
+                                            "name": "Noah Doe",
+                                            "userId": "123233452344",
+                                            "role":"admin"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "error": {
+                                        "type": "string"
+                                      }
+                                },
+                                "examples": {
+                                    "Unauthorized": {
+                                        "value": {
+                                            "error": "Unauthorized"
+                                        }
+                                    },
+                                    "Invalid credentials": {
+                                        "value": {
+                                            "error": "Invalid role"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    
+                }
+            }
+        },
+        "/auth/login": {
+            "post": {
+                "summary": "Login",
+                "description": "TThis route logs in a registered user",
+                "tags": ["Login"],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref":"#/components/schemas/Login"
+                            },
+                            "examples": {
+                                "login": {
+                                    "value": {
+                                        "email": "noah@gmail.com",
+                                        "password":"1S2G4Jds98"                          
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "400": {
+                        "description": "Bad request",
+                        "content": {
+                          "application/json": {
+                            "schema": {
+                              "error": {
+                                "type": "string"
+                              }
+                            },
+                            "examples": {
+                              "Bad Request": {
+                                "value": {
+                                  "error": "Missing credentials"
+                                }
+                              }
+                            }
+                          }
+                        }
+                    },
+                    "200": {
+                        "description": "Logged",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "object"
+                                    
+                                },
+                                "examples": {
+                                    "login": {
+                                        "value": {
+                                            "name": "Noah Doe",
+                                            "userId": "123233452344",
+                                            "role": "admin"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Bad request",
+                        "content": {
+                          "application/json": {
+                            "schema": {
+                              "error": {
+                                "type": "string"
+                              }
+                            },
+                            "examples": {
+                              "Not found": {
+                                "value": {
+                                  "error": "User not found"
+                                }
+                              }
+                            }
+                          }
+                        }
+                    },
+                    "401": {
+                        "description": "Bad request",
+                        "content": {
+                          "application/json": {
+                            "schema": {
+                              "error": {
+                                "type": "string"
+                              }
+                            },
+                            "examples": {
+                              "Unauthorized": {
+                                "value": {
+                                  "error": "Invalid password"
+                                }
+                              }
+                            }
+                          }
+                        }
+                    }
+                }
+            }
+        },
         "/instructor": {
             "post": {
                 "summary": "Create a instructor",
@@ -60,7 +255,7 @@
                                 "examples": {
                                     "Unauthorized": {
                                         "value": {
-                                            "error": "Unauthorized, please authenticate"
+                                            "error": "Unauthorized"
                                         }
                                     }
                                 }
@@ -77,7 +272,7 @@
                               }
                             },
                             "examples": {
-                              "Not found": {
+                              "Bad Request": {
                                 "value": {
                                   "error": "Instructor already exists"
                                 }
@@ -146,7 +341,7 @@
                                 "examples": {
                                     "Unauthorized": {
                                         "value": {
-                                            "error": "Unauthorized, please authenticate"
+                                            "error": "Unauthorized"
                                         }
                                     }
                                 }
@@ -168,7 +363,7 @@
                                         "error": "Unexpected error"
                                       }
                                     }
-                                  }
+                                }
                             }
                         }
                     }
@@ -231,7 +426,7 @@
                                 "examples": {
                                     "Unauthorized": {
                                         "value": {
-                                            "error": "Unauthorized, please authenticate"
+                                            "error": "Unauthorized"
                                         }
                                     }
                                 }
@@ -344,7 +539,7 @@
                                 "examples": {
                                     "Unauthorized": {
                                         "value": {
-                                            "error": "Unauthorized, please authenticate"
+                                            "error": "Unauthorized"
                                         }
                                     }
                                 }
@@ -427,7 +622,7 @@
                                 "examples": {
                                     "Unauthorized": {
                                         "value": {
-                                            "error": "Unauthorized, please authenticate"
+                                            "error": "Unauthorized"
                                         }
                                     }
                                 }
@@ -493,7 +688,7 @@
                                 "examples": {
                                     "Unauthorized": {
                                         "value": {
-                                            "error": "Unauthorized, please authenticate"
+                                            "error": "Unauthorized"
                                         }
                                     }
                                 }
@@ -560,7 +755,7 @@
                                 "examples": {
                                     "Unauthorized": {
                                         "value": {
-                                            "error": "Unauthorized, please authenticate"
+                                            "error": "Unauthorized"
                                         }
                                     }
                                 }
@@ -645,7 +840,7 @@
                                 "examples": {
                                     "Unauthorized": {
                                         "value": {
-                                            "error": "Unauthorized, please authenticate"
+                                            "error": "Unauthorized"
                                         }
                                     }
                                 }
@@ -747,7 +942,7 @@
                                 "examples": {
                                     "Unauthorized": {
                                         "value": {
-                                            "error": "Unauthorized, please authenticate"
+                                            "error": "Unauthorized"
                                         }
                                     }
                                 }
@@ -830,7 +1025,7 @@
                                 "examples": {
                                     "Unauthorized": {
                                         "value": {
-                                            "error": "Unauthorized, please authenticate"
+                                            "error": "Unauthorized"
                                         }
                                     }
                                 }
@@ -928,6 +1123,35 @@
                         "type": "string"
                     },
                     "date": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Register": {
+                "type": "object",
+                "properties": {
+                    "name": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
+                        "type": "string"
+                    },
+                    "role": {
+                        "type":"string",
+                        "enum": ["admin", "student", "instructor"]
+                    }
+                }
+            },
+            "Login": {
+                "type": "object",
+                "properties": {
+                    "email": {
+                        "type": "string"
+                    },
+                    "password": {
                         "type": "string"
                     }
                 }
