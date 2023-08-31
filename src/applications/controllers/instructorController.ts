@@ -18,11 +18,6 @@ export class InstructorController {
       })
       return res.status(201).json(result)
     } catch (err) {
-      if (err instanceof Error) {
-        return res
-          .status(400)
-          .json({ message: err.message || 'Unexpected error.' })
-      }
       return res.status(500).json({ message: 'Unexpected error.' })
     }
   }
@@ -32,11 +27,6 @@ export class InstructorController {
 
       return res.status(200).json(result)
     } catch (err) {
-      if (err instanceof Error) {
-        return res
-          .status(400)
-          .json({ message: err.message || 'Unexpected error.' })
-      }
       return res.status(500).json({ message: 'Unexpected error.' })
     }
   }
@@ -44,16 +34,12 @@ export class InstructorController {
   getInstructor = async (req: Request, res: Response) => {
     try {
       const { id } = req.params
-      const result = await this.useCase.listOne(id)
 
       authMiddleware.checkUserPermissions(req.body, id)
+      const result = await this.useCase.listOne(id)
+
       return res.status(200).send(result)
     } catch (err) {
-      if (err instanceof Error) {
-        return res
-          .status(400)
-          .json({ message: err.message || 'Unexpected error.' })
-      }
       return res.status(500).json({ message: 'Unexpected error.' })
     }
   }
@@ -73,11 +59,6 @@ export class InstructorController {
 
       return res.status(200).json(result)
     } catch (err) {
-      if (err instanceof Error) {
-        return res
-          .status(400)
-          .json({ message: err.message || 'Unexpected error.' })
-      }
       return res.status(500).json({ message: 'Unexpected error.' })
     }
   }
@@ -90,11 +71,6 @@ export class InstructorController {
 
       return res.status(200).send()
     } catch (err) {
-      if (err instanceof Error) {
-        return res
-          .status(400)
-          .json({ message: err.message || 'Unexpected error.' })
-      }
       return res.status(500).json({ message: 'Unexpected error.' })
     }
   }

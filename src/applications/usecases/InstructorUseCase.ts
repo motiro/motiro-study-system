@@ -1,5 +1,6 @@
 import { InstructorRepository } from 'domain/repository/instructorRepository'
 import { Instructor } from 'domain/entities/instructor'
+import { BadRequestError, NotFoundError } from 'domain/entities/error'
 
 export class InstructorUseCase {
   constructor(private instructorRepository: InstructorRepository) {}
@@ -9,7 +10,7 @@ export class InstructorUseCase {
       request.id!
     )
     if (instructorExists) {
-      throw new Error('Instructor already exists.')
+      throw new BadRequestError('Instructor already exists')
     }
 
     const instructor = new Instructor(request)
@@ -30,7 +31,7 @@ export class InstructorUseCase {
       await this.instructorRepository.findInstructorById(id)
 
     if (!instructorExists) {
-      throw new Error('Tutor does not exists')
+      throw new NotFoundError('Tutor does not exists')
     }
 
     return instructorExists
@@ -40,7 +41,7 @@ export class InstructorUseCase {
       await this.instructorRepository.findInstructorById(id)
 
     if (!instructorExists) {
-      throw new Error('Tutor does not exists')
+      throw new NotFoundError('Tutor does not exists')
     }
 
     const instructor = new Instructor(request, id)
@@ -53,7 +54,7 @@ export class InstructorUseCase {
       await this.instructorRepository.findInstructorById(id)
 
     if (!instructorExists) {
-      throw new Error('Tutor does not exists')
+      throw new NotFoundError('Tutor does not exists')
     }
 
     await this.instructorRepository.deleteInstructor(id)

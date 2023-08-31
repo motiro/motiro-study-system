@@ -1,13 +1,14 @@
 import { Request, Response, NextFunction } from 'express'
 import { jwt, User } from '@jwt/.'
 import { Types } from 'mongoose'
+import { UnauthorizedError } from 'domain/entities/error'
 
 class AuthMiddleware {
   authUser(req: Request, _: Response, next: NextFunction) {
     const token = req.signedCookies.token
 
     if (!token) {
-      throw new Error('Invalid authentication')
+      throw new UnauthorizedError('Invalid authentication')
     }
 
     try {
@@ -15,14 +16,14 @@ class AuthMiddleware {
       req.body.user = { userId, name, role }
       next()
     } catch (error) {
-      throw new Error('Invalid authentication')
+      throw new UnauthorizedError('Invalid authentication')
     }
   }
 
   checkRole(...roles: string[]) {
     return (req: Request, _: Response, next: NextFunction) => {
       if (!roles.includes(req.body.user.role)) {
-        throw new Error('Unauthorized')
+        throw new UnauthorizedError('Unauthorized')
       }
       next()
     }
@@ -34,7 +35,7 @@ class AuthMiddleware {
   ) {
     if (requestUser.user.role === 'admin') return
     if (requestUser.user.userId === resourceUserId.toString()) return
-    throw new Error('Unauthorized')
+    throw new UnauthorizedError('Unauthorized')
   }
 }
 
