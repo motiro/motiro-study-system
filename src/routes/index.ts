@@ -1,7 +1,10 @@
+import { Router } from 'express'
+import authRoutes from './authRoutes'
 import instructorRoute from './instructorRoute'
-import express from 'express'
 
-const routes = express()
-routes.use('/api/v1/instructor', instructorRoute)
+const router = Router()
 
-export default routes
+router.use('/api/v1', authRoutes)
+router.use('/api/v1/instructor', instructorRoute)
+
+export default router
