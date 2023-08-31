@@ -11,7 +11,7 @@ const models = [adminModel, instructorModel, studentModel]
 
 class AuthController {
   private getModel(req: Request) {
-    const reqRole = req.body.role ?? req.body.user?.role
+    const reqRole = req.body.role
     const model =
       reqRole === 'admin'
         ? models[0]
@@ -37,7 +37,7 @@ class AuthController {
   async register(req: Request, res: Response) {
     const { model, reqRole } = this.getModel(req)
     const { name, email, password, specialty, schedule } = req.body
-    const token = req.signedCookies.token
+    const token = req.signedCookies?.token
 
     const emailAlreadyExists = await model.findOne({ email })
     if (emailAlreadyExists) {
