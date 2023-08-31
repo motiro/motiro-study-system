@@ -2,6 +2,7 @@ import express from 'express'
 
 import studentsRoute from './routes/studentsRoute'
 import 'dotenv/config'
+import './infrastructure/persistence/mongo/connections'
 import routes from './routes'
 
 const app = express()
