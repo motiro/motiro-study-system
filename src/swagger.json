@@ -79,7 +79,7 @@
                             "examples": {
                               "Not found": {
                                 "value": {
-                                  "error": "Instructor already exists or unfilled fields"
+                                  "error": "Instructor already exists"
                                 }
                               }
                             }
@@ -93,6 +93,25 @@
                                 "schema": {
                                     "type": "object",
                                         "$ref":"#/components/schemas/Instructor"
+                                }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error", 
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "error": {
+                                        "type": "string"
+                                    }
+                                },
+                                "examples": {
+                                    "Internal server error": {
+                                      "value": {
+                                        "error": "Unexpected error"
+                                      }
+                                    }
                                 }
                             }
                         }
@@ -131,6 +150,25 @@
                                         }
                                     }
                                 }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error", 
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "error": {
+                                        "type": "string"
+                                    }
+                                },
+                                "examples": {
+                                    "Internal server error": {
+                                      "value": {
+                                        "error": "Unexpected error"
+                                      }
+                                    }
+                                  }
                             }
                         }
                     }
@@ -174,7 +212,7 @@
                             "examples": {
                               "Instructor not found": {
                                 "value": {
-                                  "error": "No instructor with this id"
+                                  "error": "Instructor does not exists"
                                 }
                               }
                             }
@@ -197,6 +235,25 @@
                                         }
                                     }
                                 }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error", 
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "error": {
+                                        "type": "string"
+                                    }
+                                },
+                                "examples": {
+                                    "Internal server error": {
+                                      "value": {
+                                        "error": "Unexpected error"
+                                      }
+                                    }
+                                  }
                             }
                         }
                     }
@@ -268,7 +325,7 @@
                             "examples": {
                               "Instructor not found": {
                                 "value": {
-                                  "error": "No instructor with this id"
+                                  "error": "Instructor does not exists"
                                 }
                               }
                             }
@@ -291,6 +348,25 @@
                                         }
                                     }
                                 }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error", 
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "error": {
+                                        "type": "string"
+                                    }
+                                },
+                                "examples": {
+                                    "Internal server error": {
+                                      "value": {
+                                        "error": "Unexpected error"
+                                      }
+                                    }
+                                  }
                             }
                         }
                     }
@@ -332,7 +408,7 @@
                             "examples": {
                               "Instructor not found": {
                                 "value": {
-                                  "error": "No instructor with this id"
+                                  "error": "Instructor does not exists"
                                 }
                               }
                             }
@@ -355,6 +431,25 @@
                                         }
                                     }
                                 }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error", 
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "error": {
+                                        "type": "string"
+                                    }
+                                },
+                                "examples": {
+                                    "Internal server error": {
+                                      "value": {
+                                        "error": "Unexpected error"
+                                      }
+                                    }
+                                  }
                             }
                         }
                     }
@@ -417,7 +512,7 @@
                             "examples": {
                               "Not found": {
                                 "value": {
-                                  "error": "Student already exists or unfilled fields"
+                                  "error": "Student already exists"
                                 }
                               }
                             }
@@ -432,6 +527,25 @@
                                     "type": "object",
                                         "$ref":"#/components/schemas/Student"
                                 }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error", 
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "error": {
+                                        "type": "string"
+                                    }
+                                },
+                                "examples": {
+                                    "Internal server error": {
+                                      "value": {
+                                        "error": "Unexpected error"
+                                      }
+                                    }
+                                  }
                             }
                         }
                     }
@@ -469,6 +583,25 @@
                                         }
                                     }
                                 }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error", 
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "error": {
+                                        "type": "string"
+                                    }
+                                },
+                                "examples": {
+                                    "Internal server error": {
+                                      "value": {
+                                        "error": "Unexpected error"
+                                      }
+                                    }
+                                  }
                             }
                         }
                     }
@@ -512,7 +645,7 @@
                             "examples": {
                               "Student not found": {
                                 "value": {
-                                  "error": "No student with this id"
+                                  "error": "Student does not exists"
                                 }
                               }
                             }
@@ -535,6 +668,25 @@
                                         }
                                     }
                                 }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error", 
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "error": {
+                                        "type": "string"
+                                    }
+                                },
+                                "examples": {
+                                    "Internal server error": {
+                                      "value": {
+                                        "error": "Unexpected error"
+                                      }
+                                    }
+                                  }
                             }
                         }
                     }
@@ -595,7 +747,7 @@
                             "examples": {
                               "Student not found": {
                                 "value": {
-                                  "error": "No student with this id"
+                                  "error": "Student does not exists"
                                 }
                               }
                             }
@@ -618,6 +770,25 @@
                                         }
                                     }
                                 }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error", 
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "error": {
+                                        "type": "string"
+                                    }
+                                },
+                                "examples": {
+                                    "Internal server error": {
+                                      "value": {
+                                        "error": "Unexpected error"
+                                      }
+                                    }
+                                  }
                             }
                         }
                     }
@@ -659,7 +830,7 @@
                             "examples": {
                               "Student not found": {
                                 "value": {
-                                  "error": "No student with this id"
+                                  "error": "Student does not exists"
                                 }
                               }
                             }
@@ -682,6 +853,25 @@
                                         }
                                     }
                                 }
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Error", 
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "error": {
+                                        "type": "string"
+                                    }
+                                },
+                                "examples": {
+                                    "Internal server error": {
+                                      "value": {
+                                        "error": "Unexpected error"
+                                      }
+                                    }
+                                  }
                             }
                         }
                     }
