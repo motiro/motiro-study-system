@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { studentModel } from '@mongo/studentModel'
-import { authMiddleware } from '../applications/middlewares/authMiddleware.ts'
+import { authMiddleware } from '../applications/middlewares/authMiddleware'
 
 class StudentController {
   async create(req: Request, res: Response) {
