@@ -1,9 +1,11 @@
+import 'express-async-errors'
 import express from 'express'
 import 'dotenv/config'
 import './infrastructure/persistence/mongo/connections'
 import routes from './routes'
-import { errorMiddleware } from 'applications/middlewares/errorMiddleware'
 import cookieParser from 'cookie-parser'
+
+import { errorMiddleware } from 'applications/middlewares/errorMiddleware'
 
 const app = express()
 

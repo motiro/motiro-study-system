@@ -3,12 +3,12 @@ import { NextFunction, Request, Response } from 'express'
 
 export const errorMiddleware = (
   error: Error & Partial<ApiError>,
-  req: Request,
+  _req: Request,
   res: Response,
-  next: NextFunction
+  _next: NextFunction
 ) => {
   console.log(error.message)
   const statusCode = error.statusCode ?? 500
-  const message = error.statusCode ? error.message : 'U2nexpected error'
+  const message = error.statusCode ? error.message : 'Unexpected error'
   return res.status(statusCode).json({ error: message })
 }

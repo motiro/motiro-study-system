@@ -5,7 +5,7 @@ import { instructorModel } from './instructorModel'
 import { StudentRepository } from 'domain/repository/studentRepository'
 import { Student } from 'domain/entities/students'
 import { studentModel } from './studentModel'
-import { Document, ObjectId } from 'mongoose'
+import { Document, ObjectId, isValidObjectId } from 'mongoose'
 
 interface InstructorDocument extends Document {
   _id: ObjectId
@@ -31,14 +31,15 @@ export class MongoRepository
   // Insctuctor methods
 
   async findInstructorById(id: string): Promise<Instructor | null> {
-    const result: InstructorDocument = await instructorModel
-      .findById(id)
-      .select('-password')
+    if (isValidObjectId(id)) {
+      const result: InstructorDocument = await instructorModel
+        .findById(id)
+        .select('-password')
 
-    if (result) {
-      return new Instructor(result)
+      if (result) {
+        return new Instructor(result)
+      }
     }
-
     return null
   }
   async saveInstructor(instructor: Instructor): Promise<Instructor> {
