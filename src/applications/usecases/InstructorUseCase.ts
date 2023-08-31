@@ -15,9 +15,9 @@ export class InstructorUseCase {
 
     const instructor = new Instructor(request)
 
-    await this.instructorRepository.saveInstructor(instructor)
+    const response = await this.instructorRepository.saveInstructor(instructor)
 
-    return instructor
+    return response
   }
 
   async list(): Promise<Instructor[]> {
