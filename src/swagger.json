@@ -500,25 +500,6 @@
                             }
                         }
                     },
-                    "400": {
-                        "description": "Bad request",
-                        "content": {
-                          "application/json": {
-                            "schema": {
-                              "error": {
-                                "type": "string"
-                              }
-                            },
-                            "examples": {
-                              "Not found": {
-                                "value": {
-                                  "error": "Student already exists"
-                                }
-                              }
-                            }
-                          }
-                        }
-                    },
                     "201": {
                         "description": "Student created",
                         "content": {
@@ -542,7 +523,7 @@
                                 "examples": {
                                     "Internal server error": {
                                       "value": {
-                                        "error": "Unexpected error"
+                                        "error": "Failed to create student"
                                       }
                                     }
                                   }
@@ -598,7 +579,7 @@
                                 "examples": {
                                     "Internal server error": {
                                       "value": {
-                                        "error": "Unexpected error"
+                                        "error": "Failed to fetch students"
                                       }
                                     }
                                   }
@@ -645,7 +626,7 @@
                             "examples": {
                               "Student not found": {
                                 "value": {
-                                  "error": "Student does not exists"
+                                  "error": "Student not found"
                                 }
                               }
                             }
@@ -683,7 +664,7 @@
                                 "examples": {
                                     "Internal server error": {
                                       "value": {
-                                        "error": "Unexpected error"
+                                        "error": "Failed to fetch student"
                                       }
                                     }
                                   }
@@ -747,7 +728,7 @@
                             "examples": {
                               "Student not found": {
                                 "value": {
-                                  "error": "Student does not exists"
+                                  "error": "Student not found"
                                 }
                               }
                             }
@@ -785,7 +766,7 @@
                                 "examples": {
                                     "Internal server error": {
                                       "value": {
-                                        "error": "Unexpected error"
+                                        "error": "Failed to update student"
                                       }
                                     }
                                   }
@@ -830,7 +811,7 @@
                             "examples": {
                               "Student not found": {
                                 "value": {
-                                  "error": "Student does not exists"
+                                  "error": "Student not found"
                                 }
                               }
                             }
@@ -868,7 +849,7 @@
                                 "examples": {
                                     "Internal server error": {
                                       "value": {
-                                        "error": "Unexpected error"
+                                        "error": "Failed to delete student"
                                       }
                                     }
                                   }
