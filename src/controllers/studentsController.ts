@@ -49,7 +49,7 @@ class StudentController {
         return res.status(404).json({ error: 'Student not found' })
       }
 
-      authMiddleware.checkUserPermissions(req.body.user, student._id)
+      authMiddleware.checkUserPermissions(req.body, student._id)
 
       return res.json(student)
     } catch (error) {
