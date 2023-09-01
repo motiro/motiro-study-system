@@ -1,12 +1,17 @@
 import { Request, Response } from 'express'
 import { adminModel, instructorModel, studentModel } from '@mongo/.'
 import { jwt, User } from '@jwt/.'
+import {
+  BadRequestError,
+  NotFoundError,
+  UnauthorizedError
+} from 'domain/entities/error'
 
 const models = [adminModel, instructorModel, studentModel]
 
 class AuthController {
   private getModel(req: Request) {
-    const reqRole = req.body.role ?? req.body.user?.role
+    const reqRole = req.body.role
     const model =
       reqRole === 'admin'
         ? models[0]
@@ -15,7 +20,7 @@ class AuthController {
         : reqRole === 'student'
         ? models[2]
         : null
-    if (!model) throw new Error('Invalid role')
+    if (!model) throw new BadRequestError('Invalid role')
     return { model, reqRole }
   }
 
@@ -32,16 +37,16 @@ class AuthController {
   async register(req: Request, res: Response) {
     const { model, reqRole } = this.getModel(req)
     const { name, email, password, specialty, schedule } = req.body
-    const token = req.signedCookies.token
+    const token = req.signedCookies?.token
 
     const emailAlreadyExists = await model.findOne({ email })
     if (emailAlreadyExists) {
-      throw new Error('E-mail already registered')
+      throw new BadRequestError('E-mail already registered')
     }
 
     if (reqRole === 'admin') {
-      if (!await this.isFirstAdminAccount() && !this.isAdminRole(token))
-        throw new Error('Unauthorized')
+      if (!(await this.isFirstAdminAccount()) && !this.isAdminRole(token))
+        throw new UnauthorizedError('Unauthorized')
     }
 
     const user = await model.create({
@@ -61,7 +66,7 @@ class AuthController {
   async login(req: Request, res: Response) {
     const { email, password } = req.body
     if (!email || !password) {
-      throw new Error('Missing credentials')
+      throw new BadRequestError('Missing credentials')
     }
 
     const getUser = async () => {
@@ -69,13 +74,13 @@ class AuthController {
         const model = await m.findOne({ email })
         if (model) return model
       }
-      throw new Error('User not found')
+      throw new NotFoundError('User not found')
     }
     const user = await getUser()
 
     const isPasswordCorrect = user.comparePassword(password)
     if (!isPasswordCorrect) {
-      throw new Error('Invalid password')
+      throw new BadRequestError('Invalid credentials')
     }
 
     const userToken = jwt.createUserToken(user as unknown as User)
