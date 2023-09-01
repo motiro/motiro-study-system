@@ -62,7 +62,7 @@
                             "application/json": {
                                 "schema": {
                                     "type": "object"
-                                    
+
                                 },
                                 "examples": {
                                     "register": {
@@ -100,7 +100,7 @@
                             }
                         }
                     }
-                    
+
                 }
             }
         },
@@ -119,7 +119,7 @@
                                 "login": {
                                     "value": {
                                         "email": "noah@gmail.com",
-                                        "password":"1S2G4Jds98"                          
+                                        "password":"1S2G4Jds98"
                                     }
                                 }
                             }
@@ -152,7 +152,7 @@
                             "application/json": {
                                 "schema": {
                                     "type": "object"
-                                    
+
                                 },
                                 "examples": {
                                     "login": {
@@ -293,7 +293,7 @@
                         }
                     },
                     "500": {
-                        "description": "Error", 
+                        "description": "Error",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -349,7 +349,7 @@
                         }
                     },
                     "500": {
-                        "description": "Error", 
+                        "description": "Error",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -434,7 +434,7 @@
                         }
                     },
                     "500": {
-                        "description": "Error", 
+                        "description": "Error",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -547,7 +547,7 @@
                         }
                     },
                     "500": {
-                        "description": "Error", 
+                        "description": "Error",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -630,7 +630,7 @@
                         }
                     },
                     "500": {
-                        "description": "Error", 
+                        "description": "Error",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -707,7 +707,7 @@
                         }
                     },
                     "500": {
-                        "description": "Error", 
+                        "description": "Error",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -763,7 +763,7 @@
                         }
                     },
                     "500": {
-                        "description": "Error", 
+                        "description": "Error",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -848,7 +848,7 @@
                         }
                     },
                     "500": {
-                        "description": "Error", 
+                        "description": "Error",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -950,7 +950,7 @@
                         }
                     },
                     "500": {
-                        "description": "Error", 
+                        "description": "Error",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1033,7 +1033,7 @@
                         }
                     },
                     "500": {
-                        "description": "Error", 
+                        "description": "Error",
                         "content": {
                             "application/json": {
                                 "schema": {
@@ -1052,8 +1052,8 @@
                         }
                     }
                 }
-            }  
-        }  
+            }
+        }
     },
     "components": {
         "schemas": {
