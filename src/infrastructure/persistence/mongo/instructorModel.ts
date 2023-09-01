@@ -21,8 +21,7 @@ const InstructorSchema = new Schema(
     },
     password: {
       type: String,
-      required: true,
-      select: false
+      required: true
     },
     specialty: [
       {
@@ -52,7 +51,20 @@ const InstructorSchema = new Schema(
       default: 'instructor'
     }
   },
-  { toJSON: { virtuals: true }, toObject: { virtuals: true } }
+  {
+    toJSON: {
+      virtuals: true,
+      timestamps: true,
+      transform: (
+        _,
+        ret: { _id?: Schema.Types.ObjectId; password?: string }
+      ) => {
+        delete ret.password
+        return ret
+      }
+    },
+    toObject: { virtuals: true, timestamps: true }
+  }
 )
 
 InstructorSchema.methods.comparePassword = async function (
