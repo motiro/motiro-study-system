@@ -38,6 +38,8 @@ Class scheduling system
 
 ## Run the application
 
+Before you begin, you will need to have Docker Compose installed on your machine.
+
 Clone this repository
 
 ```bash
@@ -50,24 +52,8 @@ Access the project folder
   cd motiro-study-system
 ```
 
-Run the application with docker
-
-```bash
-  docker compose up
-```
-
-```bash
-  or
-```
-
-Install the dependencies
-
-```bash
-  npm install
-```
-
 Run the application
 
 ```bash
-  npm run dev
+  docker compose up
 ```
