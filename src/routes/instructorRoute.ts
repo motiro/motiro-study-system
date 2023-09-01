@@ -1,3 +1,4 @@
+import { authMiddleware } from 'applications/middlewares'
 import { Router } from 'express'
 
 import { InstructorUseCase } from 'applications/usecases/InstructorUseCase'
@@ -10,10 +11,15 @@ const instructorController = new InstructorController(instructorUseCase)
 
 const router = Router()
 
-router.route('/').post(instructorController.createInstructor)
-router.route('/').get(instructorController.getAllInstructors)
+router
+  .route('/')
+  .all(authMiddleware.authUser)
+  .post(instructorController.createInstructor)
+  .get(instructorController.getAllInstructors)
+
 router
   .route('/:id')
+  .all(authMiddleware.authUser)
   .get(instructorController.getInstructor)
   .patch(instructorController.updateInstructor)
   .delete(instructorController.deleteInstructor)
