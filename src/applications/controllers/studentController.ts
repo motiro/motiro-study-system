@@ -1,6 +1,6 @@
 import { Request, Response } from 'express'
 import { studentModel } from '@mongo/studentModel'
-import { authMiddleware } from '../applications/middlewares/authMiddleware'
+import { authMiddleware } from 'applications/middlewares/authMiddleware'
 
 class StudentController {
   async create(req: Request, res: Response) {
@@ -24,7 +24,7 @@ class StudentController {
         { new: true }
       );
       if (!student) {
-        return res.status(404).json({ error: 'Student not found' })
+        return res.status(404).json({ error: 'Student does not exist' })
       }
       return res.json(student)
     } catch (error) {
@@ -46,7 +46,7 @@ class StudentController {
       const { id } = req.params;
       const student = await studentModel.findById(id)
       if (!student) {
-        return res.status(404).json({ error: 'Student not found' })
+        return res.status(404).json({ error: 'Student does not exist' })
       }
 
       authMiddleware.checkUserPermissions(req.body, student._id)
@@ -62,7 +62,7 @@ class StudentController {
       const { id } = req.params
       const deletedStudent = await studentModel.findByIdAndDelete(id)
       if (!deletedStudent) {
-        return res.status(404).json({ error: 'Student not found' })
+        return res.status(404).json({ error: 'Student does not exist' })
       }
       return res.json(deletedStudent)
     } catch (error) {
