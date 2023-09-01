@@ -1,8 +1,8 @@
-import express from 'express';
-import studentController from '../controllers/studentsController';
-import { authMiddleware } from '../applications/middlewares/authMiddleware';
+import { Router } from 'express';
+import studentController from 'applications/controllers/studentController';
+import { authMiddleware } from 'applications/middlewares/authMiddleware';
 
-const router = express.Router();
+const router = Router();
 
 router.post('/', authMiddleware.authUser, authMiddleware.checkRole('admin'), studentController.create);
 router.patch('/:id', authMiddleware.authUser, authMiddleware.checkRole('student'), studentController.update);
