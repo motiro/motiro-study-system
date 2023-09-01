@@ -19,8 +19,7 @@ const AdminSchema = new Schema(
     },
     password: {
       type: String,
-      required: true,
-      select: false
+      required: true
     },
     role: {
       type: String,
@@ -29,7 +28,20 @@ const AdminSchema = new Schema(
       default: 'admin'
     }
   },
-  { timestamps: true }
+  {
+    toJSON: {
+      virtuals: true,
+      timestamps: true,
+      transform: (
+        _,
+        ret: { _id?: Schema.Types.ObjectId; password?: string }
+      ) => {
+        delete ret.password
+        return ret
+      }
+    },
+    toObject: { virtuals: true, timestamps: true }
+  }
 )
 
 AdminSchema.methods.comparePassword = async function (
