@@ -31,7 +31,7 @@ export class InstructorUseCase {
       await this.instructorRepository.findInstructorById(id)
 
     if (!instructorExists) {
-      throw new NotFoundError('Tutor does not exists')
+      throw new NotFoundError('Instructor does not exist')
     }
 
     return instructorExists
@@ -41,7 +41,7 @@ export class InstructorUseCase {
       await this.instructorRepository.findInstructorById(id)
 
     if (!instructorExists) {
-      throw new NotFoundError('Tutor does not exists')
+      throw new NotFoundError('Instructor does not exist')
     }
 
     const instructor = new Instructor(request, id)
@@ -54,7 +54,7 @@ export class InstructorUseCase {
       await this.instructorRepository.findInstructorById(id)
 
     if (!instructorExists) {
-      throw new NotFoundError('Tutor does not exists')
+      throw new NotFoundError('Instructor does not exist')
     }
 
     await this.instructorRepository.deleteInstructor(id)
