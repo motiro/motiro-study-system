@@ -7,7 +7,7 @@
     },
     "servers": [
         {
-          "url": "http://localhost:5000",
+          "url": "http://localhost:5000/api/v1",
           "description": "API"
         }
     ],
@@ -29,7 +29,7 @@
                                         "name": "Noah Doe",
                                         "email": "noah@gmail.com",
                                         "password":"1S2G4Jds98",
-                                        "role":["admin"]
+                                        "role":"admin"
                                     }
                                 }
                             }
@@ -205,6 +205,19 @@
                         }
                     }
                 }
+            }
+        },
+        "/auth/logout": {
+            "get": {
+                "summary": "Logout",
+                "description": "This route logs a user out",
+                "tags": ["logout"],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+                
             }
         },
         "/instructor": {
@@ -498,15 +511,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "Instructor updated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type:": "object",
-                                    "$ref":"#/components/schemas/Instructor"
-                                }
-                            }
-                        }
+                        "description": "Instructor updated"       
                     },
                     "404": {
                         "description": "Not found",
@@ -581,15 +586,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Instructor deleted",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type:": "object",
-                                    "$ref":"#/components/schemas/Instructor"
-                                }
-                            }
-                        }
+                        "description": "Instructor deleted"
                     },
                     "404": {
                         "description": "Not found",
@@ -1155,6 +1152,9 @@
                         "type": "string"
                     }
                 }
+            },
+            "Logout": {
+
             }
         }
     }
