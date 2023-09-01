@@ -2,7 +2,7 @@ export class Instructor {
   public readonly id?: string
   public name: string
   public email: string
-  public password: string
+  public password?: string
   public specialty: string[]
   public schedule: Schedule[]
   public role?: string
@@ -21,7 +21,7 @@ export class Instructor {
   }
 }
 
-type Schedule = {
+export type Schedule = {
   date?: Date
   busy: boolean
 }

@@ -21,8 +21,7 @@ const StudentSchema = new Schema(
     },
     password: {
       type: String,
-      required: true,
-      select: false
+      required: true
     },
     role: {
       type: String,
@@ -31,7 +30,20 @@ const StudentSchema = new Schema(
       default: 'student'
     }
   },
-  { toJSON: { virtuals: true }, toObject: { virtuals: true } }
+  {
+    toJSON: {
+      virtuals: true,
+      timestamps: true,
+      transform: (
+        _,
+        ret: { _id?: Schema.Types.ObjectId; password?: string }
+      ) => {
+        delete ret.password
+        return ret
+      }
+    },
+    toObject: { virtuals: true, timestamps: true }
+  }
 )
 
 StudentSchema.methods.comparePassword = async function (
