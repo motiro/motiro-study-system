@@ -1,5 +1,5 @@
 import { Request, Response } from 'express'
-import { adminModel, instructorModel, studentModel } from '@mongo/.'
+import { model } from 'mongoose'
 import { jwt, User } from '@jwt/.'
 import {
   BadRequestError,
@@ -7,25 +7,25 @@ import {
   UnauthorizedError
 } from 'domain/entities/error'
 
-const models = [adminModel, instructorModel, studentModel]
+enum models {
+  admin = 'Admin',
+  instructor = 'Instructor',
+  student = 'Student'
+}
 
 class AuthController {
   private getModel(req: Request) {
     const reqRole = req.body.role
-    const model =
-      reqRole === 'admin'
-        ? models[0]
-        : reqRole === 'instructor'
-        ? models[1]
-        : reqRole === 'student'
-        ? models[2]
-        : null
-    if (!model) throw new BadRequestError('Invalid role')
-    return { model, reqRole }
+    if (!reqRole) throw new BadRequestError('Missing role')
+    const userModel =
+      reqRole.charAt(0).toUpperCase() + reqRole.slice(1).toLowerCase()
+    if (!Object.values(models).includes(userModel))
+      throw new BadRequestError('Invalid role')
+    return { userModel, reqRole }
   }
 
   private async isFirstAdminAccount() {
-    const documents = await adminModel.countDocuments({})
+    const documents = await model(models.admin).countDocuments({})
     return documents === 0
   }
 
@@ -34,12 +34,12 @@ class AuthController {
     return role === 'admin'
   }
 
-  async register(req: Request, res: Response) {
-    const { model, reqRole } = this.getModel(req)
+  public register = async (req: Request, res: Response) => {
+    const { userModel, reqRole } = this.getModel(req)
     const { name, email, password, specialty, schedule } = req.body
     const token = req.signedCookies?.token
 
-    const emailAlreadyExists = await model.findOne({ email })
+    const emailAlreadyExists = await model(userModel).findOne({ email })
     if (emailAlreadyExists) {
       throw new BadRequestError('E-mail already registered')
     }
@@ -49,7 +49,7 @@ class AuthController {
         throw new UnauthorizedError('Unauthorized')
     }
 
-    const user = await model.create({
+    const user = await model(userModel).create({
       name,
       email,
       password,
@@ -63,16 +63,20 @@ class AuthController {
     res.status(201).json(tokenUser)
   }
 
-  async login(req: Request, res: Response) {
+  public login = async (req: Request, res: Response) => {
     const { email, password } = req.body
     if (!email || !password) {
       throw new BadRequestError('Missing credentials')
     }
 
     const getUser = async () => {
-      for (const m of models) {
-        const model = await m.findOne({ email })
-        if (model) return model
+      for (const m of Object.values(models)) {
+        try {
+          const user = await model(m).findOne({ email })
+          if (user) return user
+        } catch (error) {
+          console.log(error)
+        }
       }
       throw new NotFoundError('User not found')
     }
@@ -80,7 +84,7 @@ class AuthController {
 
     const isPasswordCorrect = user.comparePassword(password)
     if (!isPasswordCorrect) {
-      throw new BadRequestError('Invalid credentials')
+      throw new BadRequestError('Invalid password')
     }
 
     const userToken = jwt.createUserToken(user as unknown as User)
@@ -89,7 +93,7 @@ class AuthController {
     res.status(200).json(userToken)
   }
 
-  async logout(_: Request, res: Response) {
+  public logout = (_: Request, res: Response) => {
     res.cookie('token', 'logout', {
       httpOnly: true,
       expires: new Date()
