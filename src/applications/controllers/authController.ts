@@ -30,6 +30,7 @@ class AuthController {
   }
 
   private isAdminRole(token: string) {
+    if (!token) throw new UnauthorizedError('Unauthorized')
     const { role } = jwt.decode(token) as User
     return role === 'admin'
   }
