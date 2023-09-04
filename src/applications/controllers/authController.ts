@@ -79,7 +79,7 @@ class AuthController {
     }
     const user = await getUser()
 
-    const isPasswordCorrect = user.comparePassword(password)
+    const isPasswordCorrect = await user.comparePassword(password)
     if (!isPasswordCorrect) {
       throw new BadRequestError('Invalid credentials')
     }
