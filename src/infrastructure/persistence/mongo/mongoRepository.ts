@@ -82,7 +82,17 @@ export class MongoRepository
     )
   }
   async updateAdmin(admin: Admin): Promise<void> {
-    await adminModel.updateOne({ _id: admin.id }, admin)
+    await adminModel
+      .findOneAndUpdate({ _id: admin.id }, admin)
+      .then(user => {
+        if (admin.password) {
+          user?.markModified('password')
+          user?.save()
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }
   async deleteAdmin(id: string): Promise<void> {
     await adminModel.deleteOne().where({ _id: id })
@@ -119,7 +129,17 @@ export class MongoRepository
     )
   }
   async updateInstructor(instructor: Instructor): Promise<void> {
-    await instructorModel.updateOne({ _id: instructor.id }, instructor)
+    await instructorModel
+      .findOneAndUpdate({ _id: instructor.id }, instructor)
+      .then(user => {
+        if (instructor.password) {
+          user?.markModified('password')
+          user?.save()
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }
   async deleteInstructor(id: string): Promise<void> {
     await instructorModel.deleteOne().where({ _id: id })
@@ -176,7 +196,17 @@ export class MongoRepository
     )
   }
   async updateStudent(student: Student): Promise<void> {
-    await instructorModel.updateOne({ _id: student.id }, student)
+    await studentModel
+      .findOneAndUpdate({ _id: student.id }, student)
+      .then(user => {
+        if (student.password) {
+          user?.markModified('password')
+          user?.save()
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }
   async deleteStudent(id: string): Promise<void> {
     await instructorModel.deleteOne().where({ _id: id })
