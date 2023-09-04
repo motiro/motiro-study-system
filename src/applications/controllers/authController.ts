@@ -14,16 +14,6 @@ enum models {
 }
 
 class AuthController {
-  private getModel(req: Request) {
-    const reqRole = req.body.role
-    if (!reqRole) throw new BadRequestError('Missing role')
-    const userModel =
-      reqRole.charAt(0).toUpperCase() + reqRole.slice(1).toLowerCase()
-    if (!Object.values(models).includes(userModel))
-      throw new BadRequestError('Invalid role')
-    return { userModel, reqRole }
-  }
-
   private async isFirstAdminAccount() {
     const documents = await model(models.admin).countDocuments({})
     return documents === 0
@@ -35,15 +25,35 @@ class AuthController {
     return role === 'admin'
   }
 
+  private getModel(req: Request) {
+    const reqRole = req.body?.role
+    if (!reqRole) throw new BadRequestError('Missing role')
+    const userModel =
+      reqRole.charAt(0).toUpperCase() + reqRole.slice(1).toLowerCase()
+    if (!Object.values(models).includes(userModel))
+      throw new BadRequestError('Invalid role')
+    return { userModel, reqRole }
+  }
+
+  private async getUser(email: string) {
+    for (const m of Object.values(models)) {
+      try {
+        const user = await model(m).findOne({ email })
+        if (user) return user
+      } catch (error) {
+        console.log(error)
+      }
+    }
+  }
+
   public register = async (req: Request, res: Response) => {
     const { userModel, reqRole } = this.getModel(req)
     const { name, email, password, specialty, schedule } = req.body
     const token = req.signedCookies?.token
 
-    const emailAlreadyExists = await model(userModel).findOne({ email })
-    if (emailAlreadyExists) {
+    const emailAlreadyExists = await this.getUser(email)
+    if (emailAlreadyExists)
       throw new BadRequestError('E-mail already registered')
-    }
 
     if (reqRole === 'admin') {
       if (!(await this.isFirstAdminAccount()) && !this.isAdminRole(token))
@@ -66,27 +76,13 @@ class AuthController {
 
   public login = async (req: Request, res: Response) => {
     const { email, password } = req.body
-    if (!email || !password) {
-      throw new BadRequestError('Missing credentials')
-    }
+    if (!email || !password) throw new BadRequestError('Missing credentials')
 
-    const getUser = async () => {
-      for (const m of Object.values(models)) {
-        try {
-          const user = await model(m).findOne({ email })
-          if (user) return user
-        } catch (error) {
-          console.log(error)
-        }
-      }
-      throw new NotFoundError('User not found')
-    }
-    const user = await getUser()
+    const user = await this.getUser(email)
+    if (!user) throw new NotFoundError('User not found')
 
     const isPasswordCorrect = await user.comparePassword(password)
-    if (!isPasswordCorrect) {
-      throw new BadRequestError('Invalid password')
-    }
+    if (!isPasswordCorrect) throw new BadRequestError('Invalid password')
 
     const userToken = jwt.createUserToken(user as unknown as User)
     jwt.attachCookies({ res, user: userToken })
