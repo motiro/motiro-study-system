@@ -27,5 +27,12 @@ export const errorMiddleware = (
     statusCode = 400
   }
 
+  if (error.name === 'ValidationError') {
+    message = Object.values(error.errors)
+      .map((item) => item.message)
+      .join(' ')
+    statusCode = 400
+  }
+
   return res.status(statusCode).json({ error: message })
 }
