@@ -3,6 +3,7 @@ import { model } from 'mongoose'
 import { jwt, User } from '@jwt/.'
 import {
   BadRequestError,
+  ForbiddenError,
   NotFoundError,
   UnauthorizedError
 } from 'domain/entities/error'
@@ -51,14 +52,14 @@ class AuthController {
     const { name, email, password, specialty, schedule } = req.body
     const token = req.signedCookies?.token
 
+    if (reqRole === 'admin') {
+      if (!(await this.isFirstAdminAccount()) && !this.isAdminRole(token))
+        throw new ForbiddenError('Access denied')
+    }
+
     const emailAlreadyExists = await this.getUser(email)
     if (emailAlreadyExists)
       throw new BadRequestError('E-mail already registered')
-
-    if (reqRole === 'admin') {
-      if (!(await this.isFirstAdminAccount()) && !this.isAdminRole(token))
-        throw new UnauthorizedError('Unauthorized')
-    }
 
     const user = await model(userModel).create({
       name,
