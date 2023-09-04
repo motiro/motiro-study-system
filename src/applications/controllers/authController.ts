@@ -30,6 +30,7 @@ class AuthController {
   }
 
   private isAdminRole(token: string) {
+    if (!token) throw new UnauthorizedError('Unauthorized')
     const { role } = jwt.decode(token) as User
     return role === 'admin'
   }
@@ -82,7 +83,7 @@ class AuthController {
     }
     const user = await getUser()
 
-    const isPasswordCorrect = user.comparePassword(password)
+    const isPasswordCorrect = await user.comparePassword(password)
     if (!isPasswordCorrect) {
       throw new BadRequestError('Invalid password')
     }
