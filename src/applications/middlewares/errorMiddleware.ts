@@ -16,7 +16,9 @@ export const errorMiddleware = (
   _next: NextFunction
 ) => {
   console.log(
-    `\nError: ${error.name}\nCode: ${error.statusCode}\nMessage: ${error.message}\nStack:\n${error.stack}`
+    `\n${error.name}\nCode: ${error.statusCode}\nMessage: ${
+      error.message
+    }\nStack:\n${error.stack?.split('\n').splice(1).join('\n')}`
   )
 
   let statusCode = error.statusCode ?? 500
@@ -29,7 +31,7 @@ export const errorMiddleware = (
 
   if (error.name === 'ValidationError') {
     message = Object.values(error.errors)
-      .map((item) => item.message)
+      .map(item => item.message)
       .join(' ')
     statusCode = 400
   }
