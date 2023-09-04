@@ -4,7 +4,7 @@ import { Types } from 'mongoose'
 import { UnauthorizedError } from 'domain/entities/error'
 
 class AuthMiddleware {
-  authUser(req: Request, _: Response, next: NextFunction) {
+  public authUser = (req: Request, _: Response, next: NextFunction) => {
     const token = req.signedCookies.token
 
     if (!token) {
@@ -20,21 +20,21 @@ class AuthMiddleware {
     }
   }
 
-  checkRole(...roles: string[]) {
+  public checkRole = (...roles: string[]) => {
     return (req: Request, _: Response, next: NextFunction) => {
-      if (!roles.includes(req.body.user.role)) {
+      if (!roles.includes(req.body.user?.role)) {
         throw new UnauthorizedError('Unauthorized')
       }
       next()
     }
   }
 
-  checkUserPermissions(
+  public checkUserPermissions = (
     requestUser: { user: { role: string; userId: string } },
     resourceUserId: Types.ObjectId | string
-  ) {
-    if (requestUser.user.role === 'admin') return
-    if (requestUser.user.userId === resourceUserId.toString()) return
+  ) => {
+    if (requestUser.user?.role === 'admin') return
+    if (requestUser.user?.userId === resourceUserId.toString()) return
     throw new UnauthorizedError('Unauthorized')
   }
 }
