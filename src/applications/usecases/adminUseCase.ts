@@ -1,9 +1,9 @@
-import { MongoRepository } from '@mongo/mongoRepository'
+import { AdminRepository } from 'domain/repository/adminRepository'
 import { Admin } from 'domain/entities/admin'
 import { NotFoundError } from 'domain/entities/error'
 
 export class AdminUseCase {
-  constructor(private mongoRepo: MongoRepository) {}
+  constructor(private mongoRepo: AdminRepository) {}
 
   async create(req: Admin): Promise<Admin> {
     const admin = new Admin(req)
@@ -13,7 +13,7 @@ export class AdminUseCase {
 
   async listOne(id: string): Promise<Admin> {
     const response = await this.mongoRepo.findAdminById(id)
-    if (!response) throw new NotFoundError(`Admin not found`)
+    if (!response) throw new NotFoundError(`User not found`)
     return response
   }
 
@@ -26,7 +26,7 @@ export class AdminUseCase {
     const adminExists = await this.mongoRepo.findAdminById(req.id!)
 
     if (!adminExists) {
-      throw new NotFoundError('Admin not found')
+      throw new NotFoundError('User not found')
     }
 
     const admin = new Admin(req, req.id)
@@ -37,7 +37,7 @@ export class AdminUseCase {
     const adminExists = await this.mongoRepo.findAdminById(id)
 
     if (!adminExists) {
-      throw new NotFoundError('Admin not found')
+      throw new NotFoundError('User not found')
     }
 
     await this.mongoRepo.deleteAdmin(id)
