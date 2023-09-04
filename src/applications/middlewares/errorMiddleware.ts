@@ -11,7 +11,9 @@ export const errorMiddleware = (
   res: Response,
   _next: NextFunction
 ) => {
-  console.log(error.message)
+  console.log(
+    `\nError: ${error.name}\nCode: ${error.statusCode}\nMessage: ${error.message}\nStack:\n${error.stack}`
+  )
   const statusCode = error.statusCode ?? 500
   const message = error.statusCode ? error.message : 'Unexpected error'
   return res.status(statusCode).json({ error: message })
