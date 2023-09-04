@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { MongoRepository } from '@mongo/mongoRepository'
-import { AdminUseCase } from 'applications/usecases/adminUseCase'
-import { AdminController } from 'applications/controllers/adminController'
+import { AdminUseCase } from 'applications/usecases'
+import { AdminController } from 'applications/controllers'
 import { authMiddleware } from 'applications/middlewares'
 
 const mongoRepository = new MongoRepository()
