@@ -31,7 +31,7 @@ class StudentController {
     const { id } = req.params
     const student = await studentModel.findById(id)
     if (!student) {
-      throw new NotFoundError('Student does not exist')
+      throw new NotFoundError('User not found')
     }
     authMiddleware.checkUserPermissions(req.body, student._id)
     return res.json(student)
@@ -42,7 +42,7 @@ class StudentController {
     authMiddleware.checkUserPermissions(req.body, id)
     const deletedStudent = await studentModel.findByIdAndDelete(id)
     if (!deletedStudent) {
-      throw new NotFoundError('Student does not exist')
+      throw new NotFoundError('User not found')
     }
     return res.status(200).send()
   }
