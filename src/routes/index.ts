@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import swaggerUi from 'swagger-ui-express'
 import swaggerDocs from 'swagger.json'
-import authRoute from './authRoutes'
+import authRoute from './authRoute'
 import adminRoute from './adminRoute'
 import instructorRoute from './instructorRoute'
 import studentRoute from './studentRoute'
