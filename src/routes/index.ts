@@ -10,8 +10,8 @@ const router = Router()
 
 router.use('/api/v1', authRoute)
 router.use('/api/v1', adminRoute)
-router.use('/api/v1/instructor', instructorRoute)
-router.use('/api/v1/student', studentRoute)
+router.use('/api/v1', instructorRoute)
+router.use('/api/v1', studentRoute)
 router.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerDocs))
 
 export default router

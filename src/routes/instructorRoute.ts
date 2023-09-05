@@ -12,13 +12,13 @@ const instructorController = new InstructorController(instructorUseCase)
 const router = Router()
 
 router
-  .route('/')
+  .route('/instructor')
   .all(authMiddleware.authUser)
   .post(instructorController.createInstructor)
   .get(instructorController.getAllInstructors)
 
 router
-  .route('/:id')
+  .route('/instructor/:id')
   .all(authMiddleware.authUser)
   .get(instructorController.getInstructor)
   .patch(instructorController.updateInstructor)
