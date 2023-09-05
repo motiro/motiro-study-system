@@ -29,9 +29,10 @@ class AuthController {
   private getModel(req: Request) {
     const reqRole = req.body?.role
     if (!reqRole) throw new BadRequestError('Missing role')
+    if (typeof reqRole !== 'string') throw new BadRequestError('Invalid role')
     const userModel =
       reqRole.charAt(0).toUpperCase() + reqRole.slice(1).toLowerCase()
-    if (!Object.values(models).includes(userModel))
+    if (!Object.values(models).includes(userModel as models))
       throw new BadRequestError('Invalid role')
     return { userModel, reqRole }
   }

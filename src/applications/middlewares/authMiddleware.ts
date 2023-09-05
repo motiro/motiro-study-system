@@ -19,9 +19,8 @@ class AuthMiddleware {
 
   public checkRole = (...roles: string[]) => {
     return (req: Request, _: Response, next: NextFunction) => {
-      if (!roles.includes(req.body.user?.role)) {
+      if (!roles.includes(req.body.user?.role))
         throw new ForbiddenError('Access denied')
-      }
       next()
     }
   }
