@@ -3,9 +3,9 @@ import { Router } from 'express'
 
 import { InstructorUseCase } from 'applications/usecases/InstructorUseCase'
 import { InstructorController } from '../applications/controllers/instructorController'
-import { MongoRepository } from '../infrastructure/persistence/mongo/mongoRepository'
+import { MongoInstructorRepository } from '@mongo/mongoInstructorRepository'
 
-const mongoRepository = new MongoRepository()
+const mongoRepository = new MongoInstructorRepository()
 const instructorUseCase = new InstructorUseCase(mongoRepository)
 const instructorController = new InstructorController(instructorUseCase)
 

@@ -1,10 +1,10 @@
 import { Router } from 'express'
-import { MongoRepository } from '@mongo/mongoRepository'
 import { AdminUseCase } from 'applications/usecases'
 import { AdminController } from 'applications/controllers'
 import { authMiddleware } from 'applications/middlewares'
+import { MongoAdminRepository } from '@mongo/mongoAdminRepository'
 
-const mongoRepository = new MongoRepository()
+const mongoRepository = new MongoAdminRepository()
 const adminUseCase = new AdminUseCase(mongoRepository)
 const adminController = new AdminController(adminUseCase)
 const router = Router()
