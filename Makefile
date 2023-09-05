@@ -53,10 +53,10 @@ coverage:
 	docker compose exec $(call args,api) npm run coverage
 
 rm:
-	docker rmi ${dir}${sep}${args}
+	docker rmi ${dir}${sep}$(call args,api)
 
 rmf:
-	docker rmi ${dir}${sep}${args} -f
+	docker rmi ${dir}${sep}$(call args,api) -f
 
 relaunch:
 	make down; make build; make up
