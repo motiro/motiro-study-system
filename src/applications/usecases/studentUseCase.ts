@@ -5,7 +5,7 @@ import { BadRequestError, NotFoundError } from 'domain/entities/error'
 export class StudentUseCase {
   constructor(private studentRepository: StudentRepository) {}
 
-  async execute(request: Student): Promise<Student> {
+  async create(request: Student): Promise<Student> {
     const studentExists = await this.studentRepository.findStudentById(
       request.id!
     )
@@ -20,7 +20,7 @@ export class StudentUseCase {
     return response
   }
 
-  async list(): Promise<Student[]> {
+  async listAll(): Promise<Student[]> {
     const response = await this.studentRepository.getAllStudents()
 
     return response

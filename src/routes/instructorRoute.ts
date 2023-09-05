@@ -14,14 +14,14 @@ const router = Router()
 router
   .route('/')
   .all(authMiddleware.authUser)
-  .post(instructorController.createInstructor)
-  .get(instructorController.getAllInstructors)
+  .post(instructorController.create)
+  .get(instructorController.listAll)
 
 router
   .route('/:id')
   .all(authMiddleware.authUser)
-  .get(instructorController.getInstructor)
-  .patch(instructorController.updateInstructor)
-  .delete(instructorController.deleteInstructor)
+  .get(instructorController.listOne)
+  .patch(instructorController.update)
+  .delete(instructorController.delete)
 
 export default router

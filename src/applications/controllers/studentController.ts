@@ -9,7 +9,7 @@ export class StudentController {
   async create(req: Request, res: Response) {
     const { name, email, password } = req.body
 
-    const result = await this.useCase.execute({ name, email, password })
+    const result = await this.useCase.create({ name, email, password })
 
     return res.status(201).json(result)
   }
@@ -25,12 +25,12 @@ export class StudentController {
     return res.status(200).json(result)
   }
 
-  async list(_: Request, res: Response) {
+  async listAll(_: Request, res: Response) {
     const students = await studentModel.find()
     return res.status(200).json(students)
   }
 
-  async listStudent(req: Request, res: Response) {
+  async listOne(req: Request, res: Response) {
     const { id } = req.params
 
     authMiddleware.checkUserPermissions(req.body, id)

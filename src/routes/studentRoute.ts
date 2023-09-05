@@ -14,12 +14,15 @@ router
   .route('/')
   .all(authMiddleware.authUser)
   .post(authMiddleware.checkRole('admin'), studentController.create)
-  .get(authMiddleware.checkRole('admin', 'instructor'), studentController.list)
+  .get(
+    authMiddleware.checkRole('admin', 'instructor'),
+    studentController.listAll
+  )
 
 router
   .route('/:id')
   .all(authMiddleware.authUser)
-  .get(studentController.listStudent)
+  .get(studentController.listOne)
   .patch(studentController.update)
   .delete(studentController.delete)
 
