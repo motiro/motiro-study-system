@@ -1,4 +1,5 @@
 include .env
+ctr = 'api'
 
 # The $(notdir) function in GNU Make takes a list of arguments, separated by spaces.
 # Some functions support escaping spaces with \\, but $(notdir) is not one of them.
@@ -40,25 +41,25 @@ logs:
 	docker compose logs -f
 
 sh:
-	docker compose exec $(call args,api) sh
+	docker compose exec $(call args,${ctr}) sh
 
 prod:
-	docker compose run -e NODE_ENV=production --name api_prod -p 5001:${PORT} --rm \
-		$(call args,api) sh -c "npm run build && npm start"
+	docker compose run -e NODE_ENV=production --name ${ctr}_production -p 5001:${PORT} \
+		--rm $(call args,${ctr}) sh -c "npm run build && npm start"
 
 test:
-	docker compose exec $(call args,api) npm test
+	docker compose exec $(call args,${ctr}) npm test
 
 coverage:
-	docker compose exec $(call args,api) npm run coverage
+	docker compose exec $(call args,${ctr}) npm run coverage
 
 rm:
-	docker rmi ${dir}${sep}$(call args,api)
+	docker rmi ${dir}${sep}$(call args,${ctr})
 
 rmf:
-	docker rmi ${dir}${sep}$(call args,api) -f
+	docker rmi ${dir}${sep}$(call args,${ctr}) -f
 
-relaunch:
+redeploy:
 	make down; make build; make up
 
 # This allows us to accept extra arguments (by doing nothing when we get a job that
