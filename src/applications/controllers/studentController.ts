@@ -22,12 +22,12 @@ class StudentController {
     return res.json(student)
   }
 
-  async list(_: Request, res: Response) {
+  async listAll(_: Request, res: Response) {
     const students = await studentModel.find()
     return res.json(students)
   }
 
-  async listStudent(req: Request, res: Response) {
+  async listOne(req: Request, res: Response) {
     const { id } = req.params
     const student = await studentModel.findById(id)
     if (!student) {

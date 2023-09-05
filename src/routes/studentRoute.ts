@@ -15,9 +15,9 @@ router.get(
   '/',
   authMiddleware.authUser,
   authMiddleware.checkRole('admin', 'instructor'),
-  studentController.list
+  studentController.listAll
 )
-router.get('/:id', authMiddleware.authUser, studentController.listStudent)
+router.get('/:id', authMiddleware.authUser, studentController.listOne)
 router.delete('/:id', authMiddleware.authUser, studentController.delete)
 
 export default router
