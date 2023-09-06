@@ -39,7 +39,7 @@ interface StudentDocument extends Document {
 }
 
 export class MongoRepository
-  implements AdminRepository, InstructorRepository, StudentRepository
+  // implements AdminRepository, InstructorRepository, StudentRepository
 {
   // Admin methods
 
