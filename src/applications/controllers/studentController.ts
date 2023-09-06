@@ -1,51 +1,51 @@
 import { Request, Response } from 'express'
-import { NotFoundError } from 'domain/entities/error'
 import { studentModel } from '@mongo/studentModel'
 import { authMiddleware } from 'applications/middlewares/authMiddleware'
+import { StudentUseCase } from 'applications/usecases/studentUseCase'
 
-class StudentController {
+export class StudentController {
+  constructor(private useCase: StudentUseCase) {}
+
   async create(req: Request, res: Response) {
     const { name, email, password } = req.body
-    const student = new studentModel({ name, email, password })
-    await student.save()
-    return res.status(201).json(student)
+
+    const result = await this.useCase.create({ name, email, password })
+
+    return res.status(201).json(result)
   }
 
   async update(req: Request, res: Response) {
     const { id } = req.params
     const { name, email, password } = req.body
-    const student = await studentModel.findByIdAndUpdate(
-      id,
-      { name, email, password },
-      { new: true }
-    )
-    return res.json(student)
+
+    authMiddleware.checkUserPermissions(req.body, id)
+
+    const result = await this.useCase.update(id, { name, email, password })
+
+    return res.status(200).json(result)
   }
 
   async listAll(_: Request, res: Response) {
     const students = await studentModel.find()
-    return res.json(students)
+    return res.status(200).json(students)
   }
 
   async listOne(req: Request, res: Response) {
     const { id } = req.params
-    const student = await studentModel.findById(id)
-    if (!student) {
-      throw new NotFoundError('User not found')
-    }
-    authMiddleware.checkUserPermissions(req.body, student._id)
-    return res.json(student)
+    authMiddleware.checkUserPermissions(req.body, id)
+
+    const result = await this.useCase.listOne(id)
+
+    return res.status(200).json(result)
   }
 
   async delete(req: Request, res: Response) {
     const { id } = req.params
+
     authMiddleware.checkUserPermissions(req.body, id)
-    const deletedStudent = await studentModel.findByIdAndDelete(id)
-    if (!deletedStudent) {
-      throw new NotFoundError('User not found')
-    }
+
+    await this.useCase.delete(id)
+
     return res.status(200).send()
   }
 }
-
-export default new StudentController()
