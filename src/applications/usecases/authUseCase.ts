@@ -18,7 +18,9 @@ type userUseCase = AdminUseCase | InstructorUseCase | StudentUseCase
 export class AuthUseCase {
   constructor(...args: userUseCase[]) {
     const usecases = []
-    for (const arg of args) if (arg) usecases.push(arg)
+    for (const arg of args) usecases.push(arg)
+    if (!usecases.length)
+      throw new NotFoundError('No usecases provided for authentication')
     this.usecases = usecases
   }
 
