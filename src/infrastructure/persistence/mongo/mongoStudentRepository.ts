@@ -1,8 +1,6 @@
 import { Student } from 'domain/entities/students'
 import { StudentRepository } from 'domain/repository/studentRepository'
 import { Document, ObjectId } from 'mongoose'
-
-import { instructorModel } from './instructorModel'
 import { studentModel } from './studentModel'
 
 interface StudentDocument extends Document {
@@ -40,10 +38,10 @@ export class MongoStudentRepository implements StudentRepository {
     )
   }
   async updateStudent(student: Student): Promise<void> {
-    await instructorModel.updateOne({ _id: student.id }, student)
+    await studentModel.updateOne({ _id: student.id }, student)
   }
   async deleteStudent(id: string): Promise<void> {
-    await instructorModel.deleteOne().where({ _id: id })
+    await studentModel.deleteOne().where({ _id: id })
   }
   async getAllStudents(): Promise<Student[]> {
     const result: StudentDocument[] = await studentModel

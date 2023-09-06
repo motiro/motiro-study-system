@@ -1,17 +1,17 @@
 import { StudentUseCase } from 'applications/usecases/studentUseCase'
 import { StudentController } from 'applications/controllers/studentController'
-import { MongoRepository } from './../infrastructure/persistence/mongo/mongoRepository'
+import { MongoStudentRepository } from '@mongo/mongoStudentRepository'
 import { Router } from 'express'
 import { authMiddleware } from 'applications/middlewares/authMiddleware'
 
-const mongoRepository = new MongoRepository()
-const studentUseCase = new StudentUseCase(mongoRepository)
+const studentRepository = new MongoStudentRepository()
+const studentUseCase = new StudentUseCase(studentRepository)
 const studentController = new StudentController(studentUseCase)
 
 const router = Router()
 
 router
-  .route('/')
+  .route('/student')
   .all(authMiddleware.authUser)
   .post(authMiddleware.checkRole('admin'), studentController.create)
   .get(
@@ -20,7 +20,7 @@ router
   )
 
 router
-  .route('/:id')
+  .route('/student/:id')
   .all(authMiddleware.authUser)
   .get(studentController.listOne)
   .patch(studentController.update)
