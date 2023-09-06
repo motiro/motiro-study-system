@@ -56,4 +56,16 @@ export class StudentUseCase {
 
     await this.studentRepository.deleteStudent(id)
   }
+
+  async countDocuments(): Promise<number> {
+    return await this.studentRepository.countStudents()
+  }
+
+  async comparePassword(id: string, password: string): Promise<boolean> {
+    return this.studentRepository.comparePassword(id, password)
+  }
+
+  whoAmI(): string {
+    return this.studentRepository.whoAmI()
+  }
 }

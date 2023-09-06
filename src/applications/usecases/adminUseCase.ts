@@ -42,4 +42,16 @@ export class AdminUseCase {
 
     await this.adminRepository.deleteAdmin(id)
   }
+
+  async countDocuments(): Promise<number> {
+    return await this.adminRepository.countAdmins()
+  }
+
+  async comparePassword(id: string, password: string): Promise<boolean> {
+    return this.adminRepository.comparePassword(id, password)
+  }
+
+  whoAmI(): string {
+    return this.adminRepository.whoAmI()
+  }
 }

@@ -59,4 +59,16 @@ export class InstructorUseCase {
 
     await this.instructorRepository.deleteInstructor(id)
   }
+
+  async countDocuments(): Promise<number> {
+    return await this.instructorRepository.countInstructors()
+  }
+
+  async comparePassword(id: string, password: string): Promise<boolean> {
+    return this.instructorRepository.comparePassword(id, password)
+  }
+
+  whoAmI(): string {
+    return this.instructorRepository.whoAmI()
+  }
 }
