@@ -6,4 +6,7 @@ export interface InstructorRepository {
   updateInstructor(instructor: Instructor): Promise<void>
   deleteInstructor(id: string): Promise<void>
   getAllInstructors(): Promise<Instructor[]>
+  countInstructors(): Promise<number>
+  comparePassword(id: string, password: string): Promise<boolean>
+  whoAmI(): string
 }

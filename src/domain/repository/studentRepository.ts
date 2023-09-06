@@ -6,4 +6,7 @@ export interface StudentRepository {
   updateStudent(student: Student): Promise<void>
   deleteStudent(id: string): Promise<void>
   getAllStudents(): Promise<Student[]>
+  countStudents(): Promise<number>
+  comparePassword(id: string, password: string): Promise<boolean>
+  whoAmI(): string
 }
