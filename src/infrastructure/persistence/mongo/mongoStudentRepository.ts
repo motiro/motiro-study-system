@@ -63,4 +63,19 @@ export class MongoStudentRepository implements StudentRepository {
 
     return students
   }
+
+  async countStudents(): Promise<number> {
+    return await studentModel.countDocuments()
+  }
+
+  async comparePassword(id: string, password: string): Promise<boolean> {
+    const user = await studentModel.findById(id)
+    if (!user) return false
+    return await user?.comparePassword(password)
+  }
+
+  whoAmI(): string {
+    const user = new Student({ name: '', email: '' })
+    return user.role || 'student'
+  }
 }

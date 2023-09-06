@@ -57,4 +57,19 @@ export class MongoAdminRepository implements AdminRepository {
   async deleteAdmin(id: string): Promise<void> {
     await adminModel.deleteOne().where({ _id: id })
   }
+
+  async countAdmins(): Promise<number> {
+    return await adminModel.countDocuments()
+  }
+
+  async comparePassword(id: string, password: string): Promise<boolean> {
+    const user = await adminModel.findById(id)
+    if (!user) return false
+    return await user?.comparePassword(password)
+  }
+
+  whoAmI(): string {
+    const user = new Admin({ name: '', email: '' })
+    return user.role || 'admin'
+  }
 }

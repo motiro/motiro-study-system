@@ -72,4 +72,24 @@ export class MongoInstructorRepository implements InstructorRepository {
 
     return instructors
   }
+
+  async countInstructors(): Promise<number> {
+    return await instructorModel.countDocuments()
+  }
+
+  async comparePassword(id: string, password: string): Promise<boolean> {
+    const user = await instructorModel.findById(id)
+    if (!user) return false
+    return await user?.comparePassword(password)
+  }
+
+  whoAmI(): string {
+    const user = new Instructor({
+      name: '',
+      email: '',
+      specialty: [],
+      schedule: []
+    })
+    return user.role || 'instructor'
+  }
 }
