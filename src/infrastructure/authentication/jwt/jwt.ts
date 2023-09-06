@@ -1,15 +1,10 @@
 import jwt from 'jsonwebtoken'
 import { Response } from 'express'
-import { Types } from 'mongoose'
+import { Admin, Student, Instructor } from 'domain/entities'
 
 const { JWT_SECRET, JWT_LIFETIME } = process.env
 
-export interface User {
-  _id?: Types.ObjectId
-  userId?: Types.ObjectId
-  name: string
-  role: string
-}
+export type User = Admin | Instructor | Student
 
 class JsonWebToken {
   encode(payload: object) {
@@ -22,8 +17,8 @@ class JsonWebToken {
     return jwt.verify(token, JWT_SECRET as string)
   }
 
-  createUserToken(user: User) {
-    return { name: user.name, userId: user._id, role: user.role }
+  createUserToken(user: User): User {
+    return { name: user.name, role: user.role, id: user.id } as User
   }
 
   attachCookies({ res, user }: { res: Response; user: User }) {

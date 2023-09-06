@@ -9,8 +9,8 @@ class AuthMiddleware {
     if (!token) throw new UnauthorizedError('Not logged in')
 
     try {
-      const { userId, name, role } = jwt.decode(token) as User
-      req.body.user = { userId, name, role }
+      const { name, role, id } = jwt.decode(token) as User
+      req.body.user = { name, role, id }
       next()
     } catch (error) {
       throw new UnauthorizedError('Invalid authentication token')
@@ -26,11 +26,11 @@ class AuthMiddleware {
   }
 
   public checkUserPermissions = (
-    requestUser: { user: { role: string; userId: string } },
-    resourceUserId: Types.ObjectId | string
+    requestUser: { user: { role: string; id: string } },
+    resourceId: Types.ObjectId | string
   ) => {
     if (requestUser.user?.role === 'admin') return
-    if (requestUser.user?.userId === resourceUserId.toString()) return
+    if (requestUser.user?.id === resourceId.toString()) return
     throw new ForbiddenError('Access denied')
   }
 }
