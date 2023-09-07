@@ -13,7 +13,7 @@ interface AdminDocument extends Document {
 }
 
 export class MongoAdminRepository implements AdminRepository {
-  async findAdminById(id: string): Promise<Admin | null> {
+  async findById(id: string): Promise<Admin | null> {
     const result: AdminDocument = await adminModel
       .findById(id)
       .select('-password')
@@ -22,7 +22,7 @@ export class MongoAdminRepository implements AdminRepository {
     }
     return null
   }
-  async findAllAdmins(): Promise<Admin[]> {
+  async findAll(): Promise<Admin[]> {
     const result: AdminDocument[] = await adminModel.find().select('-password')
 
     const admins: Admin[] = []
@@ -39,7 +39,7 @@ export class MongoAdminRepository implements AdminRepository {
     }
     return admins
   }
-  async saveAdmin(admin: Admin): Promise<Admin> {
+  async save(admin: Admin): Promise<Admin> {
     const result: AdminDocument = (await adminModel.create(admin)).toObject()
 
     return new Admin(
@@ -51,14 +51,14 @@ export class MongoAdminRepository implements AdminRepository {
       result.id
     )
   }
-  async updateAdmin(admin: Admin): Promise<void> {
+  async update(admin: Admin): Promise<void> {
     await adminModel.updateOne({ _id: admin.id }, admin)
   }
-  async deleteAdmin(id: string): Promise<void> {
+  async delete(id: string): Promise<void> {
     await adminModel.deleteOne().where({ _id: id })
   }
 
-  async countAdmins(): Promise<number> {
+  async counts(): Promise<number> {
     return await adminModel.countDocuments()
   }
 

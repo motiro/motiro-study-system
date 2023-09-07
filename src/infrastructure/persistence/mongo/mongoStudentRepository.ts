@@ -12,7 +12,7 @@ interface StudentDocument extends Document {
 }
 
 export class MongoStudentRepository implements StudentRepository {
-  async findStudentById(id: string): Promise<Student | null> {
+  async findById(id: string): Promise<Student | null> {
     const result: StudentDocument = await studentModel
       .findById(id)
       .select('-password')
@@ -23,7 +23,7 @@ export class MongoStudentRepository implements StudentRepository {
 
     return null
   }
-  async saveStudent(student: Student): Promise<Student> {
+  async save(student: Student): Promise<Student> {
     const result: StudentDocument = (
       await studentModel.create(student)
     ).toObject()
@@ -37,13 +37,13 @@ export class MongoStudentRepository implements StudentRepository {
       result.id
     )
   }
-  async updateStudent(student: Student): Promise<void> {
+  async update(student: Student): Promise<void> {
     await studentModel.updateOne({ _id: student.id }, student)
   }
-  async deleteStudent(id: string): Promise<void> {
+  async delete(id: string): Promise<void> {
     await studentModel.deleteOne().where({ _id: id })
   }
-  async getAllStudents(): Promise<Student[]> {
+  async findAll(): Promise<Student[]> {
     const result: StudentDocument[] = await studentModel
       .find()
       .select('-password')
@@ -64,7 +64,7 @@ export class MongoStudentRepository implements StudentRepository {
     return students
   }
 
-  async countStudents(): Promise<number> {
+  async counts(): Promise<number> {
     return await studentModel.countDocuments()
   }
 

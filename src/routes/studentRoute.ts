@@ -13,17 +13,18 @@ const router = Router()
 router
   .route('/student')
   .all(authMiddleware.authUser)
-  .post(authMiddleware.checkRole('admin'), studentController.create)
-  .get(
-    authMiddleware.checkRole('admin', 'instructor'),
-    studentController.listAll
+  .post(authMiddleware.checkRole('admin'), (req, res) =>
+    studentController.create(req, res)
+  )
+  .get(authMiddleware.checkRole('admin', 'instructor'), (req, res) =>
+    studentController.listAll(req, res)
   )
 
 router
   .route('/student/:id')
   .all(authMiddleware.authUser)
-  .get(studentController.listOne)
-  .patch(studentController.update)
-  .delete(studentController.delete)
+  .get((req, res) => studentController.listOne(req, res))
+  .patch((req, res) => studentController.update(req, res))
+  .delete((req, res) => studentController.delete(req, res))
 
 export default router

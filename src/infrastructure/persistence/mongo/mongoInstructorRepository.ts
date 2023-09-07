@@ -15,7 +15,7 @@ interface InstructorDocument extends Document {
 }
 
 export class MongoInstructorRepository implements InstructorRepository {
-  async findInstructorById(id: string): Promise<Instructor | null> {
+  async findById(id: string): Promise<Instructor | null> {
     if (isValidObjectId(id)) {
       const result: InstructorDocument = await instructorModel
         .findById(id)
@@ -27,7 +27,7 @@ export class MongoInstructorRepository implements InstructorRepository {
     }
     return null
   }
-  async saveInstructor(instructor: Instructor): Promise<Instructor> {
+  async save(instructor: Instructor): Promise<Instructor> {
     const result: InstructorDocument = (
       await instructorModel.create(instructor)
     ).toObject()
@@ -43,13 +43,13 @@ export class MongoInstructorRepository implements InstructorRepository {
       result.id
     )
   }
-  async updateInstructor(instructor: Instructor): Promise<void> {
+  async update(instructor: Instructor): Promise<void> {
     await instructorModel.updateOne({ _id: instructor.id }, instructor)
   }
-  async deleteInstructor(id: string): Promise<void> {
+  async delete(id: string): Promise<void> {
     await instructorModel.deleteOne().where({ _id: id })
   }
-  async getAllInstructors(): Promise<Instructor[]> {
+  async findAll(): Promise<Instructor[]> {
     const result: InstructorDocument[] = await instructorModel
       .find()
       .select('-password')
@@ -73,7 +73,7 @@ export class MongoInstructorRepository implements InstructorRepository {
     return instructors
   }
 
-  async countInstructors(): Promise<number> {
+  async count(): Promise<number> {
     return await instructorModel.countDocuments()
   }
 

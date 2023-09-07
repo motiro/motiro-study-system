@@ -28,8 +28,8 @@ const authUseCase = new AuthUseCase(
 const authController = new AuthController(authUseCase)
 const router = Router()
 
-router.post('/auth/register', authController.register)
-router.post('/auth/login', authController.login)
-router.get('/auth/logout', authController.logout)
+router.post('/auth/register', (req, res) => authController.register(req, res))
+router.post('/auth/login', (req, res) => authController.login(req, res))
+router.get('/auth/logout', (_, res) => authController.logout(_, res))
 
 export default router

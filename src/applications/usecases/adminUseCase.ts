@@ -7,44 +7,44 @@ export class AdminUseCase {
 
   async create(req: Admin): Promise<Admin> {
     const admin = new Admin(req)
-    const response = await this.adminRepository.saveAdmin(admin)
+    const response = await this.adminRepository.save(admin)
     return response
   }
 
   async listOne(id: string): Promise<Admin> {
-    const response = await this.adminRepository.findAdminById(id)
+    const response = await this.adminRepository.findById(id)
     if (!response) throw new NotFoundError(`Admin not found`)
     return response
   }
 
   async listAll(): Promise<Admin[]> {
-    const response = await this.adminRepository.findAllAdmins()
+    const response = await this.adminRepository.findAll()
     return response
   }
 
   async update(req: Admin): Promise<void> {
-    const adminExists = await this.adminRepository.findAdminById(req.id!)
+    const adminExists = await this.adminRepository.findById(req.id!)
 
     if (!adminExists) {
       throw new NotFoundError('User not found')
     }
 
     const admin = new Admin(req, req.id)
-    await this.adminRepository.updateAdmin(admin)
+    await this.adminRepository.update(admin)
   }
 
   async delete(id: string): Promise<void> {
-    const adminExists = await this.adminRepository.findAdminById(id)
+    const adminExists = await this.adminRepository.findById(id)
 
     if (!adminExists) {
       throw new NotFoundError('User not found')
     }
 
-    await this.adminRepository.deleteAdmin(id)
+    await this.adminRepository.delete(id)
   }
 
   async countDocuments(): Promise<number> {
-    return await this.adminRepository.countAdmins()
+    return await this.adminRepository.counts()
   }
 
   async comparePassword(id: string, password: string): Promise<boolean> {

@@ -1,12 +1,12 @@
 import { Admin } from 'domain/entities/admin'
 
 export interface AdminRepository {
-  findAdminById(id: string): Promise<Admin | null>
-  findAllAdmins(): Promise<Admin[]>
-  saveAdmin(admin: Admin): Promise<Admin>
-  updateAdmin(admin: Admin): Promise<void>
-  deleteAdmin(id: string): Promise<void>
-  countAdmins(): Promise<number>
+  findById(id: string): Promise<Admin | null>
+  findAll(): Promise<Admin[]>
+  save(admin: Admin): Promise<Admin>
+  update(admin: Admin): Promise<void>
+  delete(id: string): Promise<void>
+  counts(): Promise<number>
   comparePassword(id: string, password: string): Promise<boolean>
   whoAmI(): string
 }
