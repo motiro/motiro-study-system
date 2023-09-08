@@ -1,0 +1,88 @@
+import { InstructorRepository } from 'domain/repository/instructorRepository'
+import { Instructor } from 'domain/entities/instructor'
+
+const users: Instructor[] = [
+  {
+    id: 'testId',
+    name: 'InstructorTest',
+    email: 'instructortest@mail.com',
+    password: 'secret',
+    specialty: ['math'],
+    schedule: [
+      {
+      date: new Date('2023-09-20'),
+      busy: false
+      },
+      {
+        date: new Date('2023-09-21'),
+        busy: true,
+      }
+    ],
+    role: 'instructor'
+  },
+  {
+    id: 'testId2',
+    name: 'InstructorTest2',
+    email: 'instructortest@mail.com',
+    password: 'secret2',
+    specialty: ['math'],
+    schedule: [
+      {
+      date: new Date('2023-09-29'),
+      busy: true
+      },
+      {
+        date: new Date('2023-09-18'),
+        busy: true,
+      }
+    ],
+    role: 'instructor'
+  }
+]
+
+export class InstructorRepoTest implements InstructorRepository {
+  async findInstructorById(id: string): Promise<Instructor | null> {
+    for (const user of users) {
+      if (user.id === id) return user
+    }
+    return null
+  }
+  async getAllInstructors(): Promise<Instructor[]> {
+    const instructors: Instructor[] = []
+    for (const user of users) {
+      instructors.push(user)
+    }
+    return instructors
+  }
+  async saveInstructor(instructor: Instructor): Promise<Instructor> {
+    const result: Instructor = new Instructor(instructor)
+    return new Instructor(
+      {
+        name: result.name,
+        email: result.email,
+        role: result.role,
+        specialty: result.specialty,
+        schedule: result.schedule
+      },
+      result.id
+    )
+  }
+  async updateInstructor(instructor: Instructor): Promise<void> {
+    for (const user of users) {
+      if (user.id === instructor.id) {
+        user.name = instructor.name ?? user.name
+        user.email = instructor.email ?? user.email
+        user.password = instructor.password ?? user.password
+        user.specialty = instructor.specialty ?? user.specialty
+        user.schedule = instructor.schedule ?? user.schedule
+      }
+    }
+  }
+  async deleteInstructor(id: string): Promise<void> {
+    for (let i = 0; i < users.length; i++) {
+      if (users[i].id === id) {
+        users.splice(i, 1);
+      }
+    }
+  }
+}
