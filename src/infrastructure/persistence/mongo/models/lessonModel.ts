@@ -18,7 +18,17 @@ const LessonSchema = new Schema(
       required: true
     }
   },
-  { timestamps: true }
+  {
+    toJSON: {
+      virtuals: true,
+      timestamps: true,
+      transform: (_, ret: { _id?: Schema.Types.ObjectId }) => {
+        delete ret._id
+        return ret
+      }
+    },
+    toObject: { virtuals: true, timestamps: true }
+  }
 )
 
 export const lessonModel = model('Lessons', LessonSchema)
