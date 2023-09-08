@@ -13,8 +13,9 @@ const LessonSchema = new Schema(
       required: true
     },
     date: {
-      type: Date,
-      required: [true, 'YYYY-MM-DD HH:mm']
+      type: Schema.ObjectId,
+      ref: 'Date',
+      required: true
     }
   },
   { timestamps: true }
