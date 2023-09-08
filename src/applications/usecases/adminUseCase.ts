@@ -44,7 +44,7 @@ export class AdminUseCase {
   }
 
   async countDocuments(): Promise<number> {
-    return await this.adminRepository.counts()
+    return await this.adminRepository.count()
   }
 
   async comparePassword(id: string, password: string): Promise<boolean> {
