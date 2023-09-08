@@ -3,25 +3,25 @@ import { Router } from 'express'
 
 import { InstructorUseCase } from 'applications/usecases/InstructorUseCase'
 import { InstructorController } from '../applications/controllers/instructorController'
-import { MongoRepository } from '../infrastructure/persistence/mongo/mongoRepository'
+import { MongoInstructorRepository } from '@mongo/mongoInstructorRepository'
 
-const mongoRepository = new MongoRepository()
+const mongoRepository = new MongoInstructorRepository()
 const instructorUseCase = new InstructorUseCase(mongoRepository)
 const instructorController = new InstructorController(instructorUseCase)
 
 const router = Router()
 
 router
-  .route('/')
+  .route('/instructor')
   .all(authMiddleware.authUser)
-  .post(instructorController.createInstructor)
-  .get(instructorController.getAllInstructors)
+  .post((req, res) => instructorController.create(req, res))
+  .get((req, res) => instructorController.listAll(req, res))
 
 router
-  .route('/:id')
+  .route('/instructor/:id')
   .all(authMiddleware.authUser)
-  .get(instructorController.getInstructor)
-  .patch(instructorController.updateInstructor)
-  .delete(instructorController.deleteInstructor)
+  .get((req, res) => instructorController.listOne(req, res))
+  .patch((req, res) => instructorController.update(req, res))
+  .delete((req, res) => instructorController.delete(req, res))
 
 export default router

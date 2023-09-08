@@ -1,9 +1,8 @@
 import { AdminRepoTest } from './adminRepoTest'
 import { AdminUseCase } from '@usecases/adminUseCase'
-import { MongoRepository } from '@mongo/mongoRepository'
 import { Admin } from '@entities/admin'
 
-const adminUseCase = new AdminUseCase(new AdminRepoTest() as MongoRepository)
+const adminUseCase = new AdminUseCase(new AdminRepoTest())
 let adminRepo: AdminRepoTest
 
 const adminObj: Admin = {
@@ -60,7 +59,7 @@ describe('AdminController', () => {
 
     await adminUseCase.update(updateAdmin)
 
-    const findAdmin = await adminRepo.findAdminById('testId')
+    const findAdmin = await adminRepo.findById('testId')
 
     expect(findAdmin).toEqual(updateAdmin)
   })
@@ -70,7 +69,7 @@ describe('AdminController', () => {
 
     await adminUseCase.delete(adminId)
 
-    const deletedAdim = await adminRepo.findAdminById(adminId)
+    const deletedAdim = await adminRepo.findById(adminId)
 
     expect(deletedAdim).toBeNull()
   })

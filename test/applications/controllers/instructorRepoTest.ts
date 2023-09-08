@@ -1,4 +1,4 @@
-import { InstructorRepository } from 'domain/repository/instructorRepository'
+import { InstructorRepository } from 'domain/repositories/instructorRepository'
 import { Instructor } from 'domain/entities/instructor'
 
 const users: Instructor[] = [
@@ -10,12 +10,12 @@ const users: Instructor[] = [
     specialty: ['math'],
     schedule: [
       {
-      date: new Date('2023-09-20'),
-      busy: false
+        date: new Date('2023-09-20'),
+        busy: false
       },
       {
         date: new Date('2023-09-21'),
-        busy: true,
+        busy: true
       }
     ],
     role: 'instructor'
@@ -28,12 +28,12 @@ const users: Instructor[] = [
     specialty: ['math'],
     schedule: [
       {
-      date: new Date('2023-09-29'),
-      busy: true
+        date: new Date('2023-09-29'),
+        busy: true
       },
       {
         date: new Date('2023-09-18'),
-        busy: true,
+        busy: true
       }
     ],
     role: 'instructor'
@@ -41,20 +41,20 @@ const users: Instructor[] = [
 ]
 
 export class InstructorRepoTest implements InstructorRepository {
-  async findInstructorById(id: string): Promise<Instructor | null> {
+  async findById(id: string): Promise<Instructor | null> {
     for (const user of users) {
       if (user.id === id) return user
     }
     return null
   }
-  async getAllInstructors(): Promise<Instructor[]> {
+  async findAll(): Promise<Instructor[]> {
     const instructors: Instructor[] = []
     for (const user of users) {
       instructors.push(user)
     }
     return instructors
   }
-  async saveInstructor(instructor: Instructor): Promise<Instructor> {
+  async save(instructor: Instructor): Promise<Instructor> {
     const result: Instructor = new Instructor(instructor)
     return new Instructor(
       {
@@ -67,7 +67,7 @@ export class InstructorRepoTest implements InstructorRepository {
       result.id
     )
   }
-  async updateInstructor(instructor: Instructor): Promise<void> {
+  async update(instructor: Instructor): Promise<void> {
     for (const user of users) {
       if (user.id === instructor.id) {
         user.name = instructor.name ?? user.name
@@ -78,11 +78,29 @@ export class InstructorRepoTest implements InstructorRepository {
       }
     }
   }
-  async deleteInstructor(id: string): Promise<void> {
+  async delete(id: string): Promise<void> {
     for (let i = 0; i < users.length; i++) {
       if (users[i].id === id) {
-        users.splice(i, 1);
+        users.splice(i, 1)
       }
     }
+  }
+  async count(): Promise<number> {
+    return users.length
+  }
+  async comparePassword(id: string, password: string): Promise<boolean> {
+    for (const user of users) {
+      if (user.id === id) return user.password === password
+    }
+    return false
+  }
+  whoAmI(): string {
+    const user = new Instructor({
+      name: '',
+      email: '',
+      specialty: [],
+      schedule: []
+    })
+    return user.role || 'instructor'
   }
 }

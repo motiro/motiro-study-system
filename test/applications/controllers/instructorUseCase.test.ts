@@ -1,9 +1,8 @@
 import { InstructorRepoTest } from './instructorRepoTest'
 import { InstructorUseCase } from '@usecases/InstructorUseCase'
-import { MongoRepository } from '@mongo/mongoRepository'
 import { Instructor } from 'domain/entities/instructor'
 
-const instructorUseCase = new InstructorUseCase(new InstructorRepoTest() as MongoRepository)
+const instructorUseCase = new InstructorUseCase(new InstructorRepoTest())
 let instructorRepo: InstructorRepoTest
 
 const instructorObj: Instructor = {
@@ -34,14 +33,14 @@ describe('InstructorController', () => {
   })
 
   it('should be object', () => {
-    const newInstructor = instructorUseCase.execute(instructorObj)
+    const newInstructor = instructorUseCase.create(instructorObj)
     expect(newInstructor).toBeInstanceOf(Object)
   })
 
   it('should be created', async () => {
     const newInstructor = instructorObj
 
-    const createdInstructor = await instructorUseCase.execute(newInstructor)
+    const createdInstructor = await instructorUseCase.create(newInstructor)
 
     expect(createdInstructor).toBeDefined()
   })
@@ -55,7 +54,7 @@ describe('InstructorController', () => {
   })
 
   it('should list all', async () => {
-    const instructors = await instructorUseCase.list()
+    const instructors = await instructorUseCase.listAll()
 
     expect(instructors).toBeDefined()
   })
@@ -82,7 +81,7 @@ describe('InstructorController', () => {
 
     await instructorUseCase.update("testId", updateInstructor)
 
-    const findInstructor = await instructorRepo.findInstructorById('testId')
+    const findInstructor = await instructorRepo.findById('testId')
 
     expect(findInstructor).toEqual(updateInstructor)
   })
@@ -92,7 +91,7 @@ describe('InstructorController', () => {
 
     await instructorUseCase.delete(instructorId)
 
-    const deletedInstructor = await instructorRepo.findInstructorById(instructorId)
+    const deletedInstructor = await instructorRepo.findById(instructorId)
 
     expect(deletedInstructor).toBeNull()
   })

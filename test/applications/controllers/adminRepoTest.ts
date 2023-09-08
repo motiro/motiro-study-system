@@ -1,4 +1,4 @@
-import { AdminRepository } from 'domain/repository/adminRepository'
+import { AdminRepository } from 'domain/repositories/adminRepository'
 import { Admin } from 'domain/entities/admin'
 
 const users: Admin[] = [
@@ -19,20 +19,20 @@ const users: Admin[] = [
 ]
 
 export class AdminRepoTest implements AdminRepository {
-  async findAdminById(id: string): Promise<Admin | null> {
+  async findById(id: string): Promise<Admin | null> {
     for (const user of users) {
       if (user.id === id) return user
     }
     return null
   }
-  async findAllAdmins(): Promise<Admin[]> {
+  async findAll(): Promise<Admin[]> {
     const admins: Admin[] = []
     for (const user of users) {
       admins.push(user)
     }
     return admins
   }
-  async saveAdmin(admin: Admin): Promise<Admin> {
+  async save(admin: Admin): Promise<Admin> {
     const result: Admin = new Admin(admin)
     return new Admin(
       {
@@ -43,7 +43,7 @@ export class AdminRepoTest implements AdminRepository {
       result.id
     )
   }
-  async updateAdmin(admin: Admin): Promise<void> {
+  async update(admin: Admin): Promise<void> {
     for (const user of users) {
       if (user.id === admin.id) {
         user.name = admin.name ?? user.name
@@ -52,11 +52,24 @@ export class AdminRepoTest implements AdminRepository {
       }
     }
   }
-  async deleteAdmin(id: string): Promise<void> {
+  async delete(id: string): Promise<void> {
     for (let i = 0; i < users.length; i++) {
       if (users[i].id === id) {
-        users.splice(i, 1);
+        users.splice(i, 1)
       }
     }
+  }
+  async counts(): Promise<number> {
+    return users.length
+  }
+  async comparePassword(id: string, password: string): Promise<boolean> {
+    for (const user of users) {
+      if (user.id === id) return user.password === password
+    }
+    return false
+  }
+  whoAmI(): string {
+    const user = new Admin({ name: '', email: '' })
+    return user.role || 'admin'
   }
 }

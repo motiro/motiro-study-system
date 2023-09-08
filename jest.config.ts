@@ -12,9 +12,10 @@ const config: Config.InitialOptions = {
     '^@middlewares(.*)$': 'applications/middlewares$1',
     '^@usecases(.*)$': 'applications/usecases$1',
     '^@entities(.*)$': 'domain/entities$1',
-    '^@repository(.*)$': 'domain/repository$1',
+    '^@repository(.*)$': 'domain/repositories$1',
     '^@jwt(.*)$': 'infrastructure/authentication/jwt$1',
-    '^@mongo(.*)$': 'infrastructure/persistence/mongo$1'
+    '^@models(.*)$': 'infrastructure/persistence/mongo/models$1',
+    '^@mongo(.*)$': 'infrastructure/persistence/mongo/repositories$1'
   }
 }
 
