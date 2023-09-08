@@ -1,7 +1,7 @@
 import { Student } from 'domain/entities/students'
-import { StudentRepository } from 'domain/repository/studentRepository'
+import { StudentRepository } from 'domain/repositories/studentRepository'
 import { Document, ObjectId } from 'mongoose'
-import { studentModel } from './studentModel'
+import { studentModel } from '../models/studentModel'
 
 interface StudentDocument extends Document {
   _id: ObjectId

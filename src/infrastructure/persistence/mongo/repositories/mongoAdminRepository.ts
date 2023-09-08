@@ -1,8 +1,8 @@
 import { Admin } from 'domain/entities/admin'
-import { AdminRepository } from 'domain/repository/adminRepository'
+import { AdminRepository } from 'domain/repositories/adminRepository'
 import { Document, ObjectId } from 'mongoose'
 
-import { adminModel } from '.'
+import { adminModel } from '../models'
 
 interface AdminDocument extends Document {
   _id: ObjectId
