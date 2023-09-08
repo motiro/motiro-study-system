@@ -6,7 +6,7 @@ export interface AdminRepository {
   save(admin: Admin): Promise<Admin>
   update(admin: Admin): Promise<void>
   delete(id: string): Promise<void>
-  counts(): Promise<number>
+  count(): Promise<number>
   comparePassword(id: string, password: string): Promise<boolean>
   whoAmI(): string
 }
