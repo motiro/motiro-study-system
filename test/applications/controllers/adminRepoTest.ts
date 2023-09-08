@@ -48,14 +48,14 @@ export class AdminRepoTest implements AdminRepository {
       if (user.id === admin.id) {
         user.name = admin.name ?? user.name
         user.email = admin.email ?? user.email
-        user.password = admin.name ?? user.password
+        user.password = admin.password ?? user.password
       }
     }
   }
   async deleteAdmin(id: string): Promise<void> {
     for (let i = 0; i < users.length; i++) {
       if (users[i].id === id) {
-        delete users[i]
+        users.splice(i, 1);
       }
     }
   }
