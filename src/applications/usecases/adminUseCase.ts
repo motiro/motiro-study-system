@@ -1,6 +1,6 @@
 import { Admin } from 'domain/entities/admin'
 import { NotFoundError } from 'domain/entities/error'
-import { AdminRepository } from 'domain/repository/adminRepository'
+import { AdminRepository } from 'domain/repositories/adminRepository'
 
 export class AdminUseCase {
   constructor(private adminRepository: AdminRepository) {}

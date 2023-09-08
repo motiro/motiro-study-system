@@ -1,4 +1,4 @@
-import { StudentRepository } from 'domain/repository/studentRepository'
+import { StudentRepository } from 'domain/repositories/studentRepository'
 import { Student } from 'domain/entities/students'
 import { BadRequestError, NotFoundError } from 'domain/entities/error'
 

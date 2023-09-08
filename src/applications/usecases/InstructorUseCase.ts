@@ -1,4 +1,4 @@
-import { InstructorRepository } from 'domain/repository/instructorRepository'
+import { InstructorRepository } from 'domain/repositories/instructorRepository'
 import { Instructor } from 'domain/entities/instructor'
 import { BadRequestError, NotFoundError } from 'domain/entities/error'
 
