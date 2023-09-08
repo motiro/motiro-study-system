@@ -2,7 +2,7 @@ import { ApiError } from 'domain/entities/error'
 import { NextFunction, Request, Response } from 'express'
 
 export const notFoundMiddleware = (_: Request, res: Response) => {
-  res.status(404).send('Route does not exist')
+  res.status(404).send('Route not found')
 }
 
 export const errorMiddleware = (

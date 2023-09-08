@@ -10,7 +10,7 @@ export class InstructorUseCase {
       request.id!
     )
     if (instructorExists) {
-      throw new BadRequestError('Instructor already exists')
+      throw new BadRequestError('User already exists')
     }
 
     const instructor = new Instructor(request)
@@ -30,7 +30,7 @@ export class InstructorUseCase {
     const instructorExists = await this.instructorRepository.findById(id)
 
     if (!instructorExists) {
-      throw new NotFoundError('Instructor does not exist')
+      throw new NotFoundError('User not found')
     }
 
     return instructorExists
@@ -39,7 +39,7 @@ export class InstructorUseCase {
     const instructorExists = await this.instructorRepository.findById(id)
 
     if (!instructorExists) {
-      throw new NotFoundError('Instructor does not exist')
+      throw new NotFoundError('User not found')
     }
 
     const instructor = new Instructor(request, id)
@@ -51,7 +51,7 @@ export class InstructorUseCase {
     const instructorExists = await this.instructorRepository.findById(id)
 
     if (!instructorExists) {
-      throw new NotFoundError('Instructor does not exist')
+      throw new NotFoundError('User not found')
     }
 
     await this.instructorRepository.delete(id)

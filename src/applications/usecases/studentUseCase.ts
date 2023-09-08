@@ -8,7 +8,7 @@ export class StudentUseCase {
   async create(request: Student): Promise<Student> {
     const studentExists = await this.studentRepository.findById(request.id!)
     if (studentExists) {
-      throw new BadRequestError('Student already exists')
+      throw new BadRequestError('User already exists')
     }
 
     const student = new Student(request)
@@ -28,7 +28,7 @@ export class StudentUseCase {
     const studentExists = await this.studentRepository.findById(id)
 
     if (!studentExists) {
-      throw new NotFoundError('Student does not exist')
+      throw new NotFoundError('User not found')
     }
 
     return studentExists
@@ -37,7 +37,7 @@ export class StudentUseCase {
     const studentExists = await this.studentRepository.findById(id)
 
     if (!studentExists) {
-      throw new NotFoundError('Student does not exist')
+      throw new NotFoundError('User not found')
     }
 
     const student = new Student(request, id)
@@ -49,7 +49,7 @@ export class StudentUseCase {
     const studentExists = await this.studentRepository.findById(id)
 
     if (!studentExists) {
-      throw new NotFoundError('Student does not exist')
+      throw new NotFoundError('User not found')
     }
 
     await this.studentRepository.delete(id)
