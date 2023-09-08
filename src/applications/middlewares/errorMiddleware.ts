@@ -2,11 +2,13 @@ import { ApiError } from 'domain/entities/error'
 import { NextFunction, Request, Response } from 'express'
 
 export const notFoundMiddleware = (_: Request, res: Response) => {
-  res.status(404).send('Route does not exist')
+  res.status(404).send('Route not found')
 }
 
 interface CustomError extends Error {
+  code?: number
   errors: Error
+  keyValue: Error
 }
 
 export const errorMiddleware = (
@@ -38,6 +40,11 @@ export const errorMiddleware = (
     message = Object.values(error.errors)
       .map(item => item.message)
       .join(' ')
+    statusCode = 400
+  }
+
+  if (error.code === 11000) {
+    message = `Provided ${Object.keys(error.keyValue)} is already registered`
     statusCode = 400
   }
 
