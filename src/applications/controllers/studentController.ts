@@ -5,7 +5,7 @@ import { StudentUseCase } from 'applications/usecases/studentUseCase'
 export class StudentController {
   constructor(private useCase: StudentUseCase) {}
 
-  create = async (req: Request, res: Response) => {
+  async create(req: Request, res: Response) {
     const { name, email, password } = req.body
 
     const result = await this.useCase.create({ name, email, password })
@@ -13,7 +13,7 @@ export class StudentController {
     return res.status(201).json(result)
   }
 
-  update = async (req: Request, res: Response) => {
+  async update(req: Request, res: Response) {
     const { id } = req.params
     const { name, email, password } = req.body
 
@@ -24,13 +24,13 @@ export class StudentController {
     return res.status(200).json(result)
   }
 
-  listAll = async (_: Request, res: Response) => {
+  async listAll(_: Request, res: Response) {
     const students = await this.useCase.listAll()
 
     return res.status(200).json(students)
   }
 
-  listOne = async (req: Request, res: Response) => {
+  async listOne(req: Request, res: Response) {
     const { id } = req.params
     authMiddleware.checkUserPermissions(req.body, id)
 
@@ -39,7 +39,7 @@ export class StudentController {
     return res.status(200).json(result)
   }
 
-  delete = async (req: Request, res: Response) => {
+  async delete(req: Request, res: Response) {
     const { id } = req.params
 
     authMiddleware.checkUserPermissions(req.body, id)
