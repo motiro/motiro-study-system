@@ -56,7 +56,7 @@ export class StudentUseCase {
   }
 
   async countDocuments(): Promise<number> {
-    return await this.studentRepository.counts()
+    return await this.studentRepository.count()
   }
 
   async comparePassword(id: string, password: string): Promise<boolean> {
