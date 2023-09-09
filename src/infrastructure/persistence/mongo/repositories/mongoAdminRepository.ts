@@ -68,7 +68,7 @@ export class MongoAdminRepository implements AdminRepository {
     await adminModel.deleteOne().where({ _id: id })
   }
 
-  async counts(): Promise<number> {
+  async count(): Promise<number> {
     return await adminModel.countDocuments()
   }
 
