@@ -59,7 +59,7 @@ export class AdminRepoTest implements AdminRepository {
       }
     }
   }
-  async counts(): Promise<number> {
+  async count(): Promise<number> {
     return users.length
   }
   async comparePassword(id: string, password: string): Promise<boolean> {
