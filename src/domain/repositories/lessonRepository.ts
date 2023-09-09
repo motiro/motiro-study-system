@@ -6,5 +6,5 @@ export interface LessonRepository {
   save(lesson: Lesson): Promise<Lesson>
   update(lesson: Lesson): Promise<void>
   delete(id: string): Promise<void>
-  counts(): Promise<number>
+  count(): Promise<number>
 }

@@ -57,7 +57,7 @@ export class MongoLessonRepository implements LessonRepository {
 
     return lessons
   }
-  async counts(): Promise<number> {
+  async count(): Promise<number> {
     return await lessonModel.countDocuments()
   }
 }
