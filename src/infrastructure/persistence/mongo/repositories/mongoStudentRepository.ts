@@ -18,7 +18,7 @@ export class MongoStudentRepository implements StudentRepository {
       .select('-password')
 
     if (result) {
-      return new Student(result)
+      return new Student(result, id)
     }
 
     return null

@@ -22,7 +22,7 @@ export class MongoInstructorRepository implements InstructorRepository {
         .select('-password')
 
       if (result) {
-        return new Instructor(result)
+        return new Instructor(result, id)
       }
     }
     return null
