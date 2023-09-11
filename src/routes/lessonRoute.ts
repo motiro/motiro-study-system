@@ -1,11 +1,17 @@
 import { Router } from 'express'
-import { MongoLessonRepository } from '@mongo/mongoLessonRepository'
-import { LessonUseCase } from 'applications/usecases'
+import { MongoLessonRepository, MongoStudentRepository, MongoInstructorRepository} from '@mongo/.'
+import { LessonUseCase, InstructorUseCase, StudentUseCase } from 'applications/usecases'
 import { LessonController } from 'applications/controllers'
 import { authMiddleware } from 'applications/middlewares'
 
+const instructorRepository = new MongoInstructorRepository()
+const instructorUseCase = new InstructorUseCase(instructorRepository)
+
+const studentRepository = new MongoStudentRepository()
+const studentUseCase = new StudentUseCase(studentRepository)
+
 const mongoRepository = new MongoLessonRepository()
-const lessonUseCase = new LessonUseCase(mongoRepository)
+const lessonUseCase = new LessonUseCase(mongoRepository, instructorUseCase, studentUseCase)
 const lessonController = new LessonController(lessonUseCase)
 const router = Router()
 
