@@ -1,57 +1,63 @@
-import { MongoLessonRepository } from '@mongo/mongoLessonRepository'
 import { Lesson } from 'domain/entities/lessons'
-import { NotFoundError } from 'domain/entities/error'
-import { instructorModel } from 'infrastructure/persistence/mongo/models'
+import { Schedule } from 'domain/entities/instructor'
+import { InstructorUseCase, StudentUseCase } from '.'
+import { BadRequestError, NotFoundError } from 'domain/entities/error'
+import { MongoLessonRepository } from '@mongo/.'
 
 export class LessonUseCase {
-  constructor(private mongoRepo: MongoLessonRepository) {}
+  constructor(
+    private mongoRepo: MongoLessonRepository,
+    private instructorUseCase: InstructorUseCase,
+    private studentUseCase: StudentUseCase
+  ) {}
+
+  private async getProps(lesson: Lesson) {
+    const instructor = await this.instructorUseCase.listOne(lesson.instructor)
+    const student = await this.studentUseCase.listOne(lesson.student)
+
+    const getDate = () => {
+      const schedule: Schedule[] = instructor.schedule
+      for (const s of schedule) {
+        if (s._id?.toString() === lesson.date.toString()) return s
+      }
+    }
+    const date = getDate()
+
+    return { instructor, student, date }
+  }
 
   async create(req: Lesson): Promise<any> {
-    const createLesson = new Lesson(req)
-    const lesson = await this.mongoRepo.save(createLesson)
+    const lesson = new Lesson(req)
+    const { instructor, student, date } = await this.getProps(lesson)
 
-    // Just an example
-    // Maybe we should create a method to change "busy" value
-    // and another method to get date by ID and return it in ISO format
-    await instructorModel.findOneAndUpdate(
-      {
-        _id: lesson.instructor,
-        schedule: { $elemMatch: { _id: lesson.date } }
-      },
-      { $set: { 'schedule.$.busy': true } },
-      { new: true, runValidators: true }
-    )
+    if (!instructor || !student || !date) throw new BadRequestError('Not found')
+    if (date.busy === true) throw new BadRequestError('Busy')
 
-    const date = await instructorModel.findOne(
-      {
-        _id: lesson.instructor,
-        schedule: { $elemMatch: { _id: lesson.date } }
-      },
-      { 'schedule.$': 1 }
-    )
+    const createLesson = await this.mongoRepo.save(lesson)
+    date.busy = true
+    await this.instructorUseCase.updateSchedule(lesson.instructor, date)
 
     const response = {
-      instructor: lesson.instructor,
-      student: lesson.student,
-      date: {
-        // @ts-ignore
-        time: date?.schedule[0]?.date,
-        id: lesson.date
-      },
+      instructor: { name: instructor.name, id: instructor.id },
+      student: { name: student.name, id: student.id },
+      lesson_date: { date: date?.date, id: date?._id },
+      id: createLesson.id
+    }
+    return response
+  }
+
+  async listOne(id: string): Promise<object> {
+    const lesson = await this.mongoRepo.findById(id)
+    if (!lesson) throw new NotFoundError(`Lesson not found`)
+    const { instructor, student, date } = await this.getProps(lesson)
+    if (!instructor || !student || !date) throw new BadRequestError('Not found')
+
+    const response = {
+      instructor: { name: instructor.name, id: instructor.id },
+      student: { name: student.name, id: student.id },
+      lesson_date: { date: date?.date, id: date?._id },
       id: lesson.id
     }
-
-    return response
-  }
-
-  async listOne(id: string): Promise<Lesson> {
-    const response = await this.mongoRepo.findById(id)
-    if (!response) throw new NotFoundError(`Lesson not found`)
-    return response
-  }
-
-  async listAll(): Promise<Lesson[]> {
-    const response = await this.mongoRepo.findAll()
     return response
   }
 
@@ -71,20 +77,21 @@ export class LessonUseCase {
       }
       response.push(result)
     }
-
-    // We must implement some logic to update instructor too
-    const lesson = new Lesson(req, req.id)
-    await this.mongoRepo.update(lesson)
+    return response
   }
 
   async delete(id: string): Promise<void> {
-    const lessonExists = await this.mongoRepo.findById(id)
+    const lesson = await this.mongoRepo.findById(id)
 
-    if (!lessonExists) {
+    if (!lesson) {
       throw new NotFoundError('Lesson not found')
     }
 
-    // We must free instructor schedule
+    const { date } = await this.getProps(lesson)
+    if (date) {
+      date.busy = false
+      await this.instructorUseCase.updateSchedule(lesson.instructor, date)
+    }
     await this.mongoRepo.delete(id)
   }
 }
