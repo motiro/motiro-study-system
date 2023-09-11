@@ -4,7 +4,6 @@ export interface LessonRepository {
   findById(id: string): Promise<Lesson | null>
   findAll(): Promise<Lesson[]>
   save(lesson: Lesson): Promise<Lesson>
-  update(lesson: Lesson): Promise<void>
   delete(id: string): Promise<void>
   count(): Promise<number>
 }
