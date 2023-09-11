@@ -55,11 +55,21 @@ export class LessonUseCase {
     return response
   }
 
-  async update(req: Lesson): Promise<void> {
-    const lessonExists = await this.mongoRepo.findById(req.id!)
+  async listAll(): Promise<object[]> {
+    const lessons = await this.mongoRepo.findAll()
+    const response = []
+    for (const lesson of lessons) {
+      const { instructor, student, date } = await this.getProps(lesson)
+      if (!instructor || !student || !date)
+        throw new BadRequestError('Not found')
 
-    if (!lessonExists) {
-      throw new NotFoundError('Lesson not found')
+      const result = {
+        instructor: { name: instructor.name, id: instructor.id },
+        student: { name: student.name, id: student.id },
+        lesson_date: { date: date?.date, id: date?._id },
+        id: lesson.id
+      }
+      response.push(result)
     }
 
     // We must implement some logic to update instructor too
