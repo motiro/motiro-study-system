@@ -13,7 +13,7 @@ export class AdminUseCase {
 
   async listOne(id: string): Promise<Admin> {
     const response = await this.adminRepository.findById(id)
-    if (!response) throw new NotFoundError(`Admin not found`)
+    if (!response) throw new NotFoundError(`User not found`)
     return response
   }
 
@@ -44,7 +44,7 @@ export class AdminUseCase {
   }
 
   async countDocuments(): Promise<number> {
-    return await this.adminRepository.counts()
+    return await this.adminRepository.count()
   }
 
   async comparePassword(id: string, password: string): Promise<boolean> {

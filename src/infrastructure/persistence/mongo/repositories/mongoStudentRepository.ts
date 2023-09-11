@@ -64,7 +64,7 @@ export class MongoStudentRepository implements StudentRepository {
     return students
   }
 
-  async counts(): Promise<number> {
+  async count(): Promise<number> {
     return await studentModel.countDocuments()
   }
 
