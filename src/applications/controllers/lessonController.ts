@@ -26,20 +26,6 @@ export class LessonController {
     return res.status(200).json(result)
   }
 
-  update = async (req: Request, res: Response) => {
-    const id = req.params.id
-    const { instructor, student, date } = req.body
-
-    await this.useCase.update({
-      id,
-      instructor,
-      student,
-      date
-    })
-
-    return res.status(200).send()
-  }
-
   delete = async (req: Request, res: Response) => {
     const id = req.params.id
     await this.useCase.delete(id)
