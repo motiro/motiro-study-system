@@ -33,9 +33,6 @@ export class MongoLessonRepository implements LessonRepository {
       result.id
     )
   }
-  async update(lesson: Lesson): Promise<void> {
-    await lessonModel.updateOne({ _id: lesson.id }, lesson)
-  }
   async delete(id: string): Promise<void> {
     await lessonModel.deleteOne().where({ _id: id })
   }
