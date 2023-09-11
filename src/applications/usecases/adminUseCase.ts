@@ -1,9 +1,9 @@
-import { MongoRepository } from '@mongo/mongoRepository'
 import { Admin } from 'domain/entities/admin'
 import { NotFoundError } from 'domain/entities/error'
+import { AdminRepository } from 'domain/repository/adminRepository'
 
 export class AdminUseCase {
-  constructor(private mongoRepo: MongoRepository) {}
+  constructor(private mongoRepo: AdminRepository) {}
 
   async create(req: Admin): Promise<Admin> {
     const admin = new Admin(req)
