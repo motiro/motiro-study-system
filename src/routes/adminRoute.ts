@@ -12,13 +12,13 @@ const router = Router()
 router
   .route('/admin')
   .all(authMiddleware.authUser, authMiddleware.checkRole('admin'))
-  .get(adminController.listAll)
-  .post(adminController.create)
+  .get((req, res) => adminController.listAll(req, res))
+  .post((req, res) => adminController.create(req, res))
 router
   .route('/admin/:id')
   .all(authMiddleware.authUser, authMiddleware.checkRole('admin'))
-  .get(adminController.listOne)
-  .patch(adminController.update)
-  .delete(adminController.delete)
+  .get((req, res) => adminController.listOne(req, res))
+  .patch((req, res) => adminController.update(req, res))
+  .delete((req, res) => adminController.delete(req, res))
 
 export default router

@@ -1,8 +1,8 @@
 import { Instructor, Schedule } from 'domain/entities/instructor'
-import { InstructorRepository } from 'domain/repository/instructorRepository'
+import { InstructorRepository } from 'domain/repositories/instructorRepository'
 import { Document, isValidObjectId, ObjectId } from 'mongoose'
 
-import { instructorModel } from './instructorModel'
+import { instructorModel } from '../models/instructorModel'
 
 interface InstructorDocument extends Document {
   _id: ObjectId
@@ -15,7 +15,7 @@ interface InstructorDocument extends Document {
 }
 
 export class MongoInstructorRepository implements InstructorRepository {
-  async findInstructorById(id: string): Promise<Instructor | null> {
+  async findById(id: string): Promise<Instructor | null> {
     if (isValidObjectId(id)) {
       const result: InstructorDocument = await instructorModel
         .findById(id)
@@ -27,7 +27,7 @@ export class MongoInstructorRepository implements InstructorRepository {
     }
     return null
   }
-  async saveInstructor(instructor: Instructor): Promise<Instructor> {
+  async save(instructor: Instructor): Promise<Instructor> {
     const result: InstructorDocument = (
       await instructorModel.create(instructor)
     ).toObject()
@@ -43,13 +43,13 @@ export class MongoInstructorRepository implements InstructorRepository {
       result.id
     )
   }
-  async updateInstructor(instructor: Instructor): Promise<void> {
+  async update(instructor: Instructor): Promise<void> {
     await instructorModel.updateOne({ _id: instructor.id }, instructor)
   }
-  async deleteInstructor(id: string): Promise<void> {
+  async delete(id: string): Promise<void> {
     await instructorModel.deleteOne().where({ _id: id })
   }
-  async getAllInstructors(): Promise<Instructor[]> {
+  async findAll(): Promise<Instructor[]> {
     const result: InstructorDocument[] = await instructorModel
       .find()
       .select('-password')
@@ -71,5 +71,25 @@ export class MongoInstructorRepository implements InstructorRepository {
     }
 
     return instructors
+  }
+
+  async count(): Promise<number> {
+    return await instructorModel.countDocuments()
+  }
+
+  async comparePassword(id: string, password: string): Promise<boolean> {
+    const user = await instructorModel.findById(id)
+    if (!user) return false
+    return await user?.comparePassword(password)
+  }
+
+  whoAmI(): string {
+    const user = new Instructor({
+      name: '',
+      email: '',
+      specialty: [],
+      schedule: []
+    })
+    return user.role || 'instructor'
   }
 }

@@ -1,26 +1,30 @@
 import { StudentUseCase } from 'applications/usecases/studentUseCase'
 import { StudentController } from 'applications/controllers/studentController'
-import { MongoRepository } from './../infrastructure/persistence/mongo/mongoRepository'
+import { MongoStudentRepository } from '@mongo/mongoStudentRepository'
 import { Router } from 'express'
 import { authMiddleware } from 'applications/middlewares/authMiddleware'
 
-const mongoRepository = new MongoRepository()
-const studentUseCase = new StudentUseCase(mongoRepository)
+const studentRepository = new MongoStudentRepository()
+const studentUseCase = new StudentUseCase(studentRepository)
 const studentController = new StudentController(studentUseCase)
 
 const router = Router()
 
 router
-  .route('/')
+  .route('/student')
   .all(authMiddleware.authUser)
-  .post(authMiddleware.checkRole('admin'), studentController.create)
-  .get(authMiddleware.checkRole('admin', 'instructor'), studentController.list)
+  .post(authMiddleware.checkRole('admin'), (req, res) =>
+    studentController.create(req, res)
+  )
+  .get(authMiddleware.checkRole('admin', 'instructor'), (req, res) =>
+    studentController.listAll(req, res)
+  )
 
 router
-  .route('/:id')
+  .route('/student/:id')
   .all(authMiddleware.authUser)
-  .get(studentController.listStudent)
-  .patch(studentController.update)
-  .delete(studentController.delete)
+  .get((req, res) => studentController.listOne(req, res))
+  .patch((req, res) => studentController.update(req, res))
+  .delete((req, res) => studentController.delete(req, res))
 
 export default router

@@ -1,8 +1,8 @@
 import { Admin } from 'domain/entities/admin'
-import { AdminRepository } from 'domain/repository/adminRepository'
+import { AdminRepository } from 'domain/repositories/adminRepository'
 import { Document, ObjectId } from 'mongoose'
 
-import { adminModel } from '.'
+import { adminModel } from '../models'
 
 interface AdminDocument extends Document {
   _id: ObjectId
@@ -13,7 +13,7 @@ interface AdminDocument extends Document {
 }
 
 export class MongoAdminRepository implements AdminRepository {
-  async findAdminById(id: string): Promise<Admin | null> {
+  async findById(id: string): Promise<Admin | null> {
     const result: AdminDocument = await adminModel
       .findById(id)
       .select('-password')
@@ -22,7 +22,7 @@ export class MongoAdminRepository implements AdminRepository {
     }
     return null
   }
-  async findAllAdmins(): Promise<Admin[]> {
+  async findAll(): Promise<Admin[]> {
     const result: AdminDocument[] = await adminModel.find().select('-password')
 
     const admins: Admin[] = []
@@ -39,7 +39,7 @@ export class MongoAdminRepository implements AdminRepository {
     }
     return admins
   }
-  async saveAdmin(admin: Admin): Promise<Admin> {
+  async save(admin: Admin): Promise<Admin> {
     const result: AdminDocument = (await adminModel.create(admin)).toObject()
 
     return new Admin(
@@ -51,10 +51,25 @@ export class MongoAdminRepository implements AdminRepository {
       result.id
     )
   }
-  async updateAdmin(admin: Admin): Promise<void> {
+  async update(admin: Admin): Promise<void> {
     await adminModel.updateOne({ _id: admin.id }, admin)
   }
-  async deleteAdmin(id: string): Promise<void> {
+  async delete(id: string): Promise<void> {
     await adminModel.deleteOne().where({ _id: id })
+  }
+
+  async counts(): Promise<number> {
+    return await adminModel.countDocuments()
+  }
+
+  async comparePassword(id: string, password: string): Promise<boolean> {
+    const user = await adminModel.findById(id)
+    if (!user) return false
+    return await user?.comparePassword(password)
+  }
+
+  whoAmI(): string {
+    const user = new Admin({ name: '', email: '' })
+    return user.role || 'admin'
   }
 }
