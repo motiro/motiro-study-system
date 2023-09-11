@@ -22,7 +22,6 @@ router
   .all(authMiddleware.authUser)
   .get(lessonController.listOne)
   .get(lessonController.listAll) // Perhaps verify if id exists in params and return all lessons from a specific instructor?
-  .patch(lessonController.update)
   .delete(lessonController.delete)
 
 export default router
