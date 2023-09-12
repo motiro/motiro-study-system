@@ -1,6 +1,7 @@
 import { Student } from 'domain/entities/students'
 
 export interface StudentRepository {
+  findByEmail(email: string): Promise<boolean>
   findById(id: string): Promise<Student | null>
   save(student: Student): Promise<Student>
   update(student: Student): Promise<void>

@@ -16,6 +16,15 @@ interface InstructorDocument extends Document {
 }
 
 export class MongoInstructorRepository implements InstructorRepository {
+  async findByEmail(email: string): Promise<boolean> {
+    await instructorModel.findOne({ email: email }).then(result => {
+      console.log(result)
+      return false
+    })
+
+    return true
+  }
+
   async findById(id: string): Promise<Instructor | null> {
     if (!isValidObjectId(id)) {
       throw new CastError('Invalid ID')

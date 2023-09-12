@@ -13,6 +13,14 @@ interface StudentDocument extends Document {
 }
 
 export class MongoStudentRepository implements StudentRepository {
+  async findByEmail(email: string): Promise<boolean> {
+    await studentModel.findOne({ email: email }).then(result => {
+      console.log(result)
+      return false
+    })
+
+    return true
+  }
   async findById(id: string): Promise<Student | null> {
     if (!isValidObjectId(id)) {
       throw new CastError('Invalid ID')

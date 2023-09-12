@@ -1,6 +1,7 @@
 import { Instructor } from 'domain/entities/instructor'
 
 export interface InstructorRepository {
+  findByEmail(email: string): Promise<boolean>
   findById(id: string): Promise<Instructor | null>
   save(instructor: Instructor): Promise<Instructor>
   update(instructor: Instructor): Promise<void>
