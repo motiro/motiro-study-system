@@ -96,12 +96,33 @@ describe('InstructorController', () => {
     expect(deletedInstructor).toBeNull()
   })
 
-  it('should throw an error if the id does not exist', async () => {
+  it('should throw an error if the id does not exist when listOne', async () => {
     const nonExistentId = 'falseId'
 
     await expect(instructorUseCase.listOne(nonExistentId)).rejects.toThrow(
       'User not found'
     )
+  })
+
+  it('should throw an error if the id does not exist when update', async () => {
+    const nonExistentId = 'falseId'
+    const existingInstructor = instructorObj
+
+    if (!(await instructorRepo.findById(nonExistentId))) {
+      await expect(
+        instructorUseCase.update(nonExistentId, existingInstructor)
+      ).rejects.toThrow('User not found')
+    }
+  })
+
+  it('should throw an error if the id does not exist when delete', async () => {
+    const nonExistentId = 'falseId'
+
+    if (!(await instructorRepo.findById(nonExistentId))) {
+      await expect(instructorUseCase.delete(nonExistentId)).rejects.toThrow(
+        'User not found'
+      )
+    }
   })
 
   it('should throw an error if instructor already exists', async () => {

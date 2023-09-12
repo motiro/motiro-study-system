@@ -110,9 +110,9 @@ describe('StudentController', () => {
     const nonExistentId = 'falseId'
 
     if (!(await studentRepo.findById(nonExistentId))) {
-      await expect(
-        studentUseCase.delete(nonExistentId)
-      ).rejects.toThrow('User not found')
+      await expect(studentUseCase.delete(nonExistentId)).rejects.toThrow(
+        'User not found'
+      )
     }
   })
 
