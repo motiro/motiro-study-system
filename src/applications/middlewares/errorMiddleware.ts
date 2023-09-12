@@ -38,6 +38,11 @@ export const errorMiddleware = (
     statusCode = 400
   }
 
+  if (error.name === 'TokenExpiredError') {
+    message = 'Session expired'
+    statusCode = 401
+  }
+
   if (error.code === 11000) {
     message = `Provided ${Object.keys(error.keyValue)} is already registered`
     statusCode = 400
