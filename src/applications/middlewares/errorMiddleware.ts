@@ -26,11 +26,6 @@ export const errorMiddleware = (
   let statusCode = error.statusCode ?? 500
   let message = error.statusCode ? error.message : 'Unexpected error'
 
-  if (error.name === 'CastError') {
-    message = 'Invalid ID'
-    statusCode = 400
-  }
-
   if (error.name === 'ValidationError') {
     message = Object.values(error.errors)
       .map(item => item.message)
