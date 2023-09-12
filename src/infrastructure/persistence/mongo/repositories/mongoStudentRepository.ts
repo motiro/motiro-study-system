@@ -1,7 +1,8 @@
 import { Student } from 'domain/entities/students'
 import { StudentRepository } from 'domain/repositories/studentRepository'
-import { Document, ObjectId } from 'mongoose'
+import { Document, ObjectId, isValidObjectId } from 'mongoose'
 import { studentModel } from '../models/studentModel'
+import { CastError } from 'domain/entities'
 
 interface StudentDocument extends Document {
   _id: ObjectId
@@ -13,6 +14,10 @@ interface StudentDocument extends Document {
 
 export class MongoStudentRepository implements StudentRepository {
   async findById(id: string): Promise<Student | null> {
+    if (!isValidObjectId(id)) {
+      throw new CastError('Invalid ID')
+    }
+
     const result: StudentDocument = await studentModel
       .findById(id)
       .select('-password')

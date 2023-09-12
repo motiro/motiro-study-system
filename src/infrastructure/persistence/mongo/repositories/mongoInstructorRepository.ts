@@ -1,8 +1,8 @@
 import { Instructor, Schedule } from 'domain/entities/instructor'
 import { InstructorRepository } from 'domain/repositories/instructorRepository'
-import { Document, isValidObjectId, ObjectId } from 'mongoose'
-
+import { Document, ObjectId, isValidObjectId } from 'mongoose'
 import { instructorModel } from '../models/instructorModel'
+import { CastError } from 'domain/entities'
 
 interface InstructorDocument extends Document {
   _id: ObjectId
@@ -16,14 +16,15 @@ interface InstructorDocument extends Document {
 
 export class MongoInstructorRepository implements InstructorRepository {
   async findById(id: string): Promise<Instructor | null> {
-    if (isValidObjectId(id)) {
-      const result: InstructorDocument = await instructorModel
-        .findById(id)
-        .select('-password')
+    if (!isValidObjectId(id)) {
+      throw new CastError('Invalid ID')
+    }
+    const result: InstructorDocument = await instructorModel
+      .findById(id)
+      .select('-password')
 
-      if (result) {
-        return new Instructor(result, id)
-      }
+    if (result) {
+      return new Instructor(result, id)
     }
     return null
   }

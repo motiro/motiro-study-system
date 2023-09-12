@@ -1,8 +1,9 @@
 import { Admin } from 'domain/entities/admin'
 import { AdminRepository } from 'domain/repositories/adminRepository'
-import { Document, ObjectId } from 'mongoose'
+import { Document, ObjectId, isValidObjectId } from 'mongoose'
 
 import { adminModel } from '../models'
+import { CastError } from 'domain/entities'
 
 interface AdminDocument extends Document {
   _id: ObjectId
@@ -14,6 +15,10 @@ interface AdminDocument extends Document {
 
 export class MongoAdminRepository implements AdminRepository {
   async findById(id: string): Promise<Admin | null> {
+    if (!isValidObjectId(id)) {
+      throw new CastError('Invalid ID')
+    }
+
     const result: AdminDocument = await adminModel
       .findById(id)
       .select('-password')
