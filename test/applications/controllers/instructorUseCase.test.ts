@@ -65,7 +65,7 @@ describe('InstructorController', () => {
       name: 'UpdatedInstructor',
       email: 'updatedinstructor@mail.com',
       password: 'updatedsecret',
-      specialty: ['math', "filosofy"],
+      specialty: ['math', 'filosofy'],
       schedule: [
         {
           date: new Date('2023-09-30'),
@@ -79,7 +79,7 @@ describe('InstructorController', () => {
       role: 'instructor'
     }
 
-    await instructorUseCase.update("testId", updateInstructor)
+    await instructorUseCase.update('testId', updateInstructor)
 
     const findInstructor = await instructorRepo.findById('testId')
 
@@ -97,17 +97,20 @@ describe('InstructorController', () => {
   })
 
   it('should throw an error if the id does not exist', async () => {
-    const nonExistentId = 'falseId';
-  
-    await expect(instructorUseCase.listOne(nonExistentId)).rejects.toThrow('User not found');
-  });
-  
+    const nonExistentId = 'falseId'
+
+    await expect(instructorUseCase.listOne(nonExistentId)).rejects.toThrow(
+      'User not found'
+    )
+  })
+
   it('should throw an error if instructor already exists', async () => {
-    const existingStudent = instructorObj
-  
-    if (await instructorRepo.findById('testId')){
-      await expect(instructorUseCase.create(existingStudent)).rejects.toThrow('User already exists');
+    const existingInstructor = instructorObj
+
+    if (await instructorRepo.findById('testId')) {
+      await expect(
+        instructorUseCase.create(existingInstructor)
+      ).rejects.toThrow('User already exists')
     }
-  
-  });
+  })
 })
