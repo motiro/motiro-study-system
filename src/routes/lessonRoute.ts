@@ -1,6 +1,6 @@
 import { Router } from 'express'
-import { LessonController } from 'applications/controllers'
 import { authMiddleware } from 'applications/middlewares'
+import { LessonController } from 'applications/controllers'
 import {
   MongoLessonRepository,
   MongoStudentRepository,
@@ -37,7 +37,6 @@ router
   .route('/lesson/:id')
   .all(authMiddleware.authUser)
   .get((req, res) => lessonController.listOne(req, res))
-  .get((req, res) => lessonController.listAll(req, res)) // Perhaps verify if id exists in params and return all lessons from a specific instructor?
   .delete((req, res) => lessonController.delete(req, res))
 
 export default router
