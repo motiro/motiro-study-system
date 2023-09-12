@@ -1,7 +1,7 @@
 import { authMiddleware } from 'applications/middlewares'
 import { Router } from 'express'
 
-import { InstructorUseCase } from 'applications/usecases/InstructorUseCase'
+import { InstructorUseCase } from 'applications/usecases/instructorUseCase'
 import { InstructorController } from '../applications/controllers/instructorController'
 import { MongoInstructorRepository } from '@mongo/mongoInstructorRepository'
 import { verifyToken } from 'applications/middlewares/verifyTokenMiddleware'
