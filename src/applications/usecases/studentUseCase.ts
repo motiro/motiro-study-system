@@ -6,7 +6,10 @@ export class StudentUseCase {
   constructor(private studentRepository: StudentRepository) {}
 
   async create(request: Student): Promise<Student> {
-    const studentExists = await this.studentRepository.findById(request.id!)
+    const studentExists = await this.studentRepository.findByEmail(
+      request.email
+    )
+
     if (studentExists) {
       throw new BadRequestError('User already exists')
     }
