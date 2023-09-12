@@ -5,10 +5,9 @@ import { authMiddleware } from 'applications/middlewares'
 export class InstructorController {
   constructor(private useCase: InstructorUseCase) {}
   async create(req: Request, res: Response) {
-    const { id, name, email, password, specialty, schedule } = req.body
+    const { name, email, password, specialty, schedule } = req.body
 
     const result = await this.useCase.create({
-      id,
       name,
       email,
       password,
