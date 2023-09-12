@@ -4,6 +4,7 @@ import 'dotenv/config'
 import './infrastructure/persistence/mongo/connections'
 import routes from './routes'
 import cookieParser from 'cookie-parser'
+import fileUpload from 'express-fileupload'
 
 import { notFoundMiddleware, errorMiddleware } from 'applications/middlewares/errorMiddleware'
 
@@ -17,6 +18,7 @@ app.use(express.json())
 app.use(routes)
 app.use(notFoundMiddleware)
 app.use(errorMiddleware)
+app.use(fileUpload())
 
 app.listen(port, () => {
   console.log(`Server is listening on port ${port}`)
