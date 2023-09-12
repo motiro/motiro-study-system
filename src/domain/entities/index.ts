@@ -1,5 +1,5 @@
 import { Admin } from './admin'
-import { Instructor } from './instructor'
+import { Instructor, Schedule } from './instructor'
 import { Student } from './students'
 import { Lesson } from './lessons'
 import {
@@ -19,6 +19,7 @@ export enum ENTITIES {
 export {
   Admin,
   Instructor,
+  Schedule,
   Student,
   Lesson,
   ApiError,
