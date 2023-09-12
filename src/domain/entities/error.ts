@@ -29,3 +29,21 @@ export class ForbiddenError extends ApiError {
     super(message, 403)
   }
 }
+
+export class TokenExpiredError extends ApiError {
+  constructor(message: string) {
+    super(message, 401)
+  }
+}
+
+export class CastError extends ApiError {
+  constructor(message: string) {
+    super(message, 400)
+  }
+}
+
+export class ValidationError extends ApiError {
+  constructor(message: string) {
+    super(message, 400)
+  }
+}

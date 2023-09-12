@@ -3,6 +3,7 @@ import { StudentController } from 'applications/controllers/studentController'
 import { MongoStudentRepository } from '@mongo/mongoStudentRepository'
 import { Router } from 'express'
 import { authMiddleware } from 'applications/middlewares/authMiddleware'
+import { verifyToken } from 'applications/middlewares/verifyTokenMiddleware'
 
 const studentRepository = new MongoStudentRepository()
 const studentUseCase = new StudentUseCase(studentRepository)
@@ -12,7 +13,7 @@ const router = Router()
 
 router
   .route('/student')
-  .all(authMiddleware.authUser)
+  .all(verifyToken, authMiddleware.authUser)
   .post(authMiddleware.checkRole('admin'), (req, res) =>
     studentController.create(req, res)
   )
@@ -22,7 +23,7 @@ router
 
 router
   .route('/student/:id')
-  .all(authMiddleware.authUser)
+  .all(verifyToken, authMiddleware.authUser)
   .get((req, res) => studentController.listOne(req, res))
   .patch((req, res) => studentController.update(req, res))
   .delete((req, res) => studentController.delete(req, res))
