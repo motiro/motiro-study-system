@@ -74,12 +74,33 @@ describe('AdminController', () => {
     expect(deletedAdim).toBeNull()
   })
 
-  it('should throw an error if the id does not exist', async () => {
+  it('should throw an error if the id does not exist when listOne', async () => {
     const nonExistentId = 'falseId'
 
     await expect(adminUseCase.listOne(nonExistentId)).rejects.toThrow(
       'User not found'
     )
+  })
+
+  it('should throw an error if the id does not exist when update', async () => {
+    const nonExistentId = 'falseId'
+    const existingAdmin = adminObj
+
+    if (!(await adminRepo.findById(nonExistentId))) {
+      await expect(
+        adminUseCase.update(existingAdmin)
+      ).rejects.toThrow('User not found')
+    }
+  })
+
+  it('should throw an error if the id does not exist when delete', async () => {
+    const nonExistentId = 'falseId'
+
+    if (!(await adminRepo.findById(nonExistentId))) {
+      await expect(adminUseCase.delete(nonExistentId)).rejects.toThrow(
+        'User not found'
+      )
+    }
   })
 
   it('should throw an error if admin already exists', async () => {
