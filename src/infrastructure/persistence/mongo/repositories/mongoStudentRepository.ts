@@ -38,7 +38,17 @@ export class MongoStudentRepository implements StudentRepository {
     )
   }
   async update(student: Student): Promise<void> {
-    await studentModel.updateOne({ _id: student.id }, student)
+    await studentModel
+      .findOneAndUpdate({ _id: student.id }, student)
+      .then(user => {
+        if (student.password) {
+          user?.markModified('password')
+          user?.save()
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
   }
   async delete(id: string): Promise<void> {
     await studentModel.deleteOne().where({ _id: id })
