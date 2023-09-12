@@ -1,6 +1,7 @@
 import { StudentRepoTest } from './studentRepoTest'
 import { StudentUseCase } from '@usecases/studentUseCase'
 import { Student } from 'domain/entities/students'
+import { NotFoundError } from '@entities/error'
 
 const studentUseCase = new StudentUseCase(new StudentRepoTest())
 let studentRepo: StudentRepoTest
@@ -57,7 +58,7 @@ describe('StudentController', () => {
       role: 'student'
     }
 
-    await studentUseCase.update("testId", updateStudent)
+    await studentUseCase.update('testId', updateStudent)
 
     const findStudent = await studentRepo.findById('testId')
 
@@ -73,4 +74,33 @@ describe('StudentController', () => {
 
     expect(deletedStudent).toBeNull()
   })
+
+  it('should return a message when student ID does not exist', async () => {
+    const nonExistentId = 'falseId'
+
+    try {
+      const findStudent = await studentUseCase.listOne(nonExistentId)
+      
+      expect(findStudent).toBe('User not found')
+    } catch (error: any) {
+      
+      expect(error.message).toBe('User not found')
+    }
+  })
+
+  it('should throw an error if the id does not exist', async () => {
+    const nonExistentId = 'falseId';
+  
+    await expect(studentUseCase.listOne(nonExistentId)).rejects.toThrow('User not found');
+  });
+  
+  it('should throw an error if student already exists', async () => {
+    const existingStudent = studentObj
+  
+    if (await studentRepo.findById('testId')){
+      await expect(studentUseCase.create(existingStudent)).rejects.toThrow('User already exists');
+    }
+  
+  });
+  
 })
