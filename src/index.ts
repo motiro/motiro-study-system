@@ -6,7 +6,10 @@ import routes from './routes'
 import cookieParser from 'cookie-parser'
 import fileUpload from 'express-fileupload'
 
-import { notFoundMiddleware, errorMiddleware } from 'applications/middlewares/errorMiddleware'
+import {
+  notFoundMiddleware,
+  errorMiddleware
+} from 'applications/middlewares/errorMiddleware'
 
 const app = express()
 
@@ -15,10 +18,10 @@ const port = PORT || 5000
 
 app.use(cookieParser(COOKIE_SECRET))
 app.use(express.json())
+app.use(fileUpload())
 app.use(routes)
 app.use(notFoundMiddleware)
 app.use(errorMiddleware)
-app.use(fileUpload())
 
 app.listen(port, () => {
   console.log(`Server is listening on port ${port}`)

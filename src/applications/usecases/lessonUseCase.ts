@@ -2,7 +2,8 @@ import { MongoLessonRepository } from '@mongo/mongoLessonRepository'
 import { Lesson } from 'domain/entities/lessons'
 import { NotFoundError } from 'domain/entities/error'
 import { instructorModel } from 'infrastructure/persistence/mongo/models'
-
+import { UploadedFile } from 'express-fileupload'
+import path from 'path'
 export class LessonUseCase {
   constructor(private mongoRepo: MongoLessonRepository) {}
 
@@ -44,6 +45,21 @@ export class LessonUseCase {
     return response
   }
 
+  async file(req: { id: string; textFile: UploadedFile }): Promise<void> {
+    const lessonExists = await this.mongoRepo.findById(req.id!)
+    if (!req.textFile) {
+      throw new Error('No file')
+    }
+
+    const filePath = path.join(
+      __dirname,
+      '../../../public/uploads/' + `${req.textFile.name}`
+    )
+    console.log(__dirname)
+    await req.textFile.mv(filePath)
+    await this.mongoRepo.update({ ...lessonExists!, file: req.textFile.name })
+  }
+
   async listOne(id: string): Promise<Lesson> {
     const response = await this.mongoRepo.findById(id)
     if (!response) throw new NotFoundError(`Lesson not found`)
@@ -55,17 +71,17 @@ export class LessonUseCase {
     return response
   }
 
-  async update(req: Lesson): Promise<void> {
-    const lessonExists = await this.mongoRepo.findById(req.id!)
+  // async update(req: Lesson): Promise<void> {
+  //   const lessonExists = await this.mongoRepo.findById(req.id!)
 
-    if (!lessonExists) {
-      throw new NotFoundError('Lesson not found')
-    }
+  //   if (!lessonExists) {
+  //     throw new NotFoundError('Lesson not found')
+  //   }
 
-    // We must implement some logic to update instructor too
-    const lesson = new Lesson(req, req.id)
-    await this.mongoRepo.update(lesson)
-  }
+  //   // We must implement some logic to update instructor too
+  //   const lesson = new Lesson(req, req.id)
+  //   await this.mongoRepo.update(lesson)
+  // }
 
   async delete(id: string): Promise<void> {
     const lessonExists = await this.mongoRepo.findById(id)

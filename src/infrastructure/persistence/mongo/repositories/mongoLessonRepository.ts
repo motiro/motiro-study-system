@@ -9,6 +9,7 @@ interface LessonDocument extends Document {
   instructor: string
   student: string
   date: string
+  file: string
 }
 
 export class MongoLessonRepository implements LessonRepository {
@@ -16,7 +17,7 @@ export class MongoLessonRepository implements LessonRepository {
     const result: LessonDocument | null = await lessonModel.findById(id)
 
     if (result) {
-      return new Lesson(result)
+      return new Lesson(result, id)
     }
 
     return null
@@ -28,7 +29,8 @@ export class MongoLessonRepository implements LessonRepository {
       {
         instructor: result.instructor,
         student: result.student,
-        date: result.date
+        date: result.date,
+        file: result.file
       },
       result.id
     )
@@ -49,7 +51,8 @@ export class MongoLessonRepository implements LessonRepository {
         id: item._id.toString(),
         instructor: item.instructor,
         student: item.student,
-        date: item.date
+        date: item.date,
+        file: item.file
       }
 
       lessons.push(lesson)

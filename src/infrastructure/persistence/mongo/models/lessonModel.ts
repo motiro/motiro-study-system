@@ -16,6 +16,10 @@ const LessonSchema = new Schema(
       type: Schema.ObjectId,
       ref: 'Date',
       required: true
+    },
+    file: {
+      type: String,
+      default: ''
     }
   },
   {
