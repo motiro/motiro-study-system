@@ -176,4 +176,9 @@ describe('InstructorController', () => {
 
     expect(isPasswordCorrect).toBe(false)
   })
+
+  it('should count documents when there are users', async () => {
+    const count = await instructorRepo.count();
+    expect(count).toBeGreaterThan(0);
+  });
 })
