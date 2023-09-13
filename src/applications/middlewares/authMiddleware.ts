@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express'
 import { jwt, User } from '@jwt/.'
 import { Types } from 'mongoose'
-import { UnauthorizedError, ForbiddenError } from 'domain/entities/error'
+import { UnauthorizedError, ForbiddenError } from 'domain/entities'
 
 class AuthMiddleware {
   public authUser = (req: Request, _: Response, next: NextFunction) => {
@@ -13,7 +13,7 @@ class AuthMiddleware {
       req.body.user = { name, role, id }
       next()
     } catch (error) {
-      throw new UnauthorizedError('Invalid authentication token')
+      throw new UnauthorizedError('Invalid authentication')
     }
   }
 

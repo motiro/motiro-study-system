@@ -1,6 +1,6 @@
 import { InstructorRepoTest } from './instructorRepoTest'
-import { InstructorUseCase } from '@usecases/InstructorUseCase'
-import { Instructor } from 'domain/entities/instructor'
+import { InstructorUseCase } from '@usecases/.'
+import { Instructor } from '@entities/.'
 
 const instructorUseCase = new InstructorUseCase(new InstructorRepoTest())
 let instructorRepo: InstructorRepoTest
@@ -40,7 +40,8 @@ describe('InstructorController', () => {
   it('should be created', async () => {
     const newInstructor = instructorObj
 
-    const createdInstructor = async () => await instructorUseCase.create(newInstructor)
+    const createdInstructor = async () =>
+      await instructorUseCase.create(newInstructor)
 
     expect(() => createdInstructor()).toBeDefined()
   })

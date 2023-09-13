@@ -7,7 +7,10 @@ import {
   BadRequestError,
   UnauthorizedError,
   NotFoundError,
-  ForbiddenError
+  ForbiddenError,
+  CastError,
+  ValidationError,
+  TokenExpiredError
 } from './error'
 
 export enum ENTITIES {
@@ -25,5 +28,8 @@ export {
   BadRequestError,
   UnauthorizedError,
   NotFoundError,
-  ForbiddenError
+  ForbiddenError,
+  CastError,
+  ValidationError,
+  TokenExpiredError
 }

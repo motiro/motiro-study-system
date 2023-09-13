@@ -1,6 +1,6 @@
 import { AdminRepoTest } from './adminRepoTest'
-import { AdminUseCase } from '@usecases/adminUseCase'
-import { Admin } from '@entities/admin'
+import { AdminUseCase } from '@usecases/.'
+import { Admin } from '@entities/.'
 
 const adminUseCase = new AdminUseCase(new AdminRepoTest())
 let adminRepo: AdminRepoTest
