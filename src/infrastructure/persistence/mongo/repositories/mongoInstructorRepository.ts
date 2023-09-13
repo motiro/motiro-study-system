@@ -1,7 +1,6 @@
 import { Instructor, Schedule } from 'domain/entities/instructor'
 import { InstructorRepository } from 'domain/repositories/instructorRepository'
-import { Document, isValidObjectId, ObjectId } from 'mongoose'
-
+import { Document, ObjectId, isValidObjectId } from 'mongoose'
 import { instructorModel } from '../models/instructorModel'
 import { CastError } from 'domain/entities'
 
@@ -20,13 +19,12 @@ export class MongoInstructorRepository implements InstructorRepository {
     if (!isValidObjectId(id)) {
       throw new CastError('Invalid ID')
     }
-
     const result: InstructorDocument = await instructorModel
       .findById(id)
       .select('-password')
 
     if (result) {
-      return new Instructor(result)
+      return new Instructor(result, id)
     }
     return null
   }
@@ -58,6 +56,13 @@ export class MongoInstructorRepository implements InstructorRepository {
       .catch(err => {
         console.log(err)
       })
+  }
+  async updateSchedule(id: string, schedule: Schedule): Promise<void> {
+    await instructorModel.updateOne(
+      { _id: id, schedule: { $elemMatch: { _id: schedule._id } } },
+      { $set: { 'schedule.$': schedule } },
+      { new: true, runValidators: true }
+    )
   }
   async delete(id: string): Promise<void> {
     await instructorModel.deleteOne().where({ _id: id })

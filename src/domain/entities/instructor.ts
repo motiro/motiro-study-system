@@ -1,3 +1,5 @@
+import { ObjectId } from "mongoose"
+
 export class Instructor {
   public readonly id?: string
   public name: string
@@ -22,6 +24,7 @@ export class Instructor {
 }
 
 export type Schedule = {
+  _id?: ObjectId
   date?: Date
   busy: boolean
 }

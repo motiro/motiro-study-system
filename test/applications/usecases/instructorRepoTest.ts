@@ -70,6 +70,18 @@ export class InstructorRepoTest implements InstructorRepository {
       }
     }
   }
+  async updateSchedule(id: string, schedule: Schedule): Promise<void> {
+    for (const user of users) {
+      if (user.id === id) {
+        for (const s of user.schedule) {
+          if (s._id === schedule._id) {
+            s.busy = schedule.busy ?? s.busy
+            s.date = schedule.date ?? s.date
+          }
+        }
+      }
+    }
+  }
   async delete(id: string): Promise<void> {
     for (let i = 0; i < users.length; i++) {
       if (users[i].id === id) {
