@@ -1,8 +1,7 @@
-import 'dotenv/config'
 import { LessonRepoTest } from './lessonRepoTest'
 import { InstructorRepoTest, dateId } from './instructorRepoTest'
 import { StudentRepoTest } from './studentRepoTest'
-import { Lesson } from '@entities/lessons'
+import { Lesson } from '@entities/.'
 import { LessonUseCase, InstructorUseCase, StudentUseCase } from '@usecases/.'
 
 const instructorUseCase = new InstructorUseCase(new InstructorRepoTest())
@@ -21,7 +20,7 @@ const lessonObj: Lesson = {
   date: dateId.toString()
 }
 
-describe('Lesson', () => {
+describe('LessonUseCase', () => {
   it('should throw not found error', async () => {
     const newLesson = async () =>
       await lessonUseCase.create({ ...lessonObj, instructor: 'notFound' })
