@@ -126,4 +126,30 @@ describe('AdminController', () => {
 
     expect(isAdminInList).toBe(true)
   })
+
+  it('should compare passwords correctly for the same password', async () => {
+    const newAdmin = adminObj
+
+    await adminRepo.save(newAdmin)
+
+    const isPasswordCorrect = await adminUseCase.comparePassword(
+      'testId2',
+      'secret2'
+    )
+
+    expect(isPasswordCorrect).toBe(true)
+  })
+
+  it('should compare passwords correctly for different passwords', async () => {
+    const newAdmin = adminObj
+
+    await adminRepo.save(newAdmin)
+
+    const isPasswordCorrect = await adminUseCase.comparePassword(
+      'testId',
+      'wrongpassword'
+    )
+
+    expect(isPasswordCorrect).toBe(false)
+  })
 })
