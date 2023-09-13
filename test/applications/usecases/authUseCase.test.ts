@@ -64,9 +64,7 @@ describe('AuthUseCase', () => {
 
   // We should mock jwt.decode() to be able to register while having a already registered admin
   describe('Admin Auth', () => {
-
     describe('Register', () => {
-
       it('should require role', async () => {
         const newAdmin = async () =>
           await authUseCase.register({ body: {} } as Request)
@@ -86,7 +84,14 @@ describe('AuthUseCase', () => {
           await adminUseCase.delete(admin.id!)
         }
 
-        // TODO: assertion
+        const newAdmin = await authUseCase.register({
+          body: adminObj
+        } as Request)
+        expect(newAdmin).toEqual({
+          id: undefined,
+          name: 'AdminAuthTest',
+          role: 'admin'
+        })
 
         for (const admin of admins) {
           await adminUseCase.create(admin)
@@ -96,20 +101,28 @@ describe('AuthUseCase', () => {
 
     describe('Login', () => {
       it('should throw not found error', async () => {
+        const admObj = { email: 'should@fail.adm', password: 'wrong' }
+        const admins = await adminUseCase.listAll()
+
+        for (const admin of admins) {
+          if (admin.email === admObj.email)
+            throw new Error('There is a problem with this test')
+        }
+
         const newAdmin = async () =>
-          await authUseCase.login({ body: adminObj } as Request)
+          await authUseCase.login({ body: admObj } as Request)
         expect(() => newAdmin()).rejects.toThrow('User not found')
       })
 
       it('should login', async () => {
-        const admin = await adminUseCase.listAll()
+        const admins = await adminUseCase.listAll()
         const expected = {
-          name: admin[0].name,
-          role: admin[0].role,
-          id: admin[0].id
+          name: admins[0].name,
+          role: admins[0].role,
+          id: admins[0].id
         }
         const login = await authUseCase.login({
-          body: admin[0]
+          body: admins[0]
         } as Request)
         expect(login).toEqual(expected)
       })
@@ -134,9 +147,7 @@ describe('AuthUseCase', () => {
   })
 
   describe('Instructor Auth', () => {
-
     describe('Register', () => {
-
       it('should require role', async () => {
         const newInstructor = async () =>
           await authUseCase.register({ body: {} } as Request)
@@ -150,30 +161,37 @@ describe('AuthUseCase', () => {
           id: undefined
         }
 
-          const newInstructor = await authUseCase.register({
-            body: instructorObj
-          } as Request)
+        const newInstructor = await authUseCase.register({
+          body: instructorObj
+        } as Request)
 
-          expect(newInstructor).toEqual(expected)
+        expect(newInstructor).toEqual(expected)
       })
     })
 
     describe('Login', () => {
       it('should throw not found error', async () => {
+        const insObj = { email: 'should@fail.ins', password: 'wrong' }
+        const instructors = await instructorUseCase.listAll()
+
+        for (const instructor of instructors) {
+          if (instructor.email === insObj.email)
+            throw new Error('There is a problem with this test')
+        }
         const newInstructor = async () =>
-          await authUseCase.login({ body: instructorObj } as Request)
+          await authUseCase.login({ body: insObj } as Request)
         expect(() => newInstructor()).rejects.toThrow('User not found')
       })
 
       it('should login', async () => {
-        const instructor = await instructorUseCase.listAll()
+        const instructors = await instructorUseCase.listAll()
         const expected = {
-          name: instructor[0].name,
-          role: instructor[0].role,
-          id: instructor[0].id
+          name: instructors[0].name,
+          role: instructors[0].role,
+          id: instructors[0].id
         }
         const login = await authUseCase.login({
-          body: instructor[0]
+          body: instructors[0]
         } as Request)
         expect(login).toEqual(expected)
       })
@@ -198,9 +216,7 @@ describe('AuthUseCase', () => {
   })
 
   describe('Student Auth', () => {
-
     describe('Register', () => {
-
       it('should require role', async () => {
         const newStudent = async () =>
           await authUseCase.register({ body: {} } as Request)
@@ -224,19 +240,27 @@ describe('AuthUseCase', () => {
 
     describe('Login', () => {
       it('should throw not found error', async () => {
+        const stuObj = { email: 'should@fail.stu', password: 'wrong' }
+        const students = await studentUseCase.listAll()
+
+        for (const student of students) {
+          if (student.email === stuObj.email)
+            throw new Error('There is a problem with this test')
+        }
+
         const newStudent = async () =>
-          await authUseCase.login({ body: studentObj } as Request)
+          await authUseCase.login({ body: stuObj } as Request)
         expect(() => newStudent()).rejects.toThrow('User not found')
       })
 
       it('should login', async () => {
-        const student = await studentUseCase.listAll()
+        const students = await studentUseCase.listAll()
         const expected = {
-          name: student[0].name,
-          role: student[0].role,
-          id: student[0].id
+          name: students[0].name,
+          role: students[0].role,
+          id: students[0].id
         }
-        const login = await authUseCase.login({ body: student[0] } as Request)
+        const login = await authUseCase.login({ body: students[0] } as Request)
         expect(login).toEqual(expected)
       })
 

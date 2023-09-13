@@ -34,7 +34,7 @@ export class StudentRepoTest implements StudentRepository {
   }
   async save(student: Student): Promise<Student> {
     const result: Student = new Student(student)
-    // users.push(result)
+    users.push(result)
     return result
   }
   async update(student: Student): Promise<void> {
