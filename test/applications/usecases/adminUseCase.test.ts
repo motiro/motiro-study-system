@@ -112,4 +112,18 @@ describe('AdminController', () => {
       )
     }
   })
+
+  it('should be saved', async () => {
+    const newAdmin = adminObj
+
+    const createdAdmin = await adminUseCase.create(newAdmin)
+
+    const students = await adminRepo.findAll()
+
+    const isAdminInList = students.some(
+      admin => admin.id === createdAdmin.id
+    )
+
+    expect(isAdminInList).toBe(true)
+  })
 })
