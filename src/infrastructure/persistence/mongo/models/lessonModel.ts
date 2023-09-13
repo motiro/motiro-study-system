@@ -18,8 +18,7 @@ const LessonSchema = new Schema(
       required: true
     },
     file: {
-      type: String,
-      default: ''
+      type: String
     }
   },
   {

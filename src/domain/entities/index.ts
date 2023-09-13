@@ -1,5 +1,5 @@
 import { Admin } from './admin'
-import { Instructor } from './instructor'
+import { Instructor, Schedule } from './instructor'
 import { Student } from './students'
 import { Lesson } from './lessons'
 import {
@@ -7,7 +7,10 @@ import {
   BadRequestError,
   UnauthorizedError,
   NotFoundError,
-  ForbiddenError
+  ForbiddenError,
+  CastError,
+  ValidationError,
+  TokenExpiredError
 } from './error'
 
 export enum ENTITIES {
@@ -19,11 +22,15 @@ export enum ENTITIES {
 export {
   Admin,
   Instructor,
+  Schedule,
   Student,
   Lesson,
   ApiError,
   BadRequestError,
   UnauthorizedError,
   NotFoundError,
-  ForbiddenError
+  ForbiddenError,
+  CastError,
+  ValidationError,
+  TokenExpiredError
 }

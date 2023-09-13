@@ -5,7 +5,6 @@ import './infrastructure/persistence/mongo/connections'
 import routes from './routes'
 import cookieParser from 'cookie-parser'
 import fileUpload from 'express-fileupload'
-
 import {
   notFoundMiddleware,
   errorMiddleware

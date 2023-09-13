@@ -2,7 +2,7 @@ node_modules
 data
 dist
 .env
-public
+public/uploads/*
 
 # Editor settings
 .vscode/**/*
