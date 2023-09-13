@@ -34,15 +34,8 @@ export class StudentRepoTest implements StudentRepository {
   }
   async save(student: Student): Promise<Student> {
     const result: Student = new Student(student)
-    users.push(result)
-    return new Student(
-      {
-        name: result.name,
-        email: result.email,
-        role: result.role
-      },
-      result.id
-    )
+    // users.push(result)
+    return result
   }
   async update(student: Student): Promise<void> {
     for (const user of users) {

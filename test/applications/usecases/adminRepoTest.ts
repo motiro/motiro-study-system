@@ -35,14 +35,7 @@ export class AdminRepoTest implements AdminRepository {
   async save(admin: Admin): Promise<Admin> {
     const result: Admin = new Admin(admin)
     users.push(result)
-    return new Admin(
-      {
-        name: result.name,
-        email: result.email,
-        role: result.role
-      },
-      result.id
-    )
+    return result
   }
   async update(admin: Admin): Promise<void> {
     for (const user of users) {
