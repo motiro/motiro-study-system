@@ -41,4 +41,33 @@ describe('LessonUseCase', () => {
     const newLesson = await lessonUseCase.create(lessonObj)
     expect(newLesson).toEqual(expected)
   })
+
+  it('should list one', async () => {
+    const lessonId = 'testId'
+
+    const findLesson = await lessonUseCase.listOne(lessonId)
+
+    expect(findLesson).toBeDefined()
+  })
+
+  it('should list all', async () => {
+    const lessons = await lessonUseCase.listAll()
+
+    expect(lessons).toBeDefined()
+  })
+
+  it('should be deleted', async () => {
+    const lessonId = 'testId'
+
+    await lessonUseCase.delete(lessonId)
+
+    const deletedLesson = await lessonRepoTest.findById(lessonId)
+
+    expect(deletedLesson).toBeNull()
+  })
+
+  it('should count documents when there are lessons', async () => {
+    const count = await lessonRepoTest.count()
+    expect(count).toBeGreaterThan(0)
+  })
 })
