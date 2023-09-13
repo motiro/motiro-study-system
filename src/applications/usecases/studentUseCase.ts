@@ -1,16 +1,11 @@
 import { StudentRepository } from 'domain/repositories/studentRepository'
 import { Student } from 'domain/entities/students'
-import { BadRequestError, NotFoundError } from 'domain/entities/error'
+import { NotFoundError } from 'domain/entities/error'
 
 export class StudentUseCase {
   constructor(private studentRepository: StudentRepository) {}
 
   async create(request: Student): Promise<Student> {
-    const studentExists = await this.studentRepository.findById(request.id!)
-    if (studentExists) {
-      throw new BadRequestError('User already exists')
-    }
-
     const student = new Student(request)
 
     const response = await this.studentRepository.save(student)
