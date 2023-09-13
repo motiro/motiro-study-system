@@ -1,3 +1,5 @@
+import 'dotenv/config'
+import { jwt } from '@jwt/.'
 import { Request } from 'express'
 import { AdminRepoTest } from './adminRepoTest'
 import { InstructorRepoTest } from './instructorRepoTest'
@@ -62,19 +64,55 @@ describe('AuthUseCase', () => {
     expect(authUseCase).toBeDefined()
   })
 
-  // We should mock jwt.decode() to be able to register while having a already registered admin
   describe('Admin Auth', () => {
     describe('Register', () => {
-      it('should require role', async () => {
+      it('should throw error when role is not passed in req.body', async () => {
         const newAdmin = async () =>
           await authUseCase.register({ body: {} } as Request)
         expect(() => newAdmin()).rejects.toThrow('Missing role')
       })
 
-      it('should be logged in', async () => {
+      it('should throw error when registering a second admin without being logged in', async () => {
         const newAdmin = async () =>
           await authUseCase.register({ body: adminObj } as Request)
         expect(() => newAdmin()).rejects.toThrow('Not logged in')
+      })
+
+      it('should register admin when authenticated as admin', async () => {
+        const token = jwt.encode({ role: 'admin' })
+
+        const authenticatedAdmin = adminObj
+        authenticatedAdmin.email = 'authenticated@adm.auth'
+
+        const newAdmin = await authUseCase.register({
+          body: authenticatedAdmin,
+          signedCookies: { token: token }
+        } as Request)
+
+        expect(newAdmin).toEqual({
+          id: undefined,
+          name: 'AdminAuthTest',
+          role: 'admin'
+        })
+      })
+
+      it('should fail to register admin when authenticated as anyone else', async () => {
+        const tokenInstructor = jwt.encode({ role: 'instructor' })
+        const tokenStudent = jwt.encode({ role: 'student' })
+
+        const newAdminAsInstructor = async () =>
+          await authUseCase.register({
+            body: adminObj,
+            signedCookies: { token: tokenInstructor }
+          } as Request)
+        const newAdminAsStudent = async () =>
+          await authUseCase.register({
+            body: adminObj,
+            signedCookies: { token: tokenStudent }
+          } as Request)
+
+        expect(() => newAdminAsInstructor()).rejects.toThrow('Access denied')
+        expect(() => newAdminAsStudent()).rejects.toThrow('Access denied')
       })
 
       it('should register first admin', async () => {
@@ -84,8 +122,11 @@ describe('AuthUseCase', () => {
           await adminUseCase.delete(admin.id!)
         }
 
+        const firstAdmin = adminObj
+        firstAdmin.email = 'first@adm.auth'
+
         const newAdmin = await authUseCase.register({
-          body: adminObj
+          body: firstAdmin
         } as Request)
         expect(newAdmin).toEqual({
           id: undefined,
@@ -96,6 +137,9 @@ describe('AuthUseCase', () => {
         for (const admin of admins) {
           await adminUseCase.create(admin)
         }
+
+        const adminsAfter = await adminUseCase.listAll()
+        expect(adminsAfter).toHaveLength(admins.length + 1)
       })
     })
 
