@@ -6,6 +6,7 @@ const studentUseCase = new StudentUseCase(new StudentRepoTest())
 let studentRepo: StudentRepoTest
 
 const studentObj: Student = {
+  id: '123456789',
   name: 'StudentTest',
   email: 'studenttest@mail.com',
   password: 'secret',
@@ -117,5 +118,19 @@ describe('StudentController', () => {
         'User already exists'
       )
     }
+  })
+
+  it('should be saved', async () => {
+    const newStudent = studentObj
+
+    const createdStudent = await studentUseCase.create(newStudent)
+
+    const students = await studentRepo.findAll()
+
+    const isStudentInList = students.some(
+      student => student.id === createdStudent.id
+    )
+
+    expect(isStudentInList).toBe(true)
   })
 })

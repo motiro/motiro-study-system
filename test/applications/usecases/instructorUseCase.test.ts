@@ -6,7 +6,7 @@ const instructorUseCase = new InstructorUseCase(new InstructorRepoTest())
 let instructorRepo: InstructorRepoTest
 
 const instructorObj: Instructor = {
-  id: 'secrettest',
+  id: '123456789',
   name: 'InstructorTest',
   email: 'instructortest@mail.com',
   password: 'secret',
@@ -137,7 +137,7 @@ describe('InstructorController', () => {
     }
   })
 
-  it('should be created', async () => {
+  it('should be saved', async () => {
     const newInstructor = instructorObj
 
     const createdInstructor = await instructorUseCase.create(newInstructor)
