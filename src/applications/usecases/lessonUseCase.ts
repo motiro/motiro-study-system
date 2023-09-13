@@ -22,6 +22,7 @@ interface LessonResponse {
   instructor: { name: string; id: string }
   student: { name: string; id: string }
   lesson_date: { date: Date; id: ObjectId }
+  files?: { name: string; path: string }[]
   id: string
 }
 
@@ -48,7 +49,10 @@ export class LessonUseCase {
     const lesson = new Lesson(req)
     const { instructor, student, date } = await this.getProps(lesson)
 
-    if (date.busy) throw new BadRequestError('A lesson is already booked for the requested schedule')
+    if (date.busy)
+      throw new BadRequestError(
+        'A lesson is already booked for the requested schedule'
+      )
 
     const createLesson = await this.mongoRepo.save(lesson)
     date.busy = true
@@ -78,14 +82,50 @@ export class LessonUseCase {
     await this.mongoRepo.update({ ...lessonExists!, file: req.textFile.name })
   }
 
-  async listOne(id: string): Promise<Lesson> {
-    const response = await this.mongoRepo.findById(id)
-    if (!response) throw new NotFoundError(`Lesson not found`)
+  async listOne(id: string): Promise<LessonResponse> {
+    const lesson = await this.mongoRepo.findById(id)
+    if (!lesson) throw new NotFoundError(`Lesson not found`)
+    const { instructor, student, date } = await this.getProps(lesson)
+    if (!instructor || !student || !date) throw new BadRequestError('Not found')
+
+    const response: LessonResponse = {
+      instructor: { name: instructor.name, id: instructor.id! },
+      student: { name: student.name, id: student.id! },
+      lesson_date: { date: date.date!, id: date._id! },
+      id: lesson.id!
+    }
+    if (lesson.file) {
+      response.files ??= []
+      response.files.push({
+        name: lesson.file,
+        path: `/uploads/${lesson.file}`
+      })
+    }
     return response
   }
 
-  async listAll(): Promise<Lesson[]> {
-    const response = await this.mongoRepo.findAll()
+  async listAll(): Promise<LessonResponse[]> {
+    const lessons = await this.mongoRepo.findAll()
+    const response: LessonResponse[] = []
+    for (const lesson of lessons) {
+      const { instructor, student, date } = await this.getProps(lesson)
+      if (!instructor || !student || !date) continue
+
+      const result: LessonResponse = {
+        instructor: { name: instructor.name, id: instructor.id! },
+        student: { name: student.name, id: student.id! },
+        lesson_date: { date: date.date!, id: date._id! },
+        id: lesson.id!
+      }
+      if (lesson.file) {
+        result.files ??= []
+        result.files.push({
+          name: lesson.file,
+          path: `/uploads/${lesson.file}`
+        })
+      }
+      response.push(result)
+    }
     return response
   }
 
