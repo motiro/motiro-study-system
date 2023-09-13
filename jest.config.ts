@@ -5,7 +5,7 @@ const config: Config.InitialOptions = {
   testEnvironment: 'node',
   verbose: true,
   testTimeout: 15000,
-  coverageDirectory: '<rootDir>/data/test/coverage',
+  coverageDirectory: '<rootDir>/test/coverage',
   modulePaths: ['<rootDir>/src/'],
   moduleNameMapper: {
     '^@controllers(.*)$': 'applications/controllers$1',
