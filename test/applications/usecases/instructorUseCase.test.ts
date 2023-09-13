@@ -6,6 +6,7 @@ const instructorUseCase = new InstructorUseCase(new InstructorRepoTest())
 let instructorRepo: InstructorRepoTest
 
 const instructorObj: Instructor = {
+  id: 'secrettest',
   name: 'InstructorTest',
   email: 'instructortest@mail.com',
   password: 'secret',
@@ -134,5 +135,19 @@ describe('InstructorController', () => {
         instructorUseCase.create(existingInstructor)
       ).rejects.toThrow('User already exists')
     }
+  })
+
+  it('should be created', async () => {
+    const newInstructor = instructorObj
+
+    const createdInstructor = await instructorUseCase.create(newInstructor)
+
+    const instructors = await instructorRepo.findAll()
+
+    const isInstructorInList = instructors.some(
+      instructor => instructor.id === createdInstructor.id
+    )
+
+    expect(isInstructorInList).toBe(true)
   })
 })
