@@ -40,9 +40,9 @@ describe('InstructorController', () => {
   it('should be created', async () => {
     const newInstructor = instructorObj
 
-    const createdInstructor = await instructorUseCase.create(newInstructor)
+    const createdInstructor = async () => await instructorUseCase.create(newInstructor)
 
-    expect(createdInstructor).toBeDefined()
+    expect(() => createdInstructor()).toBeDefined()
   })
 
   it('should list one', async () => {

@@ -56,6 +56,7 @@ export class InstructorRepoTest implements InstructorRepository {
   }
   async save(instructor: Instructor): Promise<Instructor> {
     const result: Instructor = new Instructor(instructor)
+    users.push(result)
     return new Instructor(
       {
         name: result.name,

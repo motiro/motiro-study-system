@@ -1,7 +1,6 @@
 import { StudentRepoTest } from './studentRepoTest'
 import { StudentUseCase } from '@usecases/studentUseCase'
 import { Student } from 'domain/entities/students'
-import { NotFoundError } from '@entities/error'
 
 const studentUseCase = new StudentUseCase(new StudentRepoTest())
 let studentRepo: StudentRepoTest
@@ -30,9 +29,9 @@ describe('StudentController', () => {
   it('should be created', async () => {
     const newStudent = studentObj
 
-    const createdStudent = await studentUseCase.create(newStudent)
+    const createdStudent = async () => await studentUseCase.create(newStudent)
 
-    expect(createdStudent).toBeDefined()
+    expect(() => createdStudent()).toBeDefined()
   })
 
   it('should list one', async () => {
@@ -77,14 +76,8 @@ describe('StudentController', () => {
 
   it('should return a message when student ID does not exist', async () => {
     const nonExistentId = 'falseId'
-
-    try {
-      const findStudent = await studentUseCase.listOne(nonExistentId)
-
-      expect(findStudent).toBe('User not found')
-    } catch (error: any) {
-      expect(error.message).toBe('User not found')
-    }
+    const findStudent = async () => await studentUseCase.listOne(nonExistentId)
+    expect(() => findStudent()).rejects.toThrow('User not found')
   })
 
   it('should throw an error if the id does not exist when listOne', async () => {

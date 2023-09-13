@@ -88,7 +88,7 @@ describe('AdminController', () => {
 
     if (!(await adminRepo.findById(nonExistentId))) {
       await expect(
-        adminUseCase.update(existingAdmin)
+        adminUseCase.update({ id: nonExistentId, ...existingAdmin })
       ).rejects.toThrow('User not found')
     }
   })
