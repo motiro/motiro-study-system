@@ -1,5 +1,9 @@
 import { InstructorRepository } from 'domain/repositories/instructorRepository'
-import { Instructor } from 'domain/entities/instructor'
+import { Instructor, Schedule } from 'domain/entities/instructor'
+import { Types } from 'mongoose'
+
+export const dateId = new Types.ObjectId()
+export const dateId2 = new Types.ObjectId()
 
 const users: Instructor[] = [
   {
@@ -10,10 +14,12 @@ const users: Instructor[] = [
     specialty: ['math'],
     schedule: [
       {
+        _id: dateId as any,
         date: new Date('2023-09-20'),
         busy: false
       },
       {
+        _id: dateId2 as any,
         date: new Date('2023-09-21'),
         busy: true
       }
@@ -28,10 +34,12 @@ const users: Instructor[] = [
     specialty: ['math'],
     schedule: [
       {
+        _id: dateId as any,
         date: new Date('2023-09-29'),
         busy: true
       },
       {
+        _id: dateId2 as any,
         date: new Date('2023-09-18'),
         busy: true
       }
