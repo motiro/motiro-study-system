@@ -82,9 +82,8 @@ export class InstructorRepoTest implements InstructorRepository {
   }
   async comparePassword(id: string, password: string): Promise<boolean> {
     for (const user of users) {
-      if (user.id === id && user.password === password) return true
-      console.log('banco', user.password)
-      console.log('fora', password)
+      if (user.id === id ) return user.password === password
+
     }
     return false
   }

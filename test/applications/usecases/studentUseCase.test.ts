@@ -133,4 +133,30 @@ describe('StudentController', () => {
 
     expect(isStudentInList).toBe(true)
   })
+
+  it('should compare passwords correctly for the same password', async () => {
+    const newStudent = studentObj
+
+    await studentRepo.save(newStudent)
+
+    const isPasswordCorrect = await studentUseCase.comparePassword(
+      'testId2',
+      'secret2'
+    )
+
+    expect(isPasswordCorrect).toBe(true)
+  })
+
+  it('should compare passwords correctly for different passwords', async () => {
+    const newStudent = studentObj
+
+    await studentRepo.save(newStudent)
+
+    const isPasswordCorrect = await studentUseCase.comparePassword(
+      'testId',
+      'wrongpassword'
+    )
+
+    expect(isPasswordCorrect).toBe(false)
+  })
 })
