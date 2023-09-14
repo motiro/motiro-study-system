@@ -36,8 +36,11 @@ router
 router
   .route('/lesson/:id')
   .all(authMiddleware.authUser)
-  .post((req, res) => lessonController.file(req, res))
   .get((req, res) => lessonController.listOne(req, res))
   .delete((req, res) => lessonController.delete(req, res))
+router
+  .route('/lesson/:id/upload')
+  .all(authMiddleware.authUser)
+  .post((req, res) => lessonController.uploadFile(req, res))
 
 export default router
