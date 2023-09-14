@@ -15,7 +15,9 @@ const router = Router()
 router
   .route('/instructor')
   .all(verifyToken, authMiddleware.authUser)
-  .post((req, res) => instructorController.create(req, res))
+  .post(authMiddleware.checkRole('admin'), (req, res) =>
+    instructorController.create(req, res)
+  )
   .get((req, res) => instructorController.listAll(req, res))
 
 router
