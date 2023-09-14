@@ -1,13 +1,13 @@
 import { Request, Response } from 'express'
-import { InstructorUseCase } from 'applications/usecases/InstructorUseCase'
+import { InstructorUseCase } from 'applications/usecases/instructorUseCase'
 import { authMiddleware } from 'applications/middlewares'
 
 export class InstructorController {
   constructor(private useCase: InstructorUseCase) {}
-  createInstructor = async (req: Request, res: Response) => {
+  async create(req: Request, res: Response) {
     const { id, name, email, password, specialty, schedule } = req.body
 
-    const result = await this.useCase.execute({
+    const result = await this.useCase.create({
       id,
       name,
       email,
@@ -17,13 +17,13 @@ export class InstructorController {
     })
     return res.status(201).json(result)
   }
-  getAllInstructors = async (req: Request, res: Response) => {
-    const result = await this.useCase.list()
+  async listAll(req: Request, res: Response) {
+    const result = await this.useCase.listAll()
 
     return res.status(200).json(result)
   }
 
-  getInstructor = async (req: Request, res: Response) => {
+  async listOne(req: Request, res: Response) {
     const { id } = req.params
 
     authMiddleware.checkUserPermissions(req.body, id)
@@ -31,7 +31,7 @@ export class InstructorController {
 
     return res.status(200).send(result)
   }
-  updateInstructor = async (req: Request, res: Response) => {
+  async update(req: Request, res: Response) {
     const { name, email, password, specialty, schedule } = req.body
     const { id } = req.params
 
@@ -46,7 +46,7 @@ export class InstructorController {
 
     return res.status(200).json(result)
   }
-  deleteInstructor = async (req: Request, res: Response) => {
+  async delete(req: Request, res: Response) {
     const { id } = req.params
 
     authMiddleware.checkUserPermissions(req.body, id)

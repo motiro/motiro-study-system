@@ -5,7 +5,7 @@ import { studentModel } from './studentModel'
 import { lessonModel } from './lessonModel'
 
 export interface UserSchema extends Schema {
-  comparePassword(password: string): boolean
+  comparePassword(password: string): Promise<boolean>
 }
 
 export { adminModel, instructorModel, studentModel, lessonModel }

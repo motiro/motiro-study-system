@@ -1,74 +1,51 @@
 import { Request, Response } from 'express'
-import { studentModel } from '@mongo/studentModel'
 import { authMiddleware } from 'applications/middlewares/authMiddleware'
+import { StudentUseCase } from 'applications/usecases/studentUseCase'
 
-class StudentController {
+export class StudentController {
+  constructor(private useCase: StudentUseCase) {}
+
   async create(req: Request, res: Response) {
-    try {
-      const { name, email, password } = req.body
-      const student = new studentModel({ name, email, password })
-      await student.save()
-      return res.status(201).json(student);
-    } catch (error) {
-      return res.status(500).json({ error: 'Failed to create student' })
-    }
+    const { name, email, password } = req.body
+
+    const result = await this.useCase.create({ name, email, password })
+
+    return res.status(201).json(result)
   }
 
   async update(req: Request, res: Response) {
-    try {
-      const { id } = req.params
-      const { name, email, password } = req.body
-      const student = await studentModel.findByIdAndUpdate(
-        id,
-        { name, email, password },
-        { new: true }
-      );
-      if (!student) {
-        return res.status(404).json({ error: 'Student does not exist' })
-      }
-      return res.json(student)
-    } catch (error) {
-      return res.status(500).json({ error: 'Failed to update student' })
-    }
+    const { id } = req.params
+    const { name, email, password } = req.body
+
+    authMiddleware.checkUserPermissions(req.body, id)
+
+    const result = await this.useCase.update(id, { name, email, password })
+
+    return res.status(200).json(result)
   }
 
-  async list(req: Request, res: Response) {
-    try {
-      const students = await studentModel.find()
-      return res.json(students)
-    } catch (error) {
-      return res.status(500).json({ error: 'Failed to fetch students' })
-    }
+  async listAll(_: Request, res: Response) {
+    const students = await this.useCase.listAll()
+
+    return res.status(200).json(students)
   }
 
-  async listStudent(req: Request, res: Response) {
-    try {
-      const { id } = req.params;
-      const student = await studentModel.findById(id)
-      if (!student) {
-        return res.status(404).json({ error: 'Student does not exist' })
-      }
+  async listOne(req: Request, res: Response) {
+    const { id } = req.params
+    authMiddleware.checkUserPermissions(req.body, id)
 
-      authMiddleware.checkUserPermissions(req.body, student._id)
+    const result = await this.useCase.listOne(id)
 
-      return res.json(student)
-    } catch (error) {
-      return res.status(500).json({ error: 'Failed to fetch student' })
-    }
+    return res.status(200).json(result)
   }
 
   async delete(req: Request, res: Response) {
-    try {
-      const { id } = req.params
-      const deletedStudent = await studentModel.findByIdAndDelete(id)
-      if (!deletedStudent) {
-        return res.status(404).json({ error: 'Student does not exist' })
-      }
-      return res.json(deletedStudent)
-    } catch (error) {
-      return res.status(500).json({ error: 'Failed to delete student' })
-    }
+    const { id } = req.params
+
+    authMiddleware.checkUserPermissions(req.body, id)
+
+    await this.useCase.delete(id)
+
+    return res.status(200).send()
   }
 }
-
-export default new StudentController()
