@@ -1,4 +1,5 @@
 import { InstructorRepository } from 'domain/repositories/instructorRepository'
+
 import { Instructor, Schedule } from 'domain/entities/instructor'
 import { NotFoundError } from 'domain/entities/error'
 
@@ -23,7 +24,7 @@ export class InstructorUseCase {
     const instructorExists = await this.instructorRepository.findById(id)
 
     if (!instructorExists) {
-      throw new NotFoundError('User not found')
+      throw new NotFoundError('Instructor not found')
     }
 
     return instructorExists
@@ -32,7 +33,7 @@ export class InstructorUseCase {
     const instructorExists = await this.instructorRepository.findById(id)
 
     if (!instructorExists) {
-      throw new NotFoundError('User not found')
+      throw new NotFoundError('Instructor not found')
     }
 
     const instructor = new Instructor(request, id)
@@ -44,7 +45,7 @@ export class InstructorUseCase {
     const instructorExists = await this.instructorRepository.findById(id)
 
     if (!instructorExists) {
-      throw new NotFoundError('User not found')
+      throw new NotFoundError('Instructor not found')
     }
 
     return await this.instructorRepository.updateSchedule(id, request)
@@ -54,7 +55,7 @@ export class InstructorUseCase {
     const instructorExists = await this.instructorRepository.findById(id)
 
     if (!instructorExists) {
-      throw new NotFoundError('User not found')
+      throw new NotFoundError('Instructor not found')
     }
 
     await this.instructorRepository.delete(id)
