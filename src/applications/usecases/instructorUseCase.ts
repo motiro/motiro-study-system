@@ -1,18 +1,11 @@
 import { InstructorRepository } from 'domain/repositories/instructorRepository'
 import { Instructor, Schedule } from 'domain/entities/instructor'
-import { BadRequestError, NotFoundError } from 'domain/entities/error'
+import { NotFoundError } from 'domain/entities/error'
 
 export class InstructorUseCase {
   constructor(private instructorRepository: InstructorRepository) {}
 
   async create(request: Instructor): Promise<Instructor> {
-    const instructorExists = await this.instructorRepository.findById(
-      request.id!
-    )
-    if (instructorExists) {
-      throw new BadRequestError('User already exists')
-    }
-
     const instructor = new Instructor(request)
 
     const response = await this.instructorRepository.save(instructor)
