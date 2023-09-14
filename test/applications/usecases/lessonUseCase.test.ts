@@ -3,6 +3,7 @@ import { InstructorRepoTest, dateId } from './instructorRepoTest'
 import { StudentRepoTest } from './studentRepoTest'
 import { Lesson } from '@entities/.'
 import { LessonUseCase, InstructorUseCase, StudentUseCase } from '@usecases/.'
+import { UploadedFile } from 'express-fileupload'
 
 const instructorUseCase = new InstructorUseCase(new InstructorRepoTest())
 const studentUseCase = new StudentUseCase(new StudentRepoTest())
@@ -87,5 +88,15 @@ describe('LessonUseCase', () => {
     await expect(lessonUseCase.delete(nonExistentId)).rejects.toThrow(
       'Lesson not found'
     )
+  })
+
+  it('should throw error ', async () => {
+    const req = {
+    lessonId: 'testId',
+    userId: 'testId',
+    textFile: { mimetype: '' } as unknown as UploadedFile
+  }
+    const newFile = async () => await lessonUseCase.uploadFile(req)
+    expect(() => newFile()).rejects.toThrow('Not a text file')
   })
 })
