@@ -70,4 +70,21 @@ describe('LessonUseCase', () => {
     const count = await lessonRepoTest.count()
     expect(count).toBeGreaterThan(0)
   })
+
+  it('should throw an error if the lesson does not exist when list one', async () => {
+    const nonExistentId = 'falseId'
+
+    await expect(lessonUseCase.listOne(nonExistentId)).rejects.toThrow(
+      'Lesson not found'
+    )
+  })
+
+  it('should throw an error if the lesson does not exist when delete', async () => {
+    const nonExistentId = 'falseId'
+
+    await expect(lessonUseCase.delete(nonExistentId)).rejects.toThrow(
+      'Lesson not found'
+    )
+  })
+
 })
