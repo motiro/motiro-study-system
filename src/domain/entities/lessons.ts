@@ -1,12 +1,12 @@
 export class Lesson {
   public readonly id?: string
-  public instructorId: string
-  public studentId: string
-  public date: Date
+  public instructor: string
+  public student: string
+  public date: string
 
   constructor(props: Omit<Lesson, 'id'>, id?: string) {
-    this.instructorId = props.instructorId
-    this.studentId = props.studentId
+    this.instructor = props.instructor
+    this.student = props.student
     this.date = props.date
 
     if (id) {

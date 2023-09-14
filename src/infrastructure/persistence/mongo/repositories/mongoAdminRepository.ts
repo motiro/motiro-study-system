@@ -23,7 +23,7 @@ export class MongoAdminRepository implements AdminRepository {
       .findById(id)
       .select('-password')
     if (result) {
-      return new Admin(result)
+      return new Admin(result, id)
     }
     return null
   }

@@ -1,5 +1,5 @@
 import { InstructorRepository } from 'domain/repositories/instructorRepository'
-import { Instructor } from 'domain/entities/instructor'
+import { Instructor, Schedule } from 'domain/entities/instructor'
 import { NotFoundError } from 'domain/entities/error'
 
 export class InstructorUseCase {
@@ -38,6 +38,16 @@ export class InstructorUseCase {
     const instructor = new Instructor(request, id)
 
     return await this.instructorRepository.update(instructor)
+  }
+
+  async updateSchedule(id: string, request: Schedule): Promise<void> {
+    const instructorExists = await this.instructorRepository.findById(id)
+
+    if (!instructorExists) {
+      throw new NotFoundError('User not found')
+    }
+
+    return await this.instructorRepository.updateSchedule(id, request)
   }
 
   async delete(id: string): Promise<void> {
