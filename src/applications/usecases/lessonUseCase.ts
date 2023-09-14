@@ -19,11 +19,11 @@ interface LessonProps {
 }
 
 interface LessonResponse {
+  id: string
   instructor: { name: string; id: string }
   student: { name: string; id: string }
   lesson_date: { date: Date; id: ObjectId }
-  files?: { name: string; path: string }[]
-  id: string
+  files: { name: string; path: string, uploadedBy: ObjectId }[]
 }
 
 export class LessonUseCase {
@@ -59,27 +59,34 @@ export class LessonUseCase {
     await this.instructorUseCase.updateSchedule(lesson.instructor, date)
 
     const response: LessonResponse = {
+      id: createLesson.id!,
       instructor: { name: instructor.name, id: instructor.id! },
       student: { name: student.name, id: student.id! },
       lesson_date: { date: date.date!, id: date._id! },
-      id: createLesson.id!
+      files: createLesson.files
     }
     return response
   }
 
-  async file(req: { id: string; textFile: UploadedFile }): Promise<void> {
-    const lessonExists = await this.mongoRepo.findById(req.id!)
-    if (!req.textFile) {
-      throw new Error('No file')
-    }
+  async uploadFile(req: { lessonId: string, userId: string, textFile: UploadedFile }): Promise<void> {
+    const lessonExists = await this.mongoRepo.findById(req.lessonId)
+    if (!lessonExists) throw new NotFoundError('Lesson not found')
 
+    if (!req.textFile)
+      throw new Error('No file was uploaded')
+
+    const fileName = new Date().getTime() + '-' + req.textFile.name
     const filePath = path.join(
       __dirname,
-      '../../../public/uploads/' + `${req.textFile.name}`
+      '../../../public/uploads/' + `${fileName}`
     )
-    console.log(__dirname)
+    const file = {
+      name: fileName,
+      path: '/uploads/' + fileName,
+      uploadedBy: req.userId
+    }
     await req.textFile.mv(filePath)
-    await this.mongoRepo.update({ ...lessonExists!, file: req.textFile.name })
+    await this.mongoRepo.uploadFile(req.lessonId, file)
   }
 
   async listOne(id: string): Promise<LessonResponse> {
@@ -89,17 +96,11 @@ export class LessonUseCase {
     if (!instructor || !student || !date) throw new BadRequestError('Not found')
 
     const response: LessonResponse = {
+      id: lesson.id!,
       instructor: { name: instructor.name, id: instructor.id! },
       student: { name: student.name, id: student.id! },
       lesson_date: { date: date.date!, id: date._id! },
-      id: lesson.id!
-    }
-    if (lesson.file) {
-      response.files ??= []
-      response.files.push({
-        name: lesson.file,
-        path: `/uploads/${lesson.file}`
-      })
+      files: lesson.files
     }
     return response
   }
@@ -112,17 +113,11 @@ export class LessonUseCase {
       if (!instructor || !student || !date) continue
 
       const result: LessonResponse = {
+        id: lesson.id!,
         instructor: { name: instructor.name, id: instructor.id! },
         student: { name: student.name, id: student.id! },
         lesson_date: { date: date.date!, id: date._id! },
-        id: lesson.id!
-      }
-      if (lesson.file) {
-        result.files ??= []
-        result.files.push({
-          name: lesson.file,
-          path: `/uploads/${lesson.file}`
-        })
+        files: lesson.files
       }
       response.push(result)
     }
