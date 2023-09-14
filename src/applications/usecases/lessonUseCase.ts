@@ -39,10 +39,7 @@ export class LessonUseCase {
     const date = instructor.schedule.find(
       s => s._id?.toString() === lesson.date.toString()
     )
-
-    if (!instructor || !student || !date)
-      throw new NotFoundError('Could not fetch lesson properties')
-    return { instructor, student, date }
+    return { instructor, student, date: date as Schedule }
   }
 
   private async handleFile(textFile: UploadedFile, userId: string) {
@@ -70,6 +67,7 @@ export class LessonUseCase {
   async create(req: Lesson): Promise<LessonResponse> {
     const lesson = new Lesson(req)
     const { instructor, student, date } = await this.getProps(lesson)
+    if (!instructor || !student || !date) throw new BadRequestError('Mismatch in provided IDs')
 
     if (date.busy)
       throw new BadRequestError(
@@ -95,8 +93,6 @@ export class LessonUseCase {
     userId: string
     textFile: UploadedFile | UploadedFile[]
   }): Promise<void> {
-    const lessonExists = await this.mongoRepo.findById(req.lessonId)
-    if (!lessonExists) throw new NotFoundError('Lesson not found')
     if (!req.textFile) throw new Error('No file was uploaded')
 
     if (Object.keys(req.textFile)[0] === '0') {
@@ -114,7 +110,6 @@ export class LessonUseCase {
     const lesson = await this.mongoRepo.findById(id)
     if (!lesson) throw new NotFoundError(`Lesson not found`)
     const { instructor, student, date } = await this.getProps(lesson)
-    if (!instructor || !student || !date) throw new BadRequestError('Not found')
 
     const response: LessonResponse = {
       id: lesson.id!,
