@@ -3,6 +3,8 @@ data
 test/coverage
 dist
 .env
+public/uploads/**/*
+!public/uploads/.gitkeep
 
 # Editor settings
 .vscode/**/*

@@ -17,7 +17,8 @@ const lessonUseCase = new LessonUseCase(
 const lessonObj: Lesson = {
   instructor: 'testId',
   student: 'testId',
-  date: dateId.toString()
+  date: dateId.toString(),
+  files: []
 }
 
 describe('LessonUseCase', () => {
@@ -35,7 +36,8 @@ describe('LessonUseCase', () => {
         date: new Date('2023-09-20T00:00:00.000Z'),
         id: dateId
       },
-      student: { id: 'testId', name: 'StudentTest' }
+      student: { id: 'testId', name: 'StudentTest' },
+      files: []
     }
 
     const newLesson = await lessonUseCase.create(lessonObj)
@@ -86,5 +88,4 @@ describe('LessonUseCase', () => {
       'Lesson not found'
     )
   })
-
 })

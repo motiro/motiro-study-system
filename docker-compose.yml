@@ -58,6 +58,7 @@ services:
     volumes:
       - ./src:/app/src
       - ./test:/app/test
+      - ./public:/app/public
     env_file:
       - .env
     environment:

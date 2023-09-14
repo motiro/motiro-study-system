@@ -1,5 +1,5 @@
 import { LessonRepository } from '@repositories/lessonRepository'
-import { Lesson } from '@entities/.'
+import { Lesson, LessonFile } from '@entities/.'
 import { dateId, dateId2 } from './instructorRepoTest'
 
 const lessons: Lesson[] = [
@@ -8,12 +8,14 @@ const lessons: Lesson[] = [
     instructor: 'testId',
     student: 'testId',
     date: dateId.toString(),
+    files: []
   },
   {
     id: 'testId2',
     instructor: 'testId2',
     student: 'testId2',
     date: dateId2.toString(),
+    files: []
   }
 ]
 
@@ -35,6 +37,11 @@ export class LessonRepoTest implements LessonRepository {
     const result: Lesson = new Lesson(lesson)
     lessons.push(result)
     return result
+  }
+  async uploadFile(id: string, file: LessonFile): Promise<void> {
+    for (const lesson of lessons) {
+      if (lesson.id === id) lesson.files.push(file)
+    }
   }
   async delete(id: string): Promise<void> {
     for (let i = 0; i < lessons.length; i++) {
