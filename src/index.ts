@@ -1,7 +1,7 @@
 import express from 'express'
 import 'express-async-errors'
 import 'dotenv/config'
-import '@mongo/connections'
+import 'infrastructure/persistence/mongo/connections'
 import routes from './routes'
 import cookieParser from 'cookie-parser'
 import fileUpload from 'express-fileupload'
