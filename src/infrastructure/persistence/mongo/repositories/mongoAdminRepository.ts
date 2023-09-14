@@ -1,7 +1,6 @@
 import { Admin } from 'domain/entities/admin'
 import { AdminRepository } from 'domain/repositories/adminRepository'
 import { Document, ObjectId, isValidObjectId } from 'mongoose'
-
 import { adminModel } from '../models'
 import { CastError } from 'domain/entities'
 
@@ -57,16 +56,16 @@ export class MongoAdminRepository implements AdminRepository {
     )
   }
   async update(admin: Admin): Promise<void> {
+    const { password, ...user } = admin
+
     await adminModel
-      .findOneAndUpdate({ _id: admin.id }, admin)
-      .then(user => {
-        if (admin.password) {
-          user?.markModified('password')
-          user?.save()
+      .findOneAndUpdate({ _id: admin.id }, user)
+      .then((user: any) => {
+        if (user && password) {
+          user.markModified('password')
+          user.password = password
+          user.save()
         }
-      })
-      .catch(err => {
-        console.log(err)
       })
   }
   async delete(id: string): Promise<void> {

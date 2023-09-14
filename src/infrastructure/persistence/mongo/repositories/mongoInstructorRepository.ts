@@ -1,7 +1,6 @@
 import { Instructor, Schedule } from 'domain/entities/instructor'
 import { InstructorRepository } from 'domain/repositories/instructorRepository'
-import { Document, isValidObjectId, ObjectId } from 'mongoose'
-
+import { Document, ObjectId, isValidObjectId } from 'mongoose'
 import { instructorModel } from '../models/instructorModel'
 import { CastError } from 'domain/entities'
 
@@ -47,16 +46,16 @@ export class MongoInstructorRepository implements InstructorRepository {
     )
   }
   async update(instructor: Instructor): Promise<void> {
+    const { password, ...user } = instructor
+
     await instructorModel
-      .findOneAndUpdate({ _id: instructor.id }, instructor)
-      .then(user => {
-        if (instructor.password) {
-          user?.markModified('password')
-          user?.save()
+      .findOneAndUpdate({ _id: instructor.id }, user)
+      .then((user: any) => {
+        if (user && password) {
+          user.markModified('password')
+          user.password = password
+          user.save()
         }
-      })
-      .catch(err => {
-        console.log(err)
       })
   }
   async delete(id: string): Promise<void> {
