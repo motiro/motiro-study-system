@@ -1,23 +1,18 @@
-import 'express-async-errors'
 import express from 'express'
+import 'express-async-errors'
 import 'dotenv/config'
-import './infrastructure/persistence/mongo/connections'
+import '@mongo/connections'
 import routes from './routes'
 import cookieParser from 'cookie-parser'
 import fileUpload from 'express-fileupload'
-import {
-  notFoundMiddleware,
-  errorMiddleware
-} from 'applications/middlewares/errorMiddleware'
-
-const app = express()
+import { notFoundMiddleware, errorMiddleware } from 'applications/middlewares/.'
 
 const { PORT, COOKIE_SECRET } = process.env
 const port = PORT || 5000
+const app = express()
 
 app.use(cookieParser(COOKIE_SECRET))
 app.use(express.json())
-app.use(express.static('./public'))
 app.use(fileUpload())
 app.use(routes)
 app.use(notFoundMiddleware)
