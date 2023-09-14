@@ -35,10 +35,10 @@ export class LessonUseCase {
   ) {}
 
   private async getProps(lesson: Lesson): Promise<LessonProps> {
-    const instructor = await this.instructorUseCase.listOne(lesson.instructor)
-    const student = await this.studentUseCase.listOne(lesson.student)
+    const instructor = await this.instructorUseCase.listOne(lesson.instructorId)
+    const student = await this.studentUseCase.listOne(lesson.studentId)
     const date = instructor.schedule.find(
-      s => s._id?.toString() === lesson.date.toString()
+      s => s._id?.toString() === lesson.dateId.toString()
     )
     return { instructor, student, date: date as Schedule }
   }
@@ -80,7 +80,7 @@ export class LessonUseCase {
 
     const createLesson = await this.mongoRepo.save(lesson)
     date.busy = true
-    await this.instructorUseCase.updateSchedule(lesson.instructor, date)
+    await this.instructorUseCase.updateSchedule(lesson.instructorId, date)
 
     const response: LessonResponse = {
       id: createLesson.id!,
@@ -116,11 +116,11 @@ export class LessonUseCase {
     const { instructor, student, date } = await this.getProps(lesson)
 
     const response: LessonResponse = {
-      id: lesson.id!,
       instructor: { name: instructor.name, id: instructor.id! },
       student: { name: student.name, id: student.id! },
       lesson_date: { date: date.date!, id: date._id! },
-      files: lesson.files
+      files: lesson.files,
+      id: lesson.id!
     }
     return response
   }
@@ -133,11 +133,11 @@ export class LessonUseCase {
       if (!instructor || !student || !date) continue
 
       const result: LessonResponse = {
-        id: lesson.id!,
         instructor: { name: instructor.name, id: instructor.id! },
         student: { name: student.name, id: student.id! },
         lesson_date: { date: date.date!, id: date._id! },
-        files: lesson.files
+        files: lesson.files,
+        id: lesson.id!
       }
       response.push(result)
     }
@@ -154,7 +154,7 @@ export class LessonUseCase {
     const { date } = await this.getProps(lesson)
     if (date) {
       date.busy = false
-      await this.instructorUseCase.updateSchedule(lesson.instructor, date)
+      await this.instructorUseCase.updateSchedule(lesson.instructorId, date)
     }
     await this.mongoRepo.delete(id)
   }

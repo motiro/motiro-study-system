@@ -78,7 +78,7 @@ describe('AdminController', () => {
     const nonExistentId = 'falseId'
 
     await expect(adminUseCase.listOne(nonExistentId)).rejects.toThrow(
-      'User not found'
+      'Admin not found'
     )
   })
 
@@ -89,7 +89,7 @@ describe('AdminController', () => {
     if (!(await adminRepo.findById(nonExistentId))) {
       await expect(
         adminUseCase.update({ id: nonExistentId, ...existingAdmin })
-      ).rejects.toThrow('User not found')
+      ).rejects.toThrow('Admin not found')
     }
   })
 
@@ -98,7 +98,7 @@ describe('AdminController', () => {
 
     if (!(await adminRepo.findById(nonExistentId))) {
       await expect(adminUseCase.delete(nonExistentId)).rejects.toThrow(
-        'User not found'
+        'Admin not found'
       )
     }
   })
@@ -108,7 +108,7 @@ describe('AdminController', () => {
 
     if (await adminRepo.findById('testId')) {
       await expect(adminUseCase.create(existingAdmin)).rejects.toThrow(
-        'User already exists'
+        'Admin already exists'
       )
     }
   })
@@ -120,9 +120,7 @@ describe('AdminController', () => {
 
     const students = await adminRepo.findAll()
 
-    const isAdminInList = students.some(
-      admin => admin.id === createdAdmin.id
-    )
+    const isAdminInList = students.some(admin => admin.id === createdAdmin.id)
 
     expect(isAdminInList).toBe(true)
   })
@@ -154,7 +152,7 @@ describe('AdminController', () => {
   })
 
   it('should count documents when there are users', async () => {
-    const count = await adminRepo.count();
-    expect(count).toBeGreaterThan(0);
-  });
+    const count = await adminRepo.count()
+    expect(count).toBeGreaterThan(0)
+  })
 })

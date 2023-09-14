@@ -5,16 +5,16 @@ import { dateId, dateId2 } from './instructorRepoTest'
 const lessons: Lesson[] = [
   {
     id: 'testId',
-    instructor: 'testId',
-    student: 'testId',
-    date: dateId.toString(),
+    instructorId: 'testId',
+    studentId: 'testId',
+    dateId: dateId.toString(),
     files: []
   },
   {
     id: 'testId2',
-    instructor: 'testId2',
-    student: 'testId2',
-    date: dateId2.toString(),
+    instructorId: 'testId2',
+    studentId: 'testId2',
+    dateId: dateId2.toString(),
     files: []
   }
 ]

@@ -16,17 +16,17 @@ const lessonUseCase = new LessonUseCase(
 )
 
 const lessonObj: Lesson = {
-  instructor: 'testId',
-  student: 'testId',
-  date: dateId.toString(),
+  instructorId: 'testId',
+  studentId: 'testId',
+  dateId: dateId.toString(),
   files: []
 }
 
 describe('LessonUseCase', () => {
   it('should throw not found error', async () => {
     const newLesson = async () =>
-      await lessonUseCase.create({ ...lessonObj, instructor: 'notFound' })
-    expect(() => newLesson()).rejects.toThrow('User not found')
+      await lessonUseCase.create({ ...lessonObj, instructorId: 'notFound' })
+    expect(() => newLesson()).rejects.toThrow('Instructor not found')
   })
 
   it('should create lesson', async () => {

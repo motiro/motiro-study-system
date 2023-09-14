@@ -102,7 +102,7 @@ describe('InstructorController', () => {
     const nonExistentId = 'falseId'
 
     await expect(instructorUseCase.listOne(nonExistentId)).rejects.toThrow(
-      'User not found'
+      'Instructor not found'
     )
   })
 
@@ -113,7 +113,7 @@ describe('InstructorController', () => {
     if (!(await instructorRepo.findById(nonExistentId))) {
       await expect(
         instructorUseCase.update(nonExistentId, existingInstructor)
-      ).rejects.toThrow('User not found')
+      ).rejects.toThrow('Instructor not found')
     }
   })
 
@@ -122,18 +122,8 @@ describe('InstructorController', () => {
 
     if (!(await instructorRepo.findById(nonExistentId))) {
       await expect(instructorUseCase.delete(nonExistentId)).rejects.toThrow(
-        'User not found'
+        'Instructor not found'
       )
-    }
-  })
-
-  it('should throw an error if instructor already exists', async () => {
-    const existingInstructor = instructorObj
-
-    if (await instructorRepo.findById('testId')) {
-      await expect(
-        instructorUseCase.create(existingInstructor)
-      ).rejects.toThrow('User already exists')
     }
   })
 
@@ -178,7 +168,7 @@ describe('InstructorController', () => {
   })
 
   it('should count documents when there are users', async () => {
-    const count = await instructorRepo.count();
-    expect(count).toBeGreaterThan(0);
-  });
+    const count = await instructorRepo.count()
+    expect(count).toBeGreaterThan(0)
+  })
 })

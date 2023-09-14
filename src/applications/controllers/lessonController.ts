@@ -11,7 +11,14 @@ import {
 export class LessonController {
   constructor(private useCase: LessonUseCase) {}
   async create(req: Request, res: Response) {
-    const result = await this.useCase.create(req.body)
+    const { instructorId, studentId, dateId } = req.body
+
+    const result = await this.useCase.create({
+      instructorId,
+      studentId,
+      dateId,
+      files: []
+    })
 
     return res.status(201).json(result)
   }

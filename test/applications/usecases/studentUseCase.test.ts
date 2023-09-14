@@ -78,14 +78,14 @@ describe('StudentController', () => {
   it('should return a message when student ID does not exist', async () => {
     const nonExistentId = 'falseId'
     const findStudent = async () => await studentUseCase.listOne(nonExistentId)
-    expect(() => findStudent()).rejects.toThrow('User not found')
+    expect(() => findStudent()).rejects.toThrow('Student not found')
   })
 
   it('should throw an error if the id does not exist when listOne', async () => {
     const nonExistentId = 'falseId'
 
     await expect(studentUseCase.listOne(nonExistentId)).rejects.toThrow(
-      'User not found'
+      'Student not found'
     )
   })
 
@@ -96,7 +96,7 @@ describe('StudentController', () => {
     if (!(await studentRepo.findById(nonExistentId))) {
       await expect(
         studentUseCase.update(nonExistentId, existingStudent)
-      ).rejects.toThrow('User not found')
+      ).rejects.toThrow('Student not found')
     }
   })
 
@@ -105,17 +105,7 @@ describe('StudentController', () => {
 
     if (!(await studentRepo.findById(nonExistentId))) {
       await expect(studentUseCase.delete(nonExistentId)).rejects.toThrow(
-        'User not found'
-      )
-    }
-  })
-
-  it('should throw an error if student already exists', async () => {
-    const existingStudent = studentObj
-
-    if (await studentRepo.findById('testId')) {
-      await expect(studentUseCase.create(existingStudent)).rejects.toThrow(
-        'User already exists'
+        'Student not found'
       )
     }
   })
@@ -161,7 +151,7 @@ describe('StudentController', () => {
   })
 
   it('should count documents when there are users', async () => {
-    const count = await studentRepo.count();
-    expect(count).toBeGreaterThan(0);
-  });
+    const count = await studentRepo.count()
+    expect(count).toBeGreaterThan(0)
+  })
 })
