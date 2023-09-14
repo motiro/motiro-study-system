@@ -1,16 +1,11 @@
 import { StudentRepository } from 'domain/repositories/studentRepository'
 import { Student } from 'domain/entities/students'
-import { BadRequestError, NotFoundError } from 'domain/entities/error'
+import { NotFoundError } from 'domain/entities/error'
 
 export class StudentUseCase {
   constructor(private studentRepository: StudentRepository) {}
 
   async create(request: Student): Promise<Student> {
-    const studentExists = await this.studentRepository.findById(request.id!)
-    if (studentExists) {
-      throw new BadRequestError('User already exists')
-    }
-
     const student = new Student(request)
 
     const response = await this.studentRepository.save(student)
@@ -28,7 +23,7 @@ export class StudentUseCase {
     const studentExists = await this.studentRepository.findById(id)
 
     if (!studentExists) {
-      throw new NotFoundError('User not found')
+      throw new NotFoundError('Student not found')
     }
 
     return studentExists
@@ -37,7 +32,7 @@ export class StudentUseCase {
     const studentExists = await this.studentRepository.findById(id)
 
     if (!studentExists) {
-      throw new NotFoundError('User not found')
+      throw new NotFoundError('Student not found')
     }
 
     const student = new Student(request, id)
@@ -49,7 +44,7 @@ export class StudentUseCase {
     const studentExists = await this.studentRepository.findById(id)
 
     if (!studentExists) {
-      throw new NotFoundError('User not found')
+      throw new NotFoundError('Student not found')
     }
 
     await this.studentRepository.delete(id)

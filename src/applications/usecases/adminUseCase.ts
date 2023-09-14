@@ -13,7 +13,7 @@ export class AdminUseCase {
 
   async listOne(id: string): Promise<Admin> {
     const response = await this.adminRepository.findById(id)
-    if (!response) throw new NotFoundError(`User not found`)
+    if (!response) throw new NotFoundError(`Admin not found`)
     return response
   }
 
@@ -26,7 +26,7 @@ export class AdminUseCase {
     const adminExists = await this.adminRepository.findById(req.id!)
 
     if (!adminExists) {
-      throw new NotFoundError('User not found')
+      throw new NotFoundError('Admin not found')
     }
 
     const admin = new Admin(req, req.id)
@@ -37,7 +37,7 @@ export class AdminUseCase {
     const adminExists = await this.adminRepository.findById(id)
 
     if (!adminExists) {
-      throw new NotFoundError('User not found')
+      throw new NotFoundError('Admin not found')
     }
 
     await this.adminRepository.delete(id)
