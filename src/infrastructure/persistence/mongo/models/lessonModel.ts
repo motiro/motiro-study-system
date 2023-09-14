@@ -17,9 +17,13 @@ const LessonSchema = new Schema(
       ref: 'Date',
       required: true
     },
-    file: {
-      type: String
-    }
+    files: [
+      {
+        name: String,
+        path: String,
+        uploadedBy: Schema.ObjectId
+      }
+    ]
   },
   {
     toJSON: {

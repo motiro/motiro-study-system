@@ -9,7 +9,7 @@ interface LessonDocument extends Document {
   instructor: string
   student: string
   date: string
-  file: string
+  files: []
 }
 
 export class MongoLessonRepository implements LessonRepository {
@@ -30,13 +30,17 @@ export class MongoLessonRepository implements LessonRepository {
         instructor: result.instructor,
         student: result.student,
         date: result.date,
-        file: result.file
+        files: result.files
       },
       result.id
     )
   }
-  async update(lesson: Lesson): Promise<void> {
-    await lessonModel.updateOne({ _id: lesson.id }, lesson)
+  async uploadFile(id: string, file: object): Promise<void> {
+    await lessonModel.findOneAndUpdate(
+      { _id: id },
+      { $push: { files: file } },
+      { new: true, runValidators: true }
+    )
   }
   async delete(id: string): Promise<void> {
     await lessonModel.deleteOne().where({ _id: id })
@@ -52,7 +56,7 @@ export class MongoLessonRepository implements LessonRepository {
         instructor: item.instructor,
         student: item.student,
         date: item.date,
-        file: item.file
+        files: item.files
       }
 
       lessons.push(lesson)
