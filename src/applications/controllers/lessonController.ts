@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { LessonUseCase } from 'applications/usecases/lessonUseCase'
 import { UploadedFile } from 'express-fileupload'
+import { BadRequestError } from 'domain/entities'
 
 export class LessonController {
   constructor(private useCase: LessonUseCase) {}
@@ -10,15 +11,32 @@ export class LessonController {
     return res.status(201).json(result)
   }
 
-  async file(req: Request, res: Response) {
-    const id = req.params.id
-    if (!req.files) {
-      throw new Error('No file')
-    }
-    const textFile = req.files?.textFile as UploadedFile
-    const result = await this.useCase.file({ id, textFile })
+  async uploadFile(req: Request, res: Response) {
+    const id = req.params?.id
+    if (!id) throw new BadRequestError('Invalid ID')
+    if (!req.body.user?.id) throw new BadRequestError('Invalid authentication')
+    if (!req.files || !req.files?.document)
+      throw new Error('No file was uploaded')
 
-    return res.status(200).json(result)
+    const textFile: UploadedFile | UploadedFile[] = req.files.document
+
+    if (Object.keys(textFile)[0] === '0') {
+      for (const doc of Object.values(textFile)) {
+        await this.useCase.uploadFile({
+          lessonId: id,
+          userId: req.body.user.id,
+          textFile: doc as UploadedFile
+        })
+      }
+      return res.status(200).json()
+    }
+    await this.useCase.uploadFile({
+      lessonId: id,
+      userId: req.body.user.id,
+      textFile: textFile as UploadedFile
+    })
+
+    return res.status(200).json()
   }
 
   async listOne(req: Request, res: Response) {
