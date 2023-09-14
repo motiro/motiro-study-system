@@ -1,7 +1,12 @@
 import { Request, Response } from 'express'
 import { LessonUseCase } from 'applications/usecases/lessonUseCase'
 import { UploadedFile } from 'express-fileupload'
-import { BadRequestError } from 'domain/entities'
+import {
+  BadRequestError,
+  ForbiddenError,
+  NotFoundError,
+  UnauthorizedError
+} from 'domain/entities'
 
 export class LessonController {
   constructor(private useCase: LessonUseCase) {}
@@ -12,9 +17,21 @@ export class LessonController {
   }
 
   async uploadFile(req: Request, res: Response) {
-    const id = req.params?.id
+    const id = req.params.id
     if (!id) throw new BadRequestError('Invalid ID')
-    if (!req.body.user?.id) throw new BadRequestError('Invalid authentication')
+
+    const userId = req.body.user?.id
+    if (!userId) throw new UnauthorizedError('Invalid authentication')
+
+    const lesson = await this.useCase.listOne(id)
+    if (!lesson) throw new NotFoundError('Lesson not found')
+
+    const isInstructor = userId === lesson.instructor.id.toString()
+    const isStudent = userId === lesson.student.id.toString()
+    const isAdmin = req.body.user?.role === 'admin'
+    if (!isInstructor && !isStudent && !isAdmin)
+      throw new ForbiddenError('Access denied')
+
     if (!req.files || !req.files?.document)
       throw new Error('No file was uploaded')
 
@@ -26,7 +43,7 @@ export class LessonController {
       textFile: textFile
     })
 
-    return res.status(200).json()
+    return res.status(200).send()
   }
 
   async listOne(req: Request, res: Response) {
