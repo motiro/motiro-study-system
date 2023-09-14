@@ -47,10 +47,10 @@ export class MongoStudentRepository implements StudentRepository {
 
     await studentModel
       .findOneAndUpdate({ _id: student.id }, user)
-      .then((user: any) => {
+      .then(user => {
         if (user && password) {
           user.markModified('password')
-          user.password = password
+          user.set({ password: password })
           user.save()
         }
       })

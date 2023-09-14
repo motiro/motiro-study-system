@@ -50,10 +50,10 @@ export class MongoInstructorRepository implements InstructorRepository {
 
     await instructorModel
       .findOneAndUpdate({ _id: instructor.id }, user)
-      .then((user: any) => {
+      .then(user => {
         if (user && password) {
           user.markModified('password')
-          user.password = password
+          user.set({ password: password })
           user.save()
         }
       })
