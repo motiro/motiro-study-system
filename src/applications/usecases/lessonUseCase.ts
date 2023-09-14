@@ -23,7 +23,7 @@ interface LessonResponse {
   instructor: { name: string; id: string }
   student: { name: string; id: string }
   lesson_date: { date: Date; id: ObjectId }
-  files: { name: string; path: string, uploadedBy: ObjectId }[]
+  files: { name: string; path: string; uploadedBy: ObjectId }[]
 }
 
 export class LessonUseCase {
@@ -43,6 +43,28 @@ export class LessonUseCase {
     if (!instructor || !student || !date)
       throw new NotFoundError('Could not fetch lesson properties')
     return { instructor, student, date }
+  }
+
+  private async handleFile(textFile: UploadedFile, userId: string) {
+    if (!textFile.mimetype.startsWith('text'))
+      throw new BadRequestError('Not a text file')
+
+    const maxSize = 1024 * 1024 * 5
+    if (textFile.size > maxSize)
+      throw new BadRequestError('File exceeds 5MB')
+
+    const fileName = new Date().getTime() + '-' + textFile.name
+    const filePath = path.join(
+      __dirname,
+      '../../../public/uploads/' + `${fileName}`
+    )
+    const file = {
+      name: fileName,
+      path: '/uploads/' + fileName,
+      uploadedBy: userId
+    }
+    await textFile.mv(filePath)
+    return file
   }
 
   async create(req: Lesson): Promise<LessonResponse> {
@@ -68,24 +90,23 @@ export class LessonUseCase {
     return response
   }
 
-  async uploadFile(req: { lessonId: string, userId: string, textFile: UploadedFile }): Promise<void> {
+  async uploadFile(req: {
+    lessonId: string
+    userId: string
+    textFile: UploadedFile | UploadedFile[]
+  }): Promise<void> {
     const lessonExists = await this.mongoRepo.findById(req.lessonId)
     if (!lessonExists) throw new NotFoundError('Lesson not found')
+    if (!req.textFile) throw new Error('No file was uploaded')
 
-    if (!req.textFile)
-      throw new Error('No file was uploaded')
-
-    const fileName = new Date().getTime() + '-' + req.textFile.name
-    const filePath = path.join(
-      __dirname,
-      '../../../public/uploads/' + `${fileName}`
-    )
-    const file = {
-      name: fileName,
-      path: '/uploads/' + fileName,
-      uploadedBy: req.userId
+    if (Object.keys(req.textFile)[0] === '0') {
+      for (const doc of Object.values(req.textFile)) {
+        const file = await this.handleFile(doc, req.userId)
+        await this.mongoRepo.uploadFile(req.lessonId, file)
+      }
+      return
     }
-    await req.textFile.mv(filePath)
+    const file = await this.handleFile(req.textFile as UploadedFile, req.userId)
     await this.mongoRepo.uploadFile(req.lessonId, file)
   }
 

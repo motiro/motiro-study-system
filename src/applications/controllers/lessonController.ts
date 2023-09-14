@@ -20,20 +20,10 @@ export class LessonController {
 
     const textFile: UploadedFile | UploadedFile[] = req.files.document
 
-    if (Object.keys(textFile)[0] === '0') {
-      for (const doc of Object.values(textFile)) {
-        await this.useCase.uploadFile({
-          lessonId: id,
-          userId: req.body.user.id,
-          textFile: doc as UploadedFile
-        })
-      }
-      return res.status(200).json()
-    }
     await this.useCase.uploadFile({
       lessonId: id,
-      userId: req.body.user.id,
-      textFile: textFile as UploadedFile
+      userId: req.body.user?.id,
+      textFile: textFile
     })
 
     return res.status(200).json()
