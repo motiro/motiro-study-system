@@ -6,9 +6,9 @@ import { Document, ObjectId } from 'mongoose'
 interface LessonDocument extends Document {
   _id: ObjectId
   id: string
-  instructor: string
-  student: string
-  date: string
+  instructorId: string
+  studentId: string
+  dateId: string
 }
 
 export class MongoLessonRepository implements LessonRepository {
@@ -26,9 +26,9 @@ export class MongoLessonRepository implements LessonRepository {
 
     return new Lesson(
       {
-        instructor: result.instructor,
-        student: result.student,
-        date: result.date
+        instructorId: result.instructorId,
+        studentId: result.studentId,
+        dateId: result.dateId
       },
       result.id
     )
@@ -44,9 +44,9 @@ export class MongoLessonRepository implements LessonRepository {
     for (let item of result) {
       const lesson: Lesson = {
         id: item._id.toString(),
-        instructor: item.instructor,
-        student: item.student,
-        date: item.date
+        instructorId: item.instructorId,
+        studentId: item.studentId,
+        dateId: item.dateId
       }
 
       lessons.push(lesson)

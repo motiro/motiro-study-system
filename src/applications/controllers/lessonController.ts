@@ -4,12 +4,12 @@ import { LessonUseCase } from 'applications/usecases/lessonUseCase'
 export class LessonController {
   constructor(private useCase: LessonUseCase) {}
   async create(req: Request, res: Response) {
-    const { instructor, student, date } = req.body
+    const { instructorId, studentId, dateId } = req.body
 
     const result = await this.useCase.create({
-      instructor,
-      student,
-      date
+      instructorId,
+      studentId,
+      dateId
     })
 
     return res.status(201).json(result)

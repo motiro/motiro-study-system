@@ -31,10 +31,10 @@ export class LessonUseCase {
   ) {}
 
   private async getProps(lesson: Lesson): Promise<LessonProps> {
-    const instructor = await this.instructorUseCase.listOne(lesson.instructor)
-    const student = await this.studentUseCase.listOne(lesson.student)
+    const instructor = await this.instructorUseCase.listOne(lesson.instructorId)
+    const student = await this.studentUseCase.listOne(lesson.studentId)
     const date = instructor.schedule.find(
-      s => s._id?.toString() === lesson.date.toString()
+      s => s._id?.toString() === lesson.dateId.toString()
     )
 
     if (!instructor || !student || !date)
@@ -46,11 +46,14 @@ export class LessonUseCase {
     const lesson = new Lesson(req)
     const { instructor, student, date } = await this.getProps(lesson)
 
-    if (date.busy) throw new BadRequestError('A lesson is already booked for the requested schedule')
+    if (date.busy)
+      throw new BadRequestError(
+        'A lesson is already booked for the requested schedule'
+      )
 
     const createLesson = await this.mongoRepo.save(lesson)
     date.busy = true
-    await this.instructorUseCase.updateSchedule(lesson.instructor, date)
+    await this.instructorUseCase.updateSchedule(lesson.instructorId, date)
 
     const response: LessonResponse = {
       instructor: { name: instructor.name, id: instructor.id! },
@@ -104,7 +107,7 @@ export class LessonUseCase {
     const { date } = await this.getProps(lesson)
     if (date) {
       date.busy = false
-      await this.instructorUseCase.updateSchedule(lesson.instructor, date)
+      await this.instructorUseCase.updateSchedule(lesson.instructorId, date)
     }
     await this.mongoRepo.delete(id)
   }
