@@ -67,10 +67,10 @@ export class MongoStudentRepository implements StudentRepository {
 
     for (let item of result) {
       const student: Student = {
+        id: item._id.toString(),
         name: item.name,
         email: item.email,
-        role: item.role,
-        id: item._id.toString()
+        role: item.role
       }
 
       students.push(student)

@@ -96,9 +96,9 @@ export class MongoInstructorRepository implements InstructorRepository {
 
       for (let date of item.schedule) {
         const scheduleDate: DateSchedule = {
+          id: date._id!.toString(),
           date: date.date,
-          busy: date.busy,
-          id: date._id!.toString()
+          busy: date.busy
         }
 
         schedule.push(scheduleDate)

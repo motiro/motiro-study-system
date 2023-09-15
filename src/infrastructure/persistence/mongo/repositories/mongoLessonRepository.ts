@@ -35,7 +35,7 @@ export class MongoLessonRepository implements LessonRepository {
       result.id
     )
   }
-  async uploadFile(id: string, file: object): Promise<void> {
+  async uploadFile(id: string, file: LessonFile): Promise<void> {
     await lessonModel.findOneAndUpdate(
       { _id: id },
       { $push: { files: file } },

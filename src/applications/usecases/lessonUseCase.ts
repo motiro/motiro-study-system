@@ -20,10 +20,10 @@ interface LessonProps {
 
 interface LessonResponse {
   id: string
-  instructor: { name: string; id: string }
-  student: { name: string; id: string }
-  lesson_date: { date: Date; id: ObjectId }
   files: { name: string; path: string; uploadedBy: ObjectId }[]
+  instructor: { id: string; name: string }
+  student: { id: string; name: string }
+  lesson_date: { id: ObjectId; date: Date }
 }
 
 export class LessonUseCase {
@@ -90,9 +90,9 @@ export class LessonUseCase {
 
     const response: LessonResponse = {
       id: createLesson.id!,
-      instructor: { name: instructor.name, id: instructor.id! },
-      student: { name: student.name, id: student.id! },
-      lesson_date: { date: date.date!, id: date._id! },
+      instructor: { id: instructor.id!, name: instructor.name },
+      student: { id: student.id!, name: student.name },
+      lesson_date: { id: date._id!, date: date.date! },
       files: createLesson.files
     }
     return response
@@ -121,12 +121,23 @@ export class LessonUseCase {
     if (!lesson) throw new NotFoundError(`Lesson not found`)
     const { instructor, student, date } = await this.getProps(lesson)
 
+    const files = []
+    for (const item of lesson.files) {
+      const file = {
+        id: item.id,
+        name: item.name,
+        path: item.path,
+        uploadedBy: item.uploadedBy
+      }
+      files.push(file)
+    }
+
     const response: LessonResponse = {
-      instructor: { name: instructor.name, id: instructor.id! },
-      student: { name: student.name, id: student.id! },
-      lesson_date: { date: date.date!, id: date._id! },
-      files: lesson.files,
-      id: lesson.id!
+      id: lesson.id!,
+      instructor: { id: instructor.id!, name: instructor.name },
+      student: { id: student.id!, name: student.name },
+      lesson_date: { id: date._id!, date: date.date! },
+      files: files
     }
     return response
   }
@@ -138,12 +149,23 @@ export class LessonUseCase {
       const { instructor, student, date } = await this.getProps(lesson)
       if (!instructor || !student || !date) continue
 
+      const files = []
+      for (const item of lesson.files) {
+        const file = {
+          id: item.id,
+          name: item.name,
+          path: item.path,
+          uploadedBy: item.uploadedBy
+        }
+        files.push(file)
+      }
+
       const result: LessonResponse = {
-        instructor: { name: instructor.name, id: instructor.id! },
-        student: { name: student.name, id: student.id! },
-        lesson_date: { date: date.date!, id: date._id! },
-        files: lesson.files,
-        id: lesson.id!
+        id: lesson.id!,
+        instructor: { id: instructor.id!, name: instructor.name },
+        student: { id: student.id!, name: student.name },
+        lesson_date: { id: date._id!, date: date.date! },
+        files: files
       }
       response.push(result)
     }
@@ -153,9 +175,7 @@ export class LessonUseCase {
   async delete(id: string): Promise<void> {
     const lesson = await this.mongoRepo.findById(id)
 
-    if (!lesson) {
-      throw new NotFoundError('Lesson not found')
-    }
+    if (!lesson) throw new NotFoundError('Lesson not found')
 
     const { date } = await this.getProps(lesson)
     if (date) {
