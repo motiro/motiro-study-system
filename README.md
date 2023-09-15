@@ -46,6 +46,8 @@ Class scheduling system
 │
 ├── public/
 │   └── uploads/
+│
+├── test/
 ```
 
 ## Environment variables
