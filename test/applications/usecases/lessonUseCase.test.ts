@@ -90,13 +90,54 @@ describe('LessonUseCase', () => {
     )
   })
 
-  it('should throw error ', async () => {
+  it('should upload a text file', async () => {
     const req = {
-    lessonId: 'testId',
-    userId: 'testId',
-    textFile: { mimetype: '' } as unknown as UploadedFile
-  }
+      lessonId: 'testId',
+      userId: 'testId',
+      textFile: {
+        mimetype: 'text',
+        mv: () => true,
+        name: 'nomeTest'
+      } as unknown as UploadedFile
+    }
     const newFile = async () => await lessonUseCase.uploadFile(req)
-    expect(() => newFile()).rejects.toThrow('Not a text file')
+    const result = await newFile()
+
+    expect(result).toBeUndefined()
+  })
+
+  it('should throw error if the file is larger than 5MB', async () => {
+    const req = {
+      lessonId: 'testId',
+      userId: 'testId',
+      textFile: {
+        mimetype: 'text',
+        mv: () => true,
+        name: 'largeFile.txt',
+        size: 1024 * 1024 * 6
+      } as unknown as UploadedFile
+    }
+
+    const newFile = async () => {
+      return await lessonUseCase.uploadFile(req)
+    }
+
+    await expect(newFile()).rejects.toThrow('File exceeds 5MB')
+  })
+
+  it('should throw error if not a text file', async () => {
+    const req = {
+      lessonId: 'testId',
+      userId: 'testId',
+      textFile: {
+        mimetype: 'image/jpeg',
+        mv: () => true,
+        name: 'image.jpg'
+      } as unknown as UploadedFile
+    }
+
+    await expect(lessonUseCase.uploadFile(req)).rejects.toThrow(
+      'Not a text file'
+    )
   })
 })
