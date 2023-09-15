@@ -1,1161 +1,1505 @@
 {
-    "openapi": "3.1.0",
-    "info":{
-        "title": "Motirõ Study System - MSS",
-        "description": "Class scheduling system.",
-        "version": "1.0.0"
-    },
-    "servers": [
-        {
-          "url": "http://localhost:5000/api/v1",
-          "description": "API"
-        }
-    ],
-    "paths": {
-        "/auth/register": {
-            "post": {
-                "summary": "Register",
-                "description": "This route register a new user",
-                "tags": ["Register"],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref":"#/components/schemas/Register"
-                            },
-                            "examples": {
-                                "register": {
-                                    "value": {
-                                        "name": "Noah Doe",
-                                        "email": "noah@gmail.com",
-                                        "password":"1S2G4Jds98",
-                                        "role":"admin"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "400": {
-                        "description": "Bad request",
-                        "content": {
-                          "application/json": {
-                            "schema": {
-                              "error": {
-                                "type": "string"
-                              }
-                            },
-                            "examples": {
-                              "Not found": {
-                                "value": {
-                                  "error": "E-mail already registered"
-                                }
-                              }
-                            }
-                          }
-                        }
-                    },
-                    "201": {
-                        "description": "Token created",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object"
-
-                                },
-                                "examples": {
-                                    "register": {
-                                        "value": {
-                                            "name": "Noah Doe",
-                                            "userId": "123233452344",
-                                            "role":"admin"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "error": {
-                                        "type": "string"
-                                      }
-                                },
-                                "examples": {
-                                    "Unauthorized": {
-                                        "value": {
-                                            "error": "Unauthorized"
-                                        }
-                                    },
-                                    "Invalid credentials": {
-                                        "value": {
-                                            "error": "Invalid role"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-
-                }
-            }
-        },
-        "/auth/login": {
-            "post": {
-                "summary": "Login",
-                "description": "TThis route logs in a registered user",
-                "tags": ["Login"],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref":"#/components/schemas/Login"
-                            },
-                            "examples": {
-                                "login": {
-                                    "value": {
-                                        "email": "noah@gmail.com",
-                                        "password":"1S2G4Jds98"
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "400": {
-                        "description": "Bad request",
-                        "content": {
-                          "application/json": {
-                            "schema": {
-                              "error": {
-                                "type": "string"
-                              }
-                            },
-                            "examples": {
-                              "Bad Request": {
-                                "value": {
-                                  "error": "Missing credentials"
-                                }
-                              }
-                            }
-                          }
-                        }
-                    },
-                    "200": {
-                        "description": "Logged",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object"
-
-                                },
-                                "examples": {
-                                    "login": {
-                                        "value": {
-                                            "name": "Noah Doe",
-                                            "userId": "123233452344",
-                                            "role": "admin"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Bad request",
-                        "content": {
-                          "application/json": {
-                            "schema": {
-                              "error": {
-                                "type": "string"
-                              }
-                            },
-                            "examples": {
-                              "Not found": {
-                                "value": {
-                                  "error": "User not found"
-                                }
-                              }
-                            }
-                          }
-                        }
-                    },
-                    "401": {
-                        "description": "Bad request",
-                        "content": {
-                          "application/json": {
-                            "schema": {
-                              "error": {
-                                "type": "string"
-                              }
-                            },
-                            "examples": {
-                              "Unauthorized": {
-                                "value": {
-                                  "error": "Invalid password"
-                                }
-                              }
-                            }
-                          }
-                        }
-                    }
-                }
-            }
-        },
-        "/auth/logout": {
-            "get": {
-                "summary": "Logout",
-                "description": "This route logs a user out",
-                "tags": ["logout"],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    }
-                }
-                
-            }
-        },
-        "/instructor": {
-            "post": {
-                "summary": "Create a instructor",
-                "description": "This route creates a new instructor",
-                "tags": ["Instructor"],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/Instructor"
-                            },
-                            "examples": {
-                                "instructor": {
-                                    "value": {
-                                        "name": "Peter Doe",
-                                        "email": "peter@gmail.com",
-                                        "password": "1S2G4Jds98",
-                                        "specialty": ["Sciences", "Philosophy"],
-                                        "schedule": [
-                                            {
-                                                "date": "2023-08-28 15:00",
-                                                "busy": false
-                                            },
-                                            {
-                                                "date": "2023-10-28 19:00",
-                                                "busy": true
-                                            }
-                                        ],
-                                        "role": ["instructor"]
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "error": {
-                                        "type": "string"
-                                    }
-                                },
-                                "examples": {
-                                    "Unauthorized": {
-                                        "value": {
-                                            "error": "Unauthorized"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad request",
-                        "content": {
-                          "application/json": {
-                            "schema": {
-                              "error": {
-                                "type": "string"
-                              }
-                            },
-                            "examples": {
-                              "Bad Request": {
-                                "value": {
-                                  "error": "Instructor already exists"
-                                }
-                              }
-                            }
-                          }
-                        }
-                    },
-                    "201": {
-                        "description": "Instructor created",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                        "$ref":"#/components/schemas/Instructor"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "error": {
-                                        "type": "string"
-                                    }
-                                },
-                                "examples": {
-                                    "Internal server error": {
-                                      "value": {
-                                        "error": "Unexpected error"
-                                      }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            },
-            "get": {
-                "summary": "Get all instructors",
-                "description": "This route get all instructors",
-                "tags": ["Instructor"],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                "type": "object",
-                                "$ref": "#/components/schemas/Instructor"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "error": {
-                                        "type": "string"
-                                    }
-                                },
-                                "examples": {
-                                    "Unauthorized": {
-                                        "value": {
-                                            "error": "Unauthorized"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "error": {
-                                        "type": "string"
-                                    }
-                                },
-                                "examples": {
-                                    "Internal server error": {
-                                      "value": {
-                                        "error": "Unexpected error"
-                                      }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/instructor/{id}": {
-            "get": {
-                "summary": "Get one instructor by id",
-                "description": "This route get one instructor by id",
-                "tags": ["Instructor"],
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "Instructor id for the search",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Instructor received",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type:": "object",
-                                    "$ref":"#/components/schemas/Instructor"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Not found",
-                        "content": {
-                          "application/json": {
-                            "schema": {
-                              "error": {
-                                "type": "string"
-                              }
-                            },
-                            "examples": {
-                              "Instructor not found": {
-                                "value": {
-                                  "error": "Instructor does not exists"
-                                }
-                              }
-                            }
-                          }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "error": {
-                                        "type": "string"
-                                    }
-                                },
-                                "examples": {
-                                    "Unauthorized": {
-                                        "value": {
-                                            "error": "Unauthorized"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "error": {
-                                        "type": "string"
-                                    }
-                                },
-                                "examples": {
-                                    "Internal server error": {
-                                      "value": {
-                                        "error": "Unexpected error"
-                                      }
-                                    }
-                                  }
-                            }
-                        }
-                    }
-                }
-            },
-            "patch": {
-                "summary": "Updates a instructor",
-                "description": "This route updates a instructor by id",
-                "tags": ["Instructor"],
-                "parameters": [
-                    {
-                       "name": "id",
-                       "in": "path",
-                       "description": "Instructor id for update",
-                       "required": true
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/Instructor"
-                            },
-                            "examples": {
-                                "instructor": {
-                                    "value": {
-                                        "name": "Peter Doe",
-                                        "email": "peter@gmail.com",
-                                        "password": "1S2G4Jds98",
-                                        "specialty": ["Sciences", "Philosophy"],
-                                        "schedule": [
-                                            {
-                                                "date": "2023-08-28 15:00",
-                                                "busy": false
-                                            },
-                                            {
-                                                "date": "2023-10-28 19:00",
-                                                "busy": true
-                                            }
-                                        ],
-                                        "role": ["instructor"]
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Instructor updated"       
-                    },
-                    "404": {
-                        "description": "Not found",
-                        "content": {
-                          "application/json": {
-                            "schema": {
-                              "error": {
-                                "type": "string"
-                              }
-                            },
-                            "examples": {
-                              "Instructor not found": {
-                                "value": {
-                                  "error": "Instructor does not exists"
-                                }
-                              }
-                            }
-                          }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "error": {
-                                        "type": "string"
-                                    }
-                                },
-                                "examples": {
-                                    "Unauthorized": {
-                                        "value": {
-                                            "error": "Unauthorized"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "error": {
-                                        "type": "string"
-                                    }
-                                },
-                                "examples": {
-                                    "Internal server error": {
-                                      "value": {
-                                        "error": "Unexpected error"
-                                      }
-                                    }
-                                  }
-                            }
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "summary": "Delete a instructor",
-                "description": "This route deletes a instructor",
-                "tags": ["Instructor"],
-                "parameters": [
-                    {
-                       "name": "id",
-                       "in": "path",
-                       "description": "Instructor id to be deleted",
-                       "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Instructor deleted"
-                    },
-                    "404": {
-                        "description": "Not found",
-                        "content": {
-                          "application/json": {
-                            "schema": {
-                              "error": {
-                                "type": "string"
-                              }
-                            },
-                            "examples": {
-                              "Instructor not found": {
-                                "value": {
-                                  "error": "Instructor does not exists"
-                                }
-                              }
-                            }
-                          }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "error": {
-                                        "type": "string"
-                                    }
-                                },
-                                "examples": {
-                                    "Unauthorized": {
-                                        "value": {
-                                            "error": "Unauthorized"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "error": {
-                                        "type": "string"
-                                    }
-                                },
-                                "examples": {
-                                    "Internal server error": {
-                                      "value": {
-                                        "error": "Unexpected error"
-                                      }
-                                    }
-                                  }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/student": {
-            "post": {
-                "summary": "Create a student",
-                "description": "This route creates a student",
-                "tags": ["Student"],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref":"#/components/schemas/Student"
-                            },
-                            "examples": {
-                                "student": {
-                                    "value": {
-                                        "name": "Lucas Dionizio",
-                                        "email": "lucas@gmail.com",
-                                        "password":"1S2G4Jds98",
-                                        "role": ["student"]
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "error": {
-                                        "type": "string"
-                                      }
-                                },
-                                "examples": {
-                                    "Unauthorized": {
-                                        "value": {
-                                            "error": "Unauthorized"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "201": {
-                        "description": "Student created",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "object",
-                                        "$ref":"#/components/schemas/Student"
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "error": {
-                                        "type": "string"
-                                    }
-                                },
-                                "examples": {
-                                    "Internal server error": {
-                                      "value": {
-                                        "error": "Failed to create student"
-                                      }
-                                    }
-                                  }
-                            }
-                        }
-                    }
-                }
-            },
-            "get": {
-                "summary": "Get all students",
-                "description": "This route get all students",
-                "tags": ["Student"],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                "type": "object",
-                                "$ref": "#/components/schemas/Student"
-                                }
-                            }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "error": {
-                                        "type": "string"
-                                      }
-                                },
-                                "examples": {
-                                    "Unauthorized": {
-                                        "value": {
-                                            "error": "Unauthorized"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "error": {
-                                        "type": "string"
-                                    }
-                                },
-                                "examples": {
-                                    "Internal server error": {
-                                      "value": {
-                                        "error": "Failed to fetch students"
-                                      }
-                                    }
-                                  }
-                            }
-                        }
-                    }
-                }
-            }
-        },
-        "/student/{id}": {
-            "get": {
-                "summary": "Get one student by id",
-                "description": "This route get one student by id",
-                "tags": ["Student"],
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "Student id for the search",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Student received",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type:": "object",
-                                    "$ref":"#/components/schemas/Student"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Not found",
-                        "content": {
-                          "application/json": {
-                            "schema": {
-                              "error": {
-                                "type": "string"
-                              }
-                            },
-                            "examples": {
-                              "Student not found": {
-                                "value": {
-                                  "error": "Student not found"
-                                }
-                              }
-                            }
-                          }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "error": {
-                                        "type": "string"
-                                    }
-                                },
-                                "examples": {
-                                    "Unauthorized": {
-                                        "value": {
-                                            "error": "Unauthorized"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "error": {
-                                        "type": "string"
-                                    }
-                                },
-                                "examples": {
-                                    "Internal server error": {
-                                      "value": {
-                                        "error": "Failed to fetch student"
-                                      }
-                                    }
-                                  }
-                            }
-                        }
-                    }
-                }
-            },
-            "patch": {
-                "summary": "Updates a student",
-                "description": "This route updates a student by id",
-                "tags": ["Student"],
-                "parameters": [
-                    {
-                       "name": "id",
-                       "in": "path",
-                       "description": "Student id for update",
-                       "required": true
-                    }
-                ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/Student"
-                            },
-                            "examples": {
-                                "instructor": {
-                                    "value": {
-                                        "name": "Lucas Dionizio",
-                                        "email": "lucas@gmail.com",
-                                        "password":"1S2G4Jds98",
-                                        "role": ["student"]
-                                    }
-                                }
-                            }
-                        }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Student updated",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type:": "object",
-                                    "$ref":"#/components/schemas/Student"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Not found",
-                        "content": {
-                          "application/json": {
-                            "schema": {
-                              "error": {
-                                "type": "string"
-                              }
-                            },
-                            "examples": {
-                              "Student not found": {
-                                "value": {
-                                  "error": "Student not found"
-                                }
-                              }
-                            }
-                          }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "error": {
-                                        "type": "string"
-                                      }
-                                },
-                                "examples": {
-                                    "Unauthorized": {
-                                        "value": {
-                                            "error": "Unauthorized"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "error": {
-                                        "type": "string"
-                                    }
-                                },
-                                "examples": {
-                                    "Internal server error": {
-                                      "value": {
-                                        "error": "Failed to update student"
-                                      }
-                                    }
-                                  }
-                            }
-                        }
-                    }
-                }
-            },
-            "delete": {
-                "summary": "Delete a student",
-                "description": "This route deletes a student",
-                "tags": ["Student"],
-                "parameters": [
-                    {
-                       "name": "id",
-                       "in": "path",
-                       "description": "Student id to be deleted",
-                       "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Student deleted",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type:": "object",
-                                    "$ref":"#/components/schemas/Student"
-                                }
-                            }
-                        }
-                    },
-                    "404": {
-                        "description": "Not found",
-                        "content": {
-                          "application/json": {
-                            "schema": {
-                              "error": {
-                                "type": "string"
-                              }
-                            },
-                            "examples": {
-                              "Student not found": {
-                                "value": {
-                                  "error": "Student not found"
-                                }
-                              }
-                            }
-                          }
-                        }
-                    },
-                    "401": {
-                        "description": "Unauthorized",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "error": {
-                                        "type": "string"
-                                      }
-                                },
-                                "examples": {
-                                    "Unauthorized": {
-                                        "value": {
-                                            "error": "Unauthorized"
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Error",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "error": {
-                                        "type": "string"
-                                    }
-                                },
-                                "examples": {
-                                    "Internal server error": {
-                                      "value": {
-                                        "error": "Failed to delete student"
-                                      }
-                                    }
-                                  }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    },
-    "components": {
-        "schemas": {
-            "Instructor": {
-                "type": "object",
-                "properties": {
-                    "name": {
-                        "type": "string"
-                    },
-                    "email": {
-                        "type": "string"
-                    },
-                    "password": {
-                        "type": "string"
-                    },
-                    "specialty": {
-                        "type": "array",
-                        "items": {
-                            "type": "string"
-                        }
-                    },
-                    "schedule": {
-                        "type": "array",
-                        "items": {
-                            "type": "object",
-                            "properties": {
-                                "date": {
-                                    "type": "string"
-                                },
-                                "busy": {
-                                    "type": "boolean"
-                                }
-                            }
-                        }
-                    },
-                    "role": {
-                        "type":"string",
-                        "enum": ["instructor"]
-                    }
-                }
-            },
-            "Student": {
-                "type": "object",
-                "properties": {
-                    "name": {
-                        "type": "string"
-                    },
-                    "email": {
-                        "type": "string"
-                    },
-                    "password": {
-                        "type": "string"
-                    },
-                    "role": {
-                        "type":"string",
-                        "enum": ["student"]
-                    }
-                }
-            },
-            "Lesson": {
-                "type": "object",
-                "properties": {
-                    "instructor": {
-                        "type": "string"
-                    },
-                    "student": {
-                        "type": "string"
-                    },
-                    "date": {
-                        "type": "string"
-                    }
-                }
-            },
-            "Register": {
-                "type": "object",
-                "properties": {
-                    "name": {
-                        "type": "string"
-                    },
-                    "email": {
-                        "type": "string"
-                    },
-                    "password": {
-                        "type": "string"
-                    },
-                    "role": {
-                        "type":"string",
-                        "enum": ["admin", "student", "instructor"]
-                    }
-                }
-            },
-            "Login": {
-                "type": "object",
-                "properties": {
-                    "email": {
-                        "type": "string"
-                    },
-                    "password": {
-                        "type": "string"
-                    }
-                }
-            },
-            "Logout": {
-
-            }
-        }
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Motirõ Study System - MSS",
+    "description": "Class scheduling system.",
+    "version": "2.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:5000/api/v1",
+      "description": "API"
     }
+  ],
+  "paths": {
+    "/auth/register": {
+      "post": {
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Register",
+        "description": "This route register a new user",
+        "tags": ["Register"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Register"
+              },
+              "examples": {
+                "Register": {
+                  "value": {
+                    "name": "Noah Doe",
+                    "email": "noah@gmail.com",
+                    "password": "1S2G4Jds98",
+                    "role": "admin"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "register": {
+                    "value": {
+                      "name": "Noah Doe",
+                      "role": "admin",
+                      "id": "650394f4ed4d999ac948ba0f"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error: Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "E-mail already registered": {
+                    "value": {
+                      "error": "E-mail already registered"
+                    }
+                  },
+                  "Invalid role": {
+                    "value": {
+                      "error": "Invalid role"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error: Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": "string"
+                },
+                "examples": {
+                  "Not logged in": {
+                    "value": {
+                      "error": "Not logged in"
+                    }
+                  },
+                  "Session expired": {
+                    "value": {
+                      "error": "Session expired"
+                    }
+                  },
+                  "Unauthorized": {
+                    "value": {
+                      "error": "Invalid authentication"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error: Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Access denied": {
+                    "value": {
+                      "error": "Access denied"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/login": {
+      "post": {
+        "summary": "Login",
+        "description": "This route logs in a registered user",
+        "tags": ["Login"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Login"
+              },
+              "examples": {
+                "Login": {
+                  "value": {
+                    "email": "noah@gmail.com",
+                    "password": "1S2G4Jds98"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Logged In",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "examples": {
+                  "Login": {
+                    "value": {
+                      "name": "Noah Doe",
+                      "role": "admin",
+                      "id": "650394f4ed4d999ac948ba0f"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error: Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Bad Request": {
+                    "value": {
+                      "error": "Missing credentials"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error: Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Unauthorized": {
+                    "value": {
+                      "error": "Invalid password"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error: Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Access denied": {
+                    "value": {
+                      "error": "Access denied"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error: Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Not found": {
+                    "value": {
+                      "error": "User not found"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "get": {
+        "summary": "Logout",
+        "description": "This route logs a user out",
+        "tags": ["Logout"],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/instructor": {
+      "post": {
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Create a instructor",
+        "description": "This route creates a new instructor",
+        "tags": ["Instructor"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Instructor"
+              },
+              "examples": {
+                "Instructor": {
+                  "value": {
+                    "name": "Peter Doe",
+                    "email": "peter@gmail.com",
+                    "password": "1S2G4Jds98",
+                    "specialty": ["Sciences", "Philosophy"],
+                    "schedule": [
+                      {
+                        "date": "2023-08-28 15:00",
+                        "busy": false
+                      },
+                      {
+                        "date": "2023-10-28 19:00",
+                        "busy": true
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Instructor"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error: Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Bad Request": {
+                    "value": {
+                      "error": "Provided email is already registered"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error: Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Not logged in": {
+                    "value": {
+                      "error": "Not logged in"
+                    }
+                  },
+                  "Session expired": {
+                    "value": {
+                      "error": "Session expired"
+                    }
+                  },
+                  "Unauthorized": {
+                    "value": {
+                      "error": "Invalid authentication"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error: Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Access denied": {
+                    "value": {
+                      "error": "Access denied"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "error": "Unexpected error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Get all instructors",
+        "description": "This route get all instructors",
+        "tags": ["Instructor"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Instructor"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Not logged in": {
+                    "value": {
+                      "error": "Not logged in"
+                    }
+                  },
+                  "Session expired": {
+                    "value": {
+                      "error": "Session expired"
+                    }
+                  },
+                  "Unauthorized": {
+                    "value": {
+                      "error": "Invalid authentication"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "error": "Unexpected error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/instructor/{id}": {
+      "get": {
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Get one instructor by id",
+        "description": "This route get one instructor by id",
+        "tags": ["Instructor"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Instructor id",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type:": "object",
+                  "$ref": "#/components/schemas/Instructor"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error: Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Not logged in": {
+                    "value": {
+                      "error": "Not logged in"
+                    }
+                  },
+                  "Session expired": {
+                    "value": {
+                      "error": "Session expired"
+                    }
+                  },
+                  "Unauthorized": {
+                    "value": {
+                      "error": "Invalid authentication"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error: Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Access denied": {
+                    "value": {
+                      "error": "Access denied"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error: Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Not found": {
+                    "value": {
+                      "error": "Instructor not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "error": "Unexpected error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Updates a instructor",
+        "description": "This route updates a instructor by id",
+        "tags": ["Instructor"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Instructor id for update",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Instructor"
+              },
+              "examples": {
+                "instructor": {
+                  "value": {
+                    "name": "Peter Doe",
+                    "email": "peter@gmail.com",
+                    "password": "1S2G4Jds98",
+                    "specialty": ["Sciences", "Philosophy"],
+                    "schedule": [
+                      {
+                        "date": "2023-08-28 15:00",
+                        "busy": false
+                      },
+                      {
+                        "date": "2023-10-28 19:00",
+                        "busy": true
+                      }
+                    ],
+                    "role": ["instructor"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Error: Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Not logged in": {
+                    "value": {
+                      "error": "Not logged in"
+                    }
+                  },
+                  "Session expired": {
+                    "value": {
+                      "error": "Session expired"
+                    }
+                  },
+                  "Unauthorized": {
+                    "value": {
+                      "error": "Invalid authentication"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error: Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Access denied": {
+                    "value": {
+                      "error": "Access denied"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error: Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Not found": {
+                    "value": {
+                      "error": "Instructor not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "error": "Unexpected error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Delete a instructor",
+        "description": "This route deletes a instructor",
+        "tags": ["Instructor"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Instructor id to be deleted",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "401": {
+            "description": "Error: Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Not logged in": {
+                    "value": {
+                      "error": "Not logged in"
+                    }
+                  },
+                  "Session expired": {
+                    "value": {
+                      "error": "Session expired"
+                    }
+                  },
+                  "Unauthorized": {
+                    "value": {
+                      "error": "Invalid authentication"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error: Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Access denied": {
+                    "value": {
+                      "error": "Access denied"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Not found": {
+                    "value": {
+                      "error": "Instructor not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "error": "Unexpected error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/student": {
+      "post": {
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Create a student",
+        "description": "This route creates a student",
+        "tags": ["Student"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Student"
+              },
+              "examples": {
+                "student": {
+                  "value": {
+                    "name": "Lucas Dionizio",
+                    "email": "lucas@gmail.com",
+                    "password": "1S2G4Jds98"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Student"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error: Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Not logged in": {
+                    "value": {
+                      "error": "Not logged in"
+                    }
+                  },
+                  "Session expired": {
+                    "value": {
+                      "error": "Session expired"
+                    }
+                  },
+                  "Unauthorized": {
+                    "value": {
+                      "error": "Invalid authentication"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error: Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Access denied": {
+                    "value": {
+                      "error": "Access denied"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "error": "Failed to create student"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Get all students",
+        "description": "This route get all students",
+        "tags": ["Student"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Student"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error: Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Not logged in": {
+                    "value": {
+                      "error": "Not logged in"
+                    }
+                  },
+                  "Session expired": {
+                    "value": {
+                      "error": "Session expired"
+                    }
+                  },
+                  "Unauthorized": {
+                    "value": {
+                      "error": "Invalid authentication"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error: Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Access denied": {
+                    "value": {
+                      "error": "Access denied"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "error": "Unexpected error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/student/{id}": {
+      "get": {
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Get one student by id",
+        "description": "This route get one student by id",
+        "tags": ["Student"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Student id for the search",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type:": "object",
+                  "$ref": "#/components/schemas/Student"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error: Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Unauthorized": {
+                    "value": {
+                      "error": "Unauthorized"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error: Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Access denied": {
+                    "value": {
+                      "error": "Access denied"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error: Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Student not found": {
+                    "value": {
+                      "error": "Student not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "error": "Unexpected error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Updates a student",
+        "description": "This route updates a student by id",
+        "tags": ["Student"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Student id for update",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Student"
+              },
+              "examples": {
+                "instructor": {
+                  "value": {
+                    "name": "Lucas Dionizio",
+                    "email": "lucas@gmail.com",
+                    "password": "1S2G4Jds98",
+                    "role": ["student"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Student updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type:": "object",
+                  "$ref": "#/components/schemas/Student"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error: Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Unauthorized": {
+                    "value": {
+                      "error": "Invalid authentication"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error: Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Access denied": {
+                    "value": {
+                      "error": "Access denied"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error: Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Not found": {
+                    "value": {
+                      "error": "Student not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "error": "Unexpected error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Delete a student",
+        "description": "This route deletes a student",
+        "tags": ["Student"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Student id to be deleted",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Student deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type:": "object",
+                  "$ref": "#/components/schemas/Student"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error: Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Unauthorized": {
+                    "value": {
+                      "error": "Invalid authentication"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error: Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Access denied": {
+                    "value": {
+                      "error": "Access denied"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error: Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Not found": {
+                    "value": {
+                      "error": "Student not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "error": "Unexpected error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Instructor": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "specialty": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "schedule": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "date": {
+                  "type": "string"
+                },
+                "busy": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "role": {
+            "type": "string",
+            "enum": ["instructor"]
+          }
+        }
+      },
+      "Student": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["student"]
+          }
+        }
+      },
+      "Lesson": {
+        "type": "object",
+        "properties": {
+          "instructor": {
+            "type": "string"
+          },
+          "student": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string"
+          },
+          "files": {
+            "type": "array"
+          }
+        }
+      },
+      "Register": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["admin", "student", "instructor"]
+          }
+        }
+      },
+      "Login": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "Logout": {}
+    }
+  },
+  "securitySchemes": {
+    "cookieAuth": {
+      "type": "apiKey",
+      "in": "cookie",
+      "name": "token"
+    }
+  }
 }
