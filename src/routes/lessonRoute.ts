@@ -41,7 +41,7 @@ router
   .delete((req, res) => lessonController.delete(req, res))
 router
   .route('/lesson/:id/upload')
-  .all(authMiddleware.authUser)
+  .all(verifyToken, authMiddleware.authUser)
   .post((req, res) => lessonController.uploadFile(req, res))
 
 export default router
