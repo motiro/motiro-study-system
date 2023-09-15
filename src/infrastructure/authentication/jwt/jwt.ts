@@ -18,7 +18,7 @@ class JsonWebToken {
   }
 
   createUserToken(user: User): User {
-    return { name: user.name, role: user.role, id: user.id } as User
+    return { id: user.id, name: user.name, role: user.role } as User
   }
 
   attachCookies({ res, user }: { res: Response; user: User }) {
