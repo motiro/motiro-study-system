@@ -109,6 +109,7 @@ Documentation
 
 - The file must be of type text, PDF or odt/doc/docx
 - File must not exceed 5MB
+- Use `document` as the key name to upload the file using Postman or Insomnia
 
 ```bash
   http://localhost:5000/api/v1/lesson/:id/upload
