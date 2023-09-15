@@ -17,4 +17,4 @@ export class Lesson {
   }
 }
 
-export type LessonFile = { name: string; path: string; uploadedBy: string }
+export type LessonFile = { id?: string, name: string; path: string; uploadedBy: string }

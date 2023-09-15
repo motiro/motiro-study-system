@@ -55,7 +55,7 @@ export class StudentUseCase {
   }
 
   async comparePassword(id: string, password: string): Promise<boolean> {
-    return this.studentRepository.comparePassword(id, password)
+    return await this.studentRepository.comparePassword(id, password)
   }
 
   whoAmI(): string {

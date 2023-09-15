@@ -43,16 +43,16 @@ export class MongoStudentRepository implements StudentRepository {
     )
   }
   async update(student: Student): Promise<void> {
+    const { password, ...user } = student
+
     await studentModel
-      .findOneAndUpdate({ _id: student.id }, student)
+      .findOneAndUpdate({ _id: student.id }, user)
       .then(user => {
-        if (student.password) {
-          user?.markModified('password')
-          user?.save()
+        if (user && password) {
+          user.markModified('password')
+          user.set({ password: password })
+          user.save()
         }
-      })
-      .catch(err => {
-        console.log(err)
       })
   }
   async delete(id: string): Promise<void> {
@@ -67,10 +67,10 @@ export class MongoStudentRepository implements StudentRepository {
 
     for (let item of result) {
       const student: Student = {
+        id: item._id.toString(),
         name: item.name,
         email: item.email,
-        role: item.role,
-        id: item._id.toString()
+        role: item.role
       }
 
       students.push(student)

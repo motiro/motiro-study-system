@@ -1,5 +1,5 @@
-import { LessonRepository } from '@repositories/lessonRepository'
-import { Lesson, LessonFile } from '@entities/.'
+import { LessonRepository } from 'domain/repositories/lessonRepository'
+import { Lesson, LessonFile } from 'domain/entities/lessons'
 import { lessonModel } from '../models'
 import { Document, ObjectId } from 'mongoose'
 
