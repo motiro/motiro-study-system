@@ -28,6 +28,7 @@ export class InstructorUseCase {
 
     return instructorExists
   }
+
   async update(id: string, request: Instructor): Promise<void> {
     const instructorExists = await this.instructorRepository.findById(id)
 
