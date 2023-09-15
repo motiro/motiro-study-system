@@ -50,7 +50,7 @@
                   "type": "object"
                 },
                 "examples": {
-                  "register": {
+                  "Register": {
                     "value": {
                       "name": "Noah Doe",
                       "role": "admin",
@@ -294,7 +294,7 @@
                 "$ref": "#/components/schemas/Admin"
               },
               "examples": {
-                "admin": {
+                "Admin": {
                   "value": {
                     "name": "Admin User",
                     "email": "admin@gmail.com",
@@ -619,7 +619,7 @@
                 "$ref": "#/components/schemas/Admin"
               },
               "examples": {
-                "instructor": {
+                "Instructor": {
                   "value": {
                     "name": "Lucas Dionizio",
                     "email": "lucas@gmail.com",
@@ -1998,6 +1998,442 @@
           }
         }
       }
+    },
+    "/lesson": {
+      "post": {
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Create a lesson",
+        "description": "This route creates a lesson",
+        "tags": ["Lesson"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Lesson"
+              },
+              "examples": {
+                "Lesson": {
+                  "value": {
+                    "instructorId": "instructorId",
+                    "studentId": "studentId",
+                    "dateId": "dateId"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Lesson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error: Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Not logged in": {
+                    "value": {
+                      "error": "Not logged in"
+                    }
+                  },
+                  "Session expired": {
+                    "value": {
+                      "error": "Session expired"
+                    }
+                  },
+                  "Unauthorized": {
+                    "value": {
+                      "error": "Invalid authentication"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error: Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Access denied": {
+                    "value": {
+                      "error": "Access denied"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "error": "Unexpected error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Get all lessons",
+        "description": "This route get all lessons",
+        "tags": ["Lesson"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Lesson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error: Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Not logged in": {
+                    "value": {
+                      "error": "Not logged in"
+                    }
+                  },
+                  "Session expired": {
+                    "value": {
+                      "error": "Session expired"
+                    }
+                  },
+                  "Unauthorized": {
+                    "value": {
+                      "error": "Invalid authentication"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error: Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Access denied": {
+                    "value": {
+                      "error": "Access denied"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "error": "Unexpected error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/lesson/{id}": {
+      "get": {
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Get one lesson by id",
+        "description": "This route get one lesson by id",
+        "tags": ["Lesson"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Lesson id for the search",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type:": "object",
+                  "$ref": "#/components/schemas/Lesson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error: Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Not logged in": {
+                    "value": {
+                      "error": "Not logged in"
+                    }
+                  },
+                  "Session expired": {
+                    "value": {
+                      "error": "Session expired"
+                    }
+                  },
+                  "Unauthorized": {
+                    "value": {
+                      "error": "Invalid authentication"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error: Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Access denied": {
+                    "value": {
+                      "error": "Access denied"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error: Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Lesson not found": {
+                    "value": {
+                      "error": "Lesson not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "error": "Unexpected error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Delete a lesson",
+        "description": "This route deletes a lesson",
+        "tags": ["Lesson"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Lesson id to be deleted",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Lesson deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type:": "object",
+                  "$ref": "#/components/schemas/Lesson"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error: Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Not logged in": {
+                    "value": {
+                      "error": "Not logged in"
+                    }
+                  },
+                  "Session expired": {
+                    "value": {
+                      "error": "Session expired"
+                    }
+                  },
+                  "Unauthorized": {
+                    "value": {
+                      "error": "Invalid authentication"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error: Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Access denied": {
+                    "value": {
+                      "error": "Access denied"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error: Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Not found": {
+                    "value": {
+                      "error": "Lesson not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "error": "Unexpected error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -2048,6 +2484,9 @@
                 },
                 "busy": {
                   "type": "boolean"
+                },
+                "id": {
+                  "type": "string"
                 }
               }
             }
@@ -2079,14 +2518,26 @@
       "Lesson": {
         "type": "object",
         "properties": {
-          "instructor": {
-            "type": "string"
+          "instructorId": {
+            "type": "object",
+            "properties": {
+              "name": "string",
+              "id": "string"
+            }
           },
-          "student": {
-            "type": "string"
+          "studentId": {
+            "type": "object",
+            "properties": {
+              "name": "string",
+              "id": "string"
+            }
           },
-          "date": {
-            "type": "string"
+          "dateId": {
+            "type": "object",
+            "properties": {
+              "name": "string",
+              "id": "string"
+            }
           },
           "files": {
             "type": "array"
