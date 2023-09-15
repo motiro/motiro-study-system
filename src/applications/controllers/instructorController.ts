@@ -16,7 +16,8 @@ export class InstructorController {
     })
     return res.status(201).json(result)
   }
-  async listAll(req: Request, res: Response) {
+
+  async listAll(_: Request, res: Response) {
     const result = await this.useCase.listAll()
 
     return res.status(200).json(result)
