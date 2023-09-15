@@ -93,7 +93,7 @@ export class LessonUseCase {
     userId: string
     textFile: UploadedFile | UploadedFile[]
   }): Promise<void> {
-    if (!req.textFile) throw new Error('No file was uploaded')
+    if (!req.textFile) throw new BadRequestError('No file was uploaded')
 
     if (Object.keys(req.textFile)[0] === '0') {
       for (const doc of Object.values(req.textFile)) {

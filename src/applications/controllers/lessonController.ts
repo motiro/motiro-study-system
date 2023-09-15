@@ -40,7 +40,7 @@ export class LessonController {
       throw new ForbiddenError('Access denied')
 
     if (!req.files || !req.files?.document)
-      throw new Error('No file was uploaded')
+      throw new BadRequestError('No file was uploaded')
 
     const textFile: UploadedFile | UploadedFile[] = req.files.document
 
