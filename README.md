@@ -100,5 +100,14 @@ Run the application
 Documentation
 
 ```bash
-  http://localhost:5000/docs/
+  http://localhost:5000/docs
+```
+
+## Upload files to lessons
+
+- The file must be of type text, PDF or odt/doc/docx
+- File must not exceed 5MB
+
+```bash
+  http://localhost:5000/api/v1/lesson/:id/upload
 ```
