@@ -23,7 +23,7 @@ export class StudentUseCase {
     const studentExists = await this.studentRepository.findById(id)
 
     if (!studentExists) {
-      throw new NotFoundError('User not found')
+      throw new NotFoundError('Student not found')
     }
 
     return studentExists
@@ -32,7 +32,7 @@ export class StudentUseCase {
     const studentExists = await this.studentRepository.findById(id)
 
     if (!studentExists) {
-      throw new NotFoundError('User not found')
+      throw new NotFoundError('Student not found')
     }
 
     const student = new Student(request, id)
@@ -44,7 +44,7 @@ export class StudentUseCase {
     const studentExists = await this.studentRepository.findById(id)
 
     if (!studentExists) {
-      throw new NotFoundError('User not found')
+      throw new NotFoundError('Student not found')
     }
 
     await this.studentRepository.delete(id)

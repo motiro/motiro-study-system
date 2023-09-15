@@ -1,7 +1,7 @@
 import { Admin } from './admin'
 import { Instructor, Schedule } from './instructor'
 import { Student } from './students'
-import { Lesson } from './lessons'
+import { Lesson, LessonFile } from './lessons'
 import {
   ApiError,
   BadRequestError,
@@ -25,6 +25,7 @@ export {
   Schedule,
   Student,
   Lesson,
+  LessonFile,
   ApiError,
   BadRequestError,
   UnauthorizedError,

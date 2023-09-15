@@ -11,6 +11,7 @@ import {
   InstructorUseCase,
   StudentUseCase
 } from 'applications/usecases'
+import { verifyToken } from 'applications/middlewares/verifyTokenMiddleware'
 
 const instructorRepository = new MongoInstructorRepository()
 const instructorUseCase = new InstructorUseCase(instructorRepository)
@@ -30,13 +31,17 @@ const router = Router()
 
 router
   .route('/lesson')
-  .all(authMiddleware.authUser)
+  .all(verifyToken, authMiddleware.authUser)
   .get((req, res) => lessonController.listAll(req, res))
   .post((req, res) => lessonController.create(req, res))
 router
   .route('/lesson/:id')
-  .all(authMiddleware.authUser)
+  .all(verifyToken, authMiddleware.authUser)
   .get((req, res) => lessonController.listOne(req, res))
   .delete((req, res) => lessonController.delete(req, res))
+router
+  .route('/lesson/:id/upload')
+  .all(authMiddleware.authUser)
+  .post((req, res) => lessonController.uploadFile(req, res))
 
 export default router

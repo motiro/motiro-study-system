@@ -1,14 +1,15 @@
 import { LessonRepository } from 'domain/repositories/lessonRepository'
-import { Lesson } from 'domain/entities/lessons'
+import { Lesson, LessonFile } from 'domain/entities/lessons'
 import { lessonModel } from '../models'
 import { Document, ObjectId } from 'mongoose'
 
 interface LessonDocument extends Document {
   _id: ObjectId
   id: string
-  instructor: string
-  student: string
-  date: string
+  instructorId: string
+  studentId: string
+  dateId: string
+  files: []
 }
 
 export class MongoLessonRepository implements LessonRepository {
@@ -16,7 +17,7 @@ export class MongoLessonRepository implements LessonRepository {
     const result: LessonDocument | null = await lessonModel.findById(id)
 
     if (result) {
-      return new Lesson(result)
+      return new Lesson(result, id)
     }
 
     return null
@@ -26,11 +27,19 @@ export class MongoLessonRepository implements LessonRepository {
 
     return new Lesson(
       {
-        instructor: result.instructor,
-        student: result.student,
-        date: result.date
+        instructorId: result.instructorId,
+        studentId: result.studentId,
+        dateId: result.dateId,
+        files: result.files,
       },
       result.id
+    )
+  }
+  async uploadFile(id: string, file: LessonFile): Promise<void> {
+    await lessonModel.findOneAndUpdate(
+      { _id: id },
+      { $push: { files: file } },
+      { new: true, runValidators: true }
     )
   }
   async delete(id: string): Promise<void> {
@@ -44,9 +53,10 @@ export class MongoLessonRepository implements LessonRepository {
     for (let item of result) {
       const lesson: Lesson = {
         id: item._id.toString(),
-        instructor: item.instructor,
-        student: item.student,
-        date: item.date
+        instructorId: item.instructorId,
+        studentId: item.studentId,
+        dateId: item.dateId,
+        files: item.files
       }
 
       lessons.push(lesson)

@@ -1,3 +1,5 @@
+import path from 'path'
+import { UploadedFile } from 'express-fileupload'
 import { InstructorUseCase, StudentUseCase } from '.'
 import { MongoLessonRepository } from '@mongo/.'
 import { ObjectId } from 'mongoose'
@@ -6,6 +8,7 @@ import {
   Schedule,
   Student,
   Lesson,
+  LessonFile,
   BadRequestError,
   NotFoundError
 } from 'domain/entities'
@@ -17,10 +20,11 @@ interface LessonProps {
 }
 
 interface LessonResponse {
-  instructor: { name: string; id: string }
-  student: { name: string; id: string }
-  lesson_date: { date: Date; id: ObjectId }
   id: string
+  instructor: { id: string; name: string }
+  student: { id: string; name: string }
+  lesson_date: { id: ObjectId; date: Date }
+  files: LessonFile[]
 }
 
 export class LessonUseCase {
@@ -31,47 +35,113 @@ export class LessonUseCase {
   ) {}
 
   private async getProps(lesson: Lesson): Promise<LessonProps> {
-    const instructor = await this.instructorUseCase.listOne(lesson.instructor)
-    const student = await this.studentUseCase.listOne(lesson.student)
+    const instructor = await this.instructorUseCase.listOne(lesson.instructorId)
+    const student = await this.studentUseCase.listOne(lesson.studentId)
     const date = instructor.schedule.find(
-      s => s._id?.toString() === lesson.date.toString()
+      s => s._id?.toString() === lesson.dateId.toString()
     )
+    return { instructor, student, date: date as Schedule }
+  }
 
-    if (!instructor || !student || !date)
-      throw new NotFoundError('Could not fetch lesson properties')
-    return { instructor, student, date }
+  private async handleFile(
+    textFile: UploadedFile,
+    userId: string
+  ): Promise<LessonFile> {
+    if (
+      !textFile.mimetype.startsWith('text') &&
+      !textFile.mimetype.startsWith('application/pdf') &&
+      !textFile.mimetype.startsWith('application/msword') &&
+      !textFile.mimetype.startsWith(
+        'application/vnd.oasis.opendocument.text'
+      ) &&
+      !textFile.mimetype.startsWith(
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      )
+    )
+      throw new BadRequestError('Not a text file')
+
+    const maxSize = 1024 * 1024 * 5
+    if (textFile.size > maxSize) throw new BadRequestError('File exceeds 5MB')
+
+    const fileName = new Date().getTime() + '-' + textFile.name
+    const filePath = path.join(
+      __dirname,
+      '../../../public/uploads/' + `${fileName}`
+    )
+    const file = {
+      name: fileName,
+      path: '/uploads/' + fileName,
+      uploadedBy: userId
+    }
+    await textFile.mv(filePath)
+    return file
   }
 
   async create(req: Lesson): Promise<LessonResponse> {
     const lesson = new Lesson(req)
     const { instructor, student, date } = await this.getProps(lesson)
+    if (!instructor || !student || !date)
+      throw new BadRequestError('Mismatch in provided IDs')
 
-    if (date.busy) throw new BadRequestError('A lesson is already booked for the requested schedule')
+    if (date.busy)
+      throw new BadRequestError(
+        'A lesson is already booked for the requested schedule'
+      )
 
     const createLesson = await this.mongoRepo.save(lesson)
     date.busy = true
-    await this.instructorUseCase.updateSchedule(lesson.instructor, date)
+    await this.instructorUseCase.updateSchedule(lesson.instructorId, date)
 
     const response: LessonResponse = {
-      instructor: { name: instructor.name, id: instructor.id! },
-      student: { name: student.name, id: student.id! },
-      lesson_date: { date: date.date!, id: date._id! },
-      id: createLesson.id!
+      id: createLesson.id!,
+      instructor: { id: instructor.id!, name: instructor.name },
+      student: { id: student.id!, name: student.name },
+      lesson_date: { id: date._id!, date: date.date! },
+      files: createLesson.files
     }
     return response
+  }
+
+  async uploadFile(req: {
+    lessonId: string
+    userId: string
+    textFile: UploadedFile | UploadedFile[]
+  }): Promise<void> {
+    if (!req.textFile) throw new BadRequestError('No file was uploaded')
+
+    if (Object.keys(req.textFile)[0] === '0') {
+      for (const doc of Object.values(req.textFile)) {
+        const file = await this.handleFile(doc, req.userId)
+        await this.mongoRepo.uploadFile(req.lessonId, file)
+      }
+      return
+    }
+    const file = await this.handleFile(req.textFile as UploadedFile, req.userId)
+    await this.mongoRepo.uploadFile(req.lessonId, file)
   }
 
   async listOne(id: string): Promise<LessonResponse> {
     const lesson = await this.mongoRepo.findById(id)
     if (!lesson) throw new NotFoundError(`Lesson not found`)
     const { instructor, student, date } = await this.getProps(lesson)
-    if (!instructor || !student || !date) throw new BadRequestError('Not found')
+
+    const files = []
+    for (const item of lesson.files) {
+      const file = {
+        id: item.id,
+        name: item.name,
+        path: item.path,
+        uploadedBy: item.uploadedBy
+      }
+      files.push(file)
+    }
 
     const response: LessonResponse = {
-      instructor: { name: instructor.name, id: instructor.id! },
-      student: { name: student.name, id: student.id! },
-      lesson_date: { date: date.date!, id: date._id! },
-      id: lesson.id!
+      id: lesson.id!,
+      instructor: { id: instructor.id!, name: instructor.name },
+      student: { id: student.id!, name: student.name },
+      lesson_date: { id: date._id!, date: date.date! },
+      files: files
     }
     return response
   }
@@ -83,11 +153,23 @@ export class LessonUseCase {
       const { instructor, student, date } = await this.getProps(lesson)
       if (!instructor || !student || !date) continue
 
+      const files = []
+      for (const item of lesson.files) {
+        const file = {
+          id: item.id,
+          name: item.name,
+          path: item.path,
+          uploadedBy: item.uploadedBy
+        }
+        files.push(file)
+      }
+
       const result: LessonResponse = {
-        instructor: { name: instructor.name, id: instructor.id! },
-        student: { name: student.name, id: student.id! },
-        lesson_date: { date: date.date!, id: date._id! },
-        id: lesson.id!
+        id: lesson.id!,
+        instructor: { id: instructor.id!, name: instructor.name },
+        student: { id: student.id!, name: student.name },
+        lesson_date: { id: date._id!, date: date.date! },
+        files: files
       }
       response.push(result)
     }
@@ -97,14 +179,12 @@ export class LessonUseCase {
   async delete(id: string): Promise<void> {
     const lesson = await this.mongoRepo.findById(id)
 
-    if (!lesson) {
-      throw new NotFoundError('Lesson not found')
-    }
+    if (!lesson) throw new NotFoundError('Lesson not found')
 
     const { date } = await this.getProps(lesson)
     if (date) {
       date.busy = false
-      await this.instructorUseCase.updateSchedule(lesson.instructor, date)
+      await this.instructorUseCase.updateSchedule(lesson.instructorId, date)
     }
     await this.mongoRepo.delete(id)
   }
