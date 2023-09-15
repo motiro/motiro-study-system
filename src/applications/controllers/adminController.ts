@@ -4,11 +4,9 @@ import { AdminUseCase } from 'applications/usecases/adminUseCase'
 export class AdminController {
   constructor(private useCase: AdminUseCase) {}
   async create(req: Request, res: Response) {
-    const id = req.params.id
     const { name, email, password } = req.body
 
     const result = await this.useCase.create({
-      id,
       name,
       email,
       password
