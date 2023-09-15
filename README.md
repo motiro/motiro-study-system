@@ -35,11 +35,17 @@ Class scheduling system
 │   │   ├── authentication/
 │   │   │   └── jwt
 │   │   └── persistence/
-│   │       └── mongo
+│   │       └── mongo/
+│   │           ├── models/
+│   │           └── repositories/
 │   │
 │   ├── routes/
 │   │
-│   └── index.ts
+│   ├── index.ts
+│   └── swagger.json
+│
+├── public/
+│   └── uploads/
 ```
 
 ## Environment variables
