@@ -8,6 +8,7 @@ import {
   Schedule,
   Student,
   Lesson,
+  LessonFile,
   BadRequestError,
   NotFoundError
 } from 'domain/entities'
@@ -20,10 +21,10 @@ interface LessonProps {
 
 interface LessonResponse {
   id: string
-  files: { name: string; path: string; uploadedBy: ObjectId }[]
   instructor: { id: string; name: string }
   student: { id: string; name: string }
   lesson_date: { id: ObjectId; date: Date }
+  files: LessonFile[]
 }
 
 export class LessonUseCase {
@@ -42,7 +43,10 @@ export class LessonUseCase {
     return { instructor, student, date: date as Schedule }
   }
 
-  private async handleFile(textFile: UploadedFile, userId: string) {
+  private async handleFile(
+    textFile: UploadedFile,
+    userId: string
+  ): Promise<LessonFile> {
     if (
       !textFile.mimetype.startsWith('text') &&
       !textFile.mimetype.startsWith('application/pdf') &&

@@ -3,7 +3,7 @@ export class Lesson {
   public instructorId: string
   public studentId: string
   public dateId: string
-  public files: []
+  public files: LessonFile[]
 
   constructor(props: Omit<Lesson, 'id'>, id?: string) {
     this.instructorId = props.instructorId
@@ -16,3 +16,5 @@ export class Lesson {
     }
   }
 }
+
+export type LessonFile = { id?: string, name: string; path: string; uploadedBy: string }

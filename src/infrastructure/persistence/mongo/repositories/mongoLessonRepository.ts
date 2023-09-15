@@ -1,5 +1,5 @@
 import { LessonRepository } from 'domain/repositories/lessonRepository'
-import { Lesson } from 'domain/entities/lessons'
+import { Lesson, LessonFile } from 'domain/entities/lessons'
 import { lessonModel } from '../models'
 import { Document, ObjectId } from 'mongoose'
 
