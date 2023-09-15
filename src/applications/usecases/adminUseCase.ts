@@ -48,7 +48,7 @@ export class AdminUseCase {
   }
 
   async comparePassword(id: string, password: string): Promise<boolean> {
-    return this.adminRepository.comparePassword(id, password)
+    return await this.adminRepository.comparePassword(id, password)
   }
 
   whoAmI(): string {

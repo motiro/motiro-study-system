@@ -45,16 +45,16 @@ export class MongoInstructorRepository implements InstructorRepository {
     )
   }
   async update(instructor: Instructor): Promise<void> {
+    const { password, ...user } = instructor
+
     await instructorModel
-      .findOneAndUpdate({ _id: instructor.id }, instructor)
+      .findOneAndUpdate({ _id: instructor.id }, user)
       .then(user => {
-        if (instructor.password) {
-          user?.markModified('password')
-          user?.save()
+        if (user && password) {
+          user.markModified('password')
+          user.set({ password: password })
+          user.save()
         }
-      })
-      .catch(err => {
-        console.log(err)
       })
   }
   async updateSchedule(id: string, schedule: Schedule): Promise<void> {
