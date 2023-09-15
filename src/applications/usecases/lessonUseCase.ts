@@ -47,6 +47,7 @@ export class LessonUseCase {
     textFile: UploadedFile,
     userId: string
   ): Promise<LessonFile> {
+
     if (
       !textFile.mimetype.startsWith('text') &&
       !textFile.mimetype.startsWith('application/pdf') &&

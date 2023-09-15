@@ -1,5 +1,4 @@
 import { InstructorRepository } from 'domain/repositories/instructorRepository'
-
 import { Instructor, Schedule } from 'domain/entities/instructor'
 import { NotFoundError } from 'domain/entities/error'
 
