@@ -97,7 +97,7 @@ describe('LessonUseCase', () => {
       textFile: {
         mimetype: 'text',
         mv: () => true,
-        name: 'nomeTest'
+        name: 'file.txt'
       } as unknown as UploadedFile
     }
     const newFile = async () => await lessonUseCase.uploadFile(req)
