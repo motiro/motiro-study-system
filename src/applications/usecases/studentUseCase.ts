@@ -28,6 +28,7 @@ export class StudentUseCase {
 
     return studentExists
   }
+
   async update(id: string, request: Student): Promise<void> {
     const studentExists = await this.studentRepository.findById(id)
 

@@ -31,6 +31,7 @@ export class InstructorController {
 
     return res.status(200).send(result)
   }
+
   async update(req: Request, res: Response) {
     const { name, email, password, specialty, schedule } = req.body
     const { id } = req.params
@@ -46,6 +47,7 @@ export class InstructorController {
 
     return res.status(200).json(result)
   }
+
   async delete(req: Request, res: Response) {
     const { id } = req.params
 
