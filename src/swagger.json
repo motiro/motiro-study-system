@@ -1999,6 +1999,176 @@
         }
       }
     },
+    "/lesson/{id}/upload": {
+      "post": {
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Upload a file",
+        "description": "This route uploads a file and links it to a lesson",
+        "tags": ["Lesson"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Lesson id to be uploaded to",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "document": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "format": "binary"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error: Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Invalid ID": {
+                    "value": {
+                      "error": "Invalid ID"
+                    }
+                  },
+                  "No file uploaded": {
+                    "value": {
+                      "error": "No file was uploaded"
+                    }
+                  },
+                  "Not a text file": {
+                    "value": {
+                      "error": "Not a text file"
+                    }
+                  },
+                  "File exceeds size limit": {
+                    "value": {
+                      "error": "File exceeds 5MB"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error: Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Not logged in": {
+                    "value": {
+                      "error": "Not logged in"
+                    }
+                  },
+                  "Session expired": {
+                    "value": {
+                      "error": "Session expired"
+                    }
+                  },
+                  "Unauthorized": {
+                    "value": {
+                      "error": "Invalid authentication"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error: Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Access denied": {
+                    "value": {
+                      "error": "Access denied"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error: Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Lesson not found": {
+                    "value": {
+                      "error": "Lesson not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "error": "Unexpected error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/lesson": {
       "post": {
         "security": [
