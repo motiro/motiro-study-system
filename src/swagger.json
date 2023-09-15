@@ -2039,6 +2039,30 @@
               }
             }
           },
+          "400": {
+            "description": "Error: Bad request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Mismatch in IDs": {
+                    "value": {
+                      "error": "Mismatch in provided IDs"
+                    }
+                  },
+                  "Schedule conflict": {
+                    "value": {
+                      "error": "A lesson is already booked for the requested schedule"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "401": {
             "description": "Error: Unauthorized",
             "content": {
