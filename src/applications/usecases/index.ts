@@ -8,5 +8,5 @@ export {
   AdminUseCase,
   InstructorUseCase,
   StudentUseCase,
-  LessonUseCase
+  LessonUseCase,
 }

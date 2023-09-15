@@ -10,8 +10,12 @@ interface InstructorDocument extends Document {
   name: string
   email: string
   specialty: string[]
-  schedule: Schedule[]
+  schedule: DateSchedule[]
   role: string
+}
+
+interface DateSchedule extends Schedule {
+  id: string
 }
 
 export class MongoInstructorRepository implements InstructorRepository {
@@ -33,12 +37,24 @@ export class MongoInstructorRepository implements InstructorRepository {
       await instructorModel.create(instructor)
     ).toObject()
 
+    const schedule: DateSchedule[] = []
+
+    for (let date of result.schedule) {
+      const scheduleDate: DateSchedule = {
+        date: date.date,
+        busy: date.busy,
+        id: date.id
+      }
+
+      schedule.push(scheduleDate)
+    }
+
     return new Instructor(
       {
         name: result.name,
         email: result.email,
         specialty: result.specialty,
-        schedule: result.schedule,
+        schedule: schedule,
         role: result.role
       },
       result.id
@@ -76,12 +92,24 @@ export class MongoInstructorRepository implements InstructorRepository {
     const instructors: Instructor[] = []
 
     for (let item of result) {
+      const schedule: DateSchedule[] = []
+
+      for (let date of item.schedule) {
+        const scheduleDate: DateSchedule = {
+          id: date._id!.toString(),
+          date: date.date,
+          busy: date.busy
+        }
+
+        schedule.push(scheduleDate)
+      }
+
       const instructor: Instructor = {
         id: item._id.toString(),
         name: item.name,
         email: item.email,
         specialty: item.specialty,
-        schedule: item.schedule,
+        schedule: schedule,
         role: item.role
       }
 
