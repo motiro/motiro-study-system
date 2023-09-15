@@ -43,7 +43,17 @@ export class LessonUseCase {
   }
 
   private async handleFile(textFile: UploadedFile, userId: string) {
-    if (!textFile.mimetype.startsWith('text'))
+    if (
+      !textFile.mimetype.startsWith('text') &&
+      !textFile.mimetype.startsWith('application/pdf') &&
+      !textFile.mimetype.startsWith('application/msword') &&
+      !textFile.mimetype.startsWith(
+        'application/vnd.oasis.opendocument.text'
+      ) &&
+      !textFile.mimetype.startsWith(
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      )
+    )
       throw new BadRequestError('Not a text file')
 
     const maxSize = 1024 * 1024 * 5
