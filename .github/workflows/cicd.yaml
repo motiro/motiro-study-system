@@ -4,11 +4,14 @@ on:
   push:
     branches:
       - main
+      - dev
+      - tests
 jobs:
   build:
     runs-on: ubuntu-latest
     env:
       JWT_SECRET: ${{ secrets.JWT_SECRET}}
+      JWT_LIFETIME: ${{ secrets.JWT_LIFETIME}}
     steps:
       - name: checkout
         uses: actions/checkout@v3
