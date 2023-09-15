@@ -35,11 +35,19 @@ Class scheduling system
 │   │   ├── authentication/
 │   │   │   └── jwt
 │   │   └── persistence/
-│   │       └── mongo
+│   │       └── mongo/
+│   │           ├── models/
+│   │           └── repositories/
 │   │
 │   ├── routes/
 │   │
-│   └── index.ts
+│   ├── index.ts
+│   └── swagger.json
+│
+├── public/
+│   └── uploads/
+│
+└── test/
 ```
 
 ## Environment variables
@@ -94,5 +102,15 @@ Run the application
 Documentation
 
 ```bash
-  http://localhost:5000/docs/
+  http://localhost:5000/docs
+```
+
+## Upload files to lessons
+
+- The file must be of type text, PDF or odt/doc/docx
+- File must not exceed 5MB
+- Use `document` as the key name to upload the file using Postman or Insomnia
+
+```bash
+  http://localhost:5000/api/v1/lesson/:id/upload
 ```
