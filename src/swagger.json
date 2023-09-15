@@ -205,9 +205,19 @@
                   }
                 },
                 "examples": {
+                  "Not logged in": {
+                    "value": {
+                      "error": "Not logged in"
+                    }
+                  },
+                  "Session expired": {
+                    "value": {
+                      "error": "Session expired"
+                    }
+                  },
                   "Unauthorized": {
                     "value": {
-                      "error": "Invalid password"
+                      "error": "Invalid authentication"
                     }
                   }
                 }
@@ -263,6 +273,578 @@
         "responses": {
           "200": {
             "description": "OK"
+          }
+        }
+      }
+    },
+    "/admin": {
+      "post": {
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Create a admin",
+        "description": "This route creates a admin",
+        "tags": ["Admin"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Admin"
+              },
+              "examples": {
+                "admin": {
+                  "value": {
+                    "name": "Admin User",
+                    "email": "admin@gmail.com",
+                    "password": "1S2G4Jds98"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Admin"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error: Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Not logged in": {
+                    "value": {
+                      "error": "Not logged in"
+                    }
+                  },
+                  "Session expired": {
+                    "value": {
+                      "error": "Session expired"
+                    }
+                  },
+                  "Unauthorized": {
+                    "value": {
+                      "error": "Invalid authentication"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error: Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Access denied": {
+                    "value": {
+                      "error": "Access denied"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "error": "Unexpected error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Get all admins",
+        "description": "This route get all admins",
+        "tags": ["Admin"],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "$ref": "#/components/schemas/Admin"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error: Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Not logged in": {
+                    "value": {
+                      "error": "Not logged in"
+                    }
+                  },
+                  "Session expired": {
+                    "value": {
+                      "error": "Session expired"
+                    }
+                  },
+                  "Unauthorized": {
+                    "value": {
+                      "error": "Invalid authentication"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error: Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Access denied": {
+                    "value": {
+                      "error": "Access denied"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "error": "Unexpected error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/admin/{id}": {
+      "get": {
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Get one admin by id",
+        "description": "This route get one admin by id",
+        "tags": ["Admin"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Admin id for the search",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type:": "object",
+                  "$ref": "#/components/schemas/Admin"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error: Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Not logged in": {
+                    "value": {
+                      "error": "Not logged in"
+                    }
+                  },
+                  "Session expired": {
+                    "value": {
+                      "error": "Session expired"
+                    }
+                  },
+                  "Unauthorized": {
+                    "value": {
+                      "error": "Invalid authentication"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error: Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Access denied": {
+                    "value": {
+                      "error": "Access denied"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error: Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Admin not found": {
+                    "value": {
+                      "error": "Admin not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "error": "Unexpected error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Updates a admin",
+        "description": "This route updates a admin by id",
+        "tags": ["Admin"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Admin id for update",
+            "required": true
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Admin"
+              },
+              "examples": {
+                "instructor": {
+                  "value": {
+                    "name": "Lucas Dionizio",
+                    "email": "lucas@gmail.com",
+                    "password": "1S2G4Jds98",
+                    "role": ["admin"]
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Admin updated",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type:": "object",
+                  "$ref": "#/components/schemas/Admin"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error: Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Not logged in": {
+                    "value": {
+                      "error": "Not logged in"
+                    }
+                  },
+                  "Session expired": {
+                    "value": {
+                      "error": "Session expired"
+                    }
+                  },
+                  "Unauthorized": {
+                    "value": {
+                      "error": "Invalid authentication"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error: Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Access denied": {
+                    "value": {
+                      "error": "Access denied"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error: Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Not found": {
+                    "value": {
+                      "error": "Admin not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "error": "Unexpected error"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "security": [
+          {
+            "cookieAuth": []
+          }
+        ],
+        "summary": "Delete a admin",
+        "description": "This route deletes a admin",
+        "tags": ["Admin"],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Admin id to be deleted",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Admin deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type:": "object",
+                  "$ref": "#/components/schemas/Admin"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Error: Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Not logged in": {
+                    "value": {
+                      "error": "Not logged in"
+                    }
+                  },
+                  "Session expired": {
+                    "value": {
+                      "error": "Session expired"
+                    }
+                  },
+                  "Unauthorized": {
+                    "value": {
+                      "error": "Invalid authentication"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Error: Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Access denied": {
+                    "value": {
+                      "error": "Access denied"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Error: Not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Not found": {
+                    "value": {
+                      "error": "Admin not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Internal server error": {
+                    "value": {
+                      "error": "Unexpected error"
+                    }
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -945,7 +1527,7 @@
                 "examples": {
                   "Internal server error": {
                     "value": {
-                      "error": "Failed to create student"
+                      "error": "Unexpected error"
                     }
                   }
                 }
@@ -1085,9 +1667,19 @@
                   }
                 },
                 "examples": {
+                  "Not logged in": {
+                    "value": {
+                      "error": "Not logged in"
+                    }
+                  },
+                  "Session expired": {
+                    "value": {
+                      "error": "Session expired"
+                    }
+                  },
                   "Unauthorized": {
                     "value": {
-                      "error": "Unauthorized"
+                      "error": "Invalid authentication"
                     }
                   }
                 }
@@ -1211,6 +1803,16 @@
                   }
                 },
                 "examples": {
+                  "Not logged in": {
+                    "value": {
+                      "error": "Not logged in"
+                    }
+                  },
+                  "Session expired": {
+                    "value": {
+                      "error": "Session expired"
+                    }
+                  },
                   "Unauthorized": {
                     "value": {
                       "error": "Invalid authentication"
@@ -1318,6 +1920,16 @@
                   }
                 },
                 "examples": {
+                  "Not logged in": {
+                    "value": {
+                      "error": "Not logged in"
+                    }
+                  },
+                  "Session expired": {
+                    "value": {
+                      "error": "Session expired"
+                    }
+                  },
                   "Unauthorized": {
                     "value": {
                       "error": "Invalid authentication"
@@ -1390,6 +2002,24 @@
   },
   "components": {
     "schemas": {
+      "Admin": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string",
+            "enum": ["admin"]
+          }
+        }
+      },
       "Instructor": {
         "type": "object",
         "properties": {
