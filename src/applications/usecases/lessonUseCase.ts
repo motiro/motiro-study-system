@@ -85,7 +85,7 @@ export class LessonUseCase {
       throw new BadRequestError('Mismatch in provided IDs')
 
     if (date.busy)
-      throw new BadRequestError(
+      throw new ConflictError(
         'A lesson is already booked for the requested schedule'
       )
 
