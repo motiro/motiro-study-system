@@ -1,13 +1,12 @@
 import { Request, Response } from 'express'
-import { LessonUseCase } from 'applications/usecases/lessonUseCase'
+import { LessonUseCase, LessonResponse } from '@usecases/.'
 import { UploadedFile } from 'express-fileupload'
-import { LessonResponse } from 'applications/usecases/lessonUseCase'
 import {
   BadRequestError,
   ForbiddenError,
   NotFoundError,
   UnauthorizedError
-} from 'domain/entities'
+} from '@entities/.'
 
 export class LessonController {
   constructor(private useCase: LessonUseCase) {}
@@ -86,7 +85,7 @@ export class LessonController {
   }
 
   async delete(req: Request, res: Response) {
-    const id = req.params.id
+    const id = req.params?.id
     await this.useCase.delete(id)
     return res.status(200).send()
   }
