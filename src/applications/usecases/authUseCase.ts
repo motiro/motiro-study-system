@@ -61,11 +61,8 @@ export class AuthUseCase {
     for (const usecase of this.usecases) {
       const users = await usecase?.listAll()
       if (users) {
-        for (const user of users) {
-          if (user.email === email) {
-            return { user, usecase }
-          }
-        }
+        for (const user of users)
+          if (user.email === email) return { user, usecase }
       }
     }
   }
@@ -75,15 +72,6 @@ export class AuthUseCase {
     const { name, email, password, specialty, schedule } = req.body
     const token = req.signedCookies?.token
 
-    if (reqRole === 'admin') {
-      if (!(await this.isFirstAdmin()) && !this.isAdminRole(token))
-        throw new ForbiddenError('Access denied')
-    }
-
-    const emailAlreadyExists = await this.getUserByEmail(email)
-    if (emailAlreadyExists)
-      throw new BadRequestError('E-mail already registered')
-
     const getUseCase: () => userUseCase | undefined = () => {
       for (const usecase of this.usecases)
         if (usecase.whoAmI() === reqRole) return usecase
@@ -91,6 +79,15 @@ export class AuthUseCase {
 
     const usecase = getUseCase()
     if (!usecase) throw new BadRequestError('Invalid role')
+
+    if (reqRole === 'admin') {
+      if (!(await this.isFirstAdmin()) && !this.isAdminRole(token))
+        throw new ForbiddenError('Access denied')
+    }
+
+    const emailAlreadyExists = await this.getUserByEmail(email)
+    if (emailAlreadyExists)
+      throw new ConflictError('Provided email is already registered')
 
     const user = await usecase.create({
       name,
@@ -109,11 +106,12 @@ export class AuthUseCase {
     if (!email || !password) throw new BadRequestError('Missing credentials')
 
     const getUser = await this.getUserByEmail(email)
-    if (!getUser) throw new NotFoundError('User not found')
+    if (!getUser) throw new BadRequestError('The email or password is invalid')
     const { user, usecase } = getUser
 
     const isPasswordCorrect = await usecase.comparePassword(user.id!, password)
-    if (!isPasswordCorrect) throw new BadRequestError('Invalid password')
+    if (!isPasswordCorrect)
+      throw new BadRequestError('The email or password is invalid')
 
     const userToken = jwt.createUserToken(user)
     return userToken
