@@ -3,9 +3,10 @@ import { Admin, Instructor, Student, ENTITIES } from 'domain/entities'
 import { jwt, User } from '@jwt/.'
 import {
   BadRequestError,
+  UnauthorizedError,
   ForbiddenError,
   NotFoundError,
-  UnauthorizedError
+  ConflictError
 } from 'domain/entities/error'
 import {
   AdminUseCase,

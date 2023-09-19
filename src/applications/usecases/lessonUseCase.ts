@@ -10,7 +10,8 @@ import {
   Lesson,
   LessonFile,
   BadRequestError,
-  NotFoundError
+  NotFoundError,
+  ConflictError
 } from 'domain/entities'
 
 interface LessonProps {
@@ -47,7 +48,6 @@ export class LessonUseCase {
     textFile: UploadedFile,
     userId: string
   ): Promise<LessonFile> {
-
     if (
       !textFile.mimetype.startsWith('text') &&
       !textFile.mimetype.startsWith('application/pdf') &&

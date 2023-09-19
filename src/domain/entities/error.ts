@@ -12,13 +12,25 @@ export class BadRequestError extends ApiError {
   }
 }
 
-export class NotFoundError extends ApiError {
+export class CastError extends ApiError {
   constructor(message: string) {
-    super(message, 404)
+    super(message, 400)
+  }
+}
+
+export class ValidationError extends ApiError {
+  constructor(message: string) {
+    super(message, 400)
   }
 }
 
 export class UnauthorizedError extends ApiError {
+  constructor(message: string) {
+    super(message, 401)
+  }
+}
+
+export class TokenExpiredError extends ApiError {
   constructor(message: string) {
     super(message, 401)
   }
@@ -30,20 +42,14 @@ export class ForbiddenError extends ApiError {
   }
 }
 
-export class TokenExpiredError extends ApiError {
+export class NotFoundError extends ApiError {
   constructor(message: string) {
-    super(message, 401)
+    super(message, 404)
   }
 }
 
-export class CastError extends ApiError {
+export class ConflictError extends ApiError {
   constructor(message: string) {
-    super(message, 400)
-  }
-}
-
-export class ValidationError extends ApiError {
-  constructor(message: string) {
-    super(message, 400)
+    super(message, 409)
   }
 }
