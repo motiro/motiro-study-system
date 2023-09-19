@@ -5,7 +5,6 @@ import {
   BadRequestError,
   UnauthorizedError,
   ForbiddenError,
-  NotFoundError,
   ConflictError
 } from 'domain/entities/error'
 import {
@@ -21,7 +20,7 @@ export class AuthUseCase {
     const usecases = []
     for (const arg of args) usecases.push(arg)
     if (!usecases.length)
-      throw new NotFoundError('No usecases provided for authentication')
+      throw new Error('No usecases provided for authentication')
     this.usecases = usecases
   }
 
