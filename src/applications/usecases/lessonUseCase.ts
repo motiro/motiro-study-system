@@ -19,7 +19,7 @@ interface LessonProps {
   date: Schedule
 }
 
-interface LessonResponse {
+export interface LessonResponse {
   id: string
   instructor: { id: string; name: string }
   student: { id: string; name: string }

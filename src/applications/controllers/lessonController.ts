@@ -1,6 +1,7 @@
 import { Request, Response } from 'express'
 import { LessonUseCase } from 'applications/usecases/lessonUseCase'
 import { UploadedFile } from 'express-fileupload'
+import { LessonResponse } from 'applications/usecases/lessonUseCase'
 import {
   BadRequestError,
   ForbiddenError,
@@ -68,8 +69,19 @@ export class LessonController {
     return res.status(200).json(result)
   }
 
-  async listAll(_: Request, res: Response) {
-    const result = await this.useCase.listAll()
+  async listAll(req: Request, res: Response) {
+    const lessons = await this.useCase.listAll()
+    let result: LessonResponse[] = []
+
+    if (req.body.user?.role !== 'admin') {
+      for (const lesson of lessons) {
+        const checkInstructor =
+          lesson.instructor.id.toString() === req.body.user?.id
+        const checkStudent = lesson.student.id.toString() === req.body.user?.id
+        if (checkStudent || checkInstructor) result.push(lesson)
+      }
+    } else result = lessons
+
     return res.status(200).json(result)
   }
 
