@@ -24,7 +24,7 @@ export class LessonController {
   }
 
   async uploadFile(req: Request, res: Response) {
-    const id = req.params.id
+    const id = req.params?.id
     if (!id) throw new BadRequestError('Invalid ID')
 
     const userId = req.body.user?.id
@@ -33,8 +33,8 @@ export class LessonController {
     const lesson = await this.useCase.listOne(id)
     if (!lesson) throw new NotFoundError('Lesson not found')
 
-    const isInstructor = userId === lesson.instructor.id.toString()
-    const isStudent = userId === lesson.student.id.toString()
+    const isInstructor = userId === lesson.instructor.id?.toString()
+    const isStudent = userId === lesson.student.id?.toString()
     const isAdmin = req.body.user?.role === 'admin'
     if (!isInstructor && !isStudent && !isAdmin)
       throw new ForbiddenError('Access denied')
@@ -54,8 +54,17 @@ export class LessonController {
   }
 
   async listOne(req: Request, res: Response) {
-    const id = req.params.id
+    const id = req.params?.id
     const result = await this.useCase.listOne(id)
+
+    if (req.body.user?.role !== 'admin') {
+      const checkInstructor =
+        result.instructor.id.toString() === req.body.user?.id
+      const checkStudent = result.student.id?.toString() === req.body.user?.id
+      if (!(checkStudent || checkInstructor))
+        throw new ForbiddenError('Access denied')
+    }
+
     return res.status(200).json(result)
   }
 
