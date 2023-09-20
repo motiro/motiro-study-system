@@ -40,7 +40,7 @@ export const errorMiddleware = (
 
   if (error.code === 11000) {
     message = `Provided ${Object.keys(error.keyValue)} is already registered`
-    statusCode = 400
+    statusCode = 409
   }
 
   return res.status(statusCode).json({ error: message })

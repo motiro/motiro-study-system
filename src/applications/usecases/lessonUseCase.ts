@@ -47,15 +47,17 @@ export class LessonUseCase {
     textFile: UploadedFile,
     userId: string
   ): Promise<LessonFile> {
+    enum allowedMimeTypes {
+      'application/pdf',
+      'application/msword',
+      'application/vnd.oasis.opendocument.text',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    }
+
     if (
-      !textFile.mimetype.startsWith('text') &&
-      !textFile.mimetype.startsWith('application/pdf') &&
-      !textFile.mimetype.startsWith('application/msword') &&
-      !textFile.mimetype.startsWith(
-        'application/vnd.oasis.opendocument.text'
-      ) &&
-      !textFile.mimetype.startsWith(
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      !(
+        textFile.mimetype.startsWith('text') ||
+        Object.values(allowedMimeTypes).includes(textFile.mimetype)
       )
     )
       throw new BadRequestError('Not a text file')
@@ -84,7 +86,7 @@ export class LessonUseCase {
       throw new BadRequestError('Mismatch in provided IDs')
 
     if (date.busy)
-      throw new BadRequestError(
+      throw new ConflictError(
         'A lesson is already booked for the requested schedule'
       )
 
