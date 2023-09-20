@@ -1,12 +1,12 @@
-import { Request, Response } from 'express'
-import { LessonUseCase, LessonResponse } from '@usecases/.'
-import { UploadedFile } from 'express-fileupload'
 import {
   BadRequestError,
   ForbiddenError,
   NotFoundError,
   UnauthorizedError
-} from '@entities/.'
+} from '@entities'
+import { LessonResponse, LessonUseCase } from '@usecases'
+import { Request, Response } from 'express'
+import { UploadedFile } from 'express-fileupload'
 
 export class LessonController {
   constructor(private useCase: LessonUseCase) {}

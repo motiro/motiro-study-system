@@ -1,8 +1,8 @@
-import { Student } from 'domain/entities/students'
-import { StudentRepository } from 'domain/repositories/studentRepository'
-import { Document, ObjectId, isValidObjectId } from 'mongoose'
-import { studentModel } from '../models/studentModel'
-import { CastError } from 'domain/entities'
+import { Student } from '@entities'
+import { CastError } from '@errors'
+import { studentModel } from '@models'
+import { StudentRepository } from '@repositories'
+import { Document, isValidObjectId, ObjectId } from 'mongoose'
 
 interface StudentDocument extends Document {
   _id: ObjectId

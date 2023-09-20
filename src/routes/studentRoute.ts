@@ -1,9 +1,8 @@
-import { StudentUseCase } from 'applications/usecases/studentUseCase'
-import { StudentController } from 'applications/controllers/studentController'
-import { MongoStudentRepository } from '@mongo/mongoStudentRepository'
+import { StudentUseCase } from '@usecases'
+import { StudentController } from '@controllers'
+import { MongoStudentRepository } from '@mongo'
+import { authMiddleware, verifyToken } from '@middlewares'
 import { Router } from 'express'
-import { authMiddleware } from 'applications/middlewares/authMiddleware'
-import { verifyToken } from 'applications/middlewares/verifyTokenMiddleware'
 
 const studentRepository = new MongoStudentRepository()
 const studentUseCase = new StudentUseCase(studentRepository)

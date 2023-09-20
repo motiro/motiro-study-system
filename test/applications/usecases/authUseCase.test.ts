@@ -1,16 +1,16 @@
 import 'dotenv/config'
-import { jwt } from '@jwt/.'
+import { jwt } from '@jwt'
 import { Request } from 'express'
 import { AdminRepoTest } from './adminRepoTest'
 import { InstructorRepoTest } from './instructorRepoTest'
 import { StudentRepoTest } from './studentRepoTest'
-import { Admin, Instructor, Student } from '@entities/.'
+import { Admin, Instructor, Student } from '@entities'
 import {
   AuthUseCase,
   AdminUseCase,
   InstructorUseCase,
   StudentUseCase
-} from '@usecases/.'
+} from '@usecases'
 
 const adminUseCase = new AdminUseCase(new AdminRepoTest())
 const instructorUseCase = new InstructorUseCase(new InstructorRepoTest())

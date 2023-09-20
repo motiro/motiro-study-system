@@ -1,9 +1,8 @@
+import { AdminUseCase } from '@usecases'
+import { AdminController } from '@controllers'
+import { authMiddleware, verifyToken } from '@middlewares'
+import { MongoAdminRepository } from '@mongo'
 import { Router } from 'express'
-import { AdminUseCase } from 'applications/usecases'
-import { AdminController } from 'applications/controllers'
-import { authMiddleware } from 'applications/middlewares'
-import { MongoAdminRepository } from '@mongo/mongoAdminRepository'
-import { verifyToken } from 'applications/middlewares/verifyTokenMiddleware'
 
 const mongoRepository = new MongoAdminRepository()
 const adminUseCase = new AdminUseCase(mongoRepository)

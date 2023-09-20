@@ -1,17 +1,17 @@
-import path from 'path'
-import { UploadedFile } from 'express-fileupload'
-import { InstructorUseCase, StudentUseCase } from '.'
-import { MongoLessonRepository } from '@mongo/.'
-import { ObjectId } from 'mongoose'
 import {
+  BadRequestError,
   Instructor,
-  Schedule,
-  Student,
   Lesson,
   LessonFile,
-  BadRequestError,
-  NotFoundError
-} from 'domain/entities'
+  NotFoundError,
+  Schedule,
+  Student
+} from '@entities'
+import { MongoLessonRepository } from '@mongo'
+import { InstructorUseCase, StudentUseCase } from '@usecases'
+import { UploadedFile } from 'express-fileupload'
+import { ObjectId } from 'mongoose'
+import path from 'path'
 
 interface LessonProps {
   instructor: Instructor
@@ -47,7 +47,6 @@ export class LessonUseCase {
     textFile: UploadedFile,
     userId: string
   ): Promise<LessonFile> {
-
     if (
       !textFile.mimetype.startsWith('text') &&
       !textFile.mimetype.startsWith('application/pdf') &&

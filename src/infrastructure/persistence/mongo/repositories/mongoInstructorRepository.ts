@@ -1,8 +1,8 @@
-import { Instructor, Schedule } from 'domain/entities/instructor'
-import { InstructorRepository } from 'domain/repositories/instructorRepository'
-import { Document, ObjectId, isValidObjectId } from 'mongoose'
-import { instructorModel } from '../models/instructorModel'
-import { CastError } from 'domain/entities'
+import { Instructor, Schedule } from '@entities'
+import { CastError } from '@errors'
+import { instructorModel } from '@models'
+import { InstructorRepository } from '@repositories'
+import { Document, isValidObjectId, ObjectId } from 'mongoose'
 
 interface InstructorDocument extends Document {
   _id: ObjectId
