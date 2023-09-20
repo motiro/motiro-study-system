@@ -155,7 +155,7 @@ describe('AuthUseCase', () => {
 
         const newAdmin = async () =>
           await authUseCase.login({ body: admObj } as Request)
-        expect(() => newAdmin()).rejects.toThrow('User not found')
+        expect(() => newAdmin()).rejects.toThrow('The email or password is invalid')
       })
 
       it('should login', async () => {
@@ -185,7 +185,7 @@ describe('AuthUseCase', () => {
           await authUseCase.login({
             body: { email: admin[0].email, password: 'wrong' }
           } as Request)
-        expect(() => login()).rejects.toThrow('Invalid password')
+        expect(() => login()).rejects.toThrow('The email or password is invalid')
       })
     })
   })
@@ -224,7 +224,7 @@ describe('AuthUseCase', () => {
         }
         const newInstructor = async () =>
           await authUseCase.login({ body: insObj } as Request)
-        expect(() => newInstructor()).rejects.toThrow('User not found')
+        expect(() => newInstructor()).rejects.toThrow('The email or password is invalid')
       })
 
       it('should login', async () => {
@@ -254,7 +254,7 @@ describe('AuthUseCase', () => {
           await authUseCase.login({
             body: { email: instructor[0].email, password: 'wrong' }
           } as Request)
-        expect(() => login()).rejects.toThrow('Invalid password')
+        expect(() => login()).rejects.toThrow('The email or password is invalid')
       })
     })
   })
@@ -294,7 +294,7 @@ describe('AuthUseCase', () => {
 
         const newStudent = async () =>
           await authUseCase.login({ body: stuObj } as Request)
-        expect(() => newStudent()).rejects.toThrow('User not found')
+        expect(() => newStudent()).rejects.toThrow('The email or password is invalid')
       })
 
       it('should login', async () => {
@@ -322,7 +322,7 @@ describe('AuthUseCase', () => {
           await authUseCase.login({
             body: { email: student[0].email, password: 'wrong' }
           } as Request)
-        expect(() => login()).rejects.toThrow('Invalid password')
+        expect(() => login()).rejects.toThrow('The email or password is invalid')
       })
     })
   })
