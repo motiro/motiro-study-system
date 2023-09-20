@@ -4,6 +4,7 @@ import {
   Lesson,
   LessonFile,
   NotFoundError,
+  ConflictError,
   Schedule,
   Student
 } from '@entities'

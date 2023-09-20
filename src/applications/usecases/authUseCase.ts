@@ -2,8 +2,8 @@ import { Admin, ENTITIES, Instructor, Student } from '@entities'
 import {
   BadRequestError,
   ForbiddenError,
-  NotFoundError,
-  UnauthorizedError
+  UnauthorizedError,
+  ConflictError
 } from '@errors'
 import { jwt, User } from '@jwt'
 import { AdminUseCase, InstructorUseCase, StudentUseCase } from '@usecases'
