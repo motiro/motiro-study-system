@@ -10,7 +10,8 @@ import {
   Lesson,
   LessonFile,
   BadRequestError,
-  NotFoundError
+  NotFoundError,
+  ConflictError
 } from 'domain/entities'
 
 interface LessonProps {
@@ -47,7 +48,6 @@ export class LessonUseCase {
     textFile: UploadedFile,
     userId: string
   ): Promise<LessonFile> {
-
     if (
       !textFile.mimetype.startsWith('text') &&
       !textFile.mimetype.startsWith('application/pdf') &&
@@ -85,7 +85,7 @@ export class LessonUseCase {
       throw new BadRequestError('Mismatch in provided IDs')
 
     if (date.busy)
-      throw new BadRequestError(
+      throw new ConflictError(
         'A lesson is already booked for the requested schedule'
       )
 
