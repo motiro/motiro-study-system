@@ -576,12 +576,11 @@
                 "$ref": "#/components/schemas/Admin"
               },
               "examples": {
-                "Instructor": {
+                "Admin": {
                   "value": {
-                    "name": "Lucas Dionizio",
-                    "email": "lucas@gmail.com",
-                    "password": "1S2G4Jds98",
-                    "role": ["admin"]
+                    "name": "Admin User",
+                    "email": "admin@gmail.com",
+                    "password": "1S2G4Jds98"
                   }
                 }
               }
@@ -590,15 +589,7 @@
         },
         "responses": {
           "200": {
-            "description": "Admin updated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type:": "object",
-                  "$ref": "#/components/schemas/Admin"
-                }
-              }
-            }
+            "description": "Admin updated"
           },
           "401": {
             "description": "Error: Unauthorized",
@@ -1159,7 +1150,7 @@
                 "$ref": "#/components/schemas/Instructor"
               },
               "examples": {
-                "instructor": {
+                "Instructor": {
                   "value": {
                     "name": "Peter Doe",
                     "email": "peter@gmail.com",
@@ -1174,8 +1165,7 @@
                         "date": "2023-10-28 19:00",
                         "busy": true
                       }
-                    ],
-                    "role": ["instructor"]
+                    ]
                   }
                 }
               }
@@ -1726,12 +1716,11 @@
                 "$ref": "#/components/schemas/Student"
               },
               "examples": {
-                "instructor": {
+                "Student": {
                   "value": {
                     "name": "Lucas Dionizio",
                     "email": "lucas@gmail.com",
-                    "password": "1S2G4Jds98",
-                    "role": ["student"]
+                    "password": "1S2G4Jds98"
                   }
                 }
               }
@@ -1740,15 +1729,7 @@
         },
         "responses": {
           "200": {
-            "description": "Student updated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type:": "object",
-                  "$ref": "#/components/schemas/Student"
-                }
-              }
-            }
+            "description": "Student updated"
           },
           "401": {
             "description": "Error: Unauthorized",
