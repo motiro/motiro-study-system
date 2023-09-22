@@ -52,9 +52,9 @@
                 "examples": {
                   "Register": {
                     "value": {
+                      "id": "650394f4ed4d999ac948ba0f",
                       "name": "Noah Doe",
-                      "role": "admin",
-                      "id": "650394f4ed4d999ac948ba0f"
+                      "role": "admin"
                     }
                   }
                 }
@@ -181,9 +181,9 @@
                 "examples": {
                   "Login": {
                     "value": {
+                      "id": "650394f4ed4d999ac948ba0f",
                       "name": "Noah Doe",
-                      "role": "admin",
-                      "id": "650394f4ed4d999ac948ba0f"
+                      "role": "admin"
                     }
                   }
                 }
