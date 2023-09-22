@@ -58,13 +58,15 @@ export class MongoAdminRepository implements AdminRepository {
   async update(admin: Admin): Promise<void> {
     const { password, ...user } = admin
 
-    await adminModel.findOneAndUpdate({ _id: admin.id }, user).then(user => {
-      if (user && password) {
-        user.markModified('password')
-        user.set({ password: password })
-        user.save()
-      }
-    })
+    await adminModel
+      .findOneAndUpdate({ _id: admin.id }, user, { runValidators: true })
+      .then(user => {
+        if (user && password) {
+          user.markModified('password')
+          user.set({ password: password })
+          user.save()
+        }
+      })
   }
   async delete(id: string): Promise<void> {
     await adminModel.deleteOne().where({ _id: id })

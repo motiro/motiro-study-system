@@ -64,7 +64,7 @@ export class MongoInstructorRepository implements InstructorRepository {
     const { password, ...user } = instructor
 
     await instructorModel
-      .findOneAndUpdate({ _id: instructor.id }, user)
+      .findOneAndUpdate({ _id: instructor.id }, user, { runValidators: true })
       .then(user => {
         if (user && password) {
           user.markModified('password')

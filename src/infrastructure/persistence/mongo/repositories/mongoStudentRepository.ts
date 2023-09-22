@@ -46,7 +46,7 @@ export class MongoStudentRepository implements StudentRepository {
     const { password, ...user } = student
 
     await studentModel
-      .findOneAndUpdate({ _id: student.id }, user)
+      .findOneAndUpdate({ _id: student.id }, user, { runValidators: true })
       .then(user => {
         if (user && password) {
           user.markModified('password')
