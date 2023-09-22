@@ -1,8 +1,8 @@
-import { Admin } from 'domain/entities/admin'
-import { AdminRepository } from 'domain/repositories/adminRepository'
-import { Document, ObjectId, isValidObjectId } from 'mongoose'
-import { CastError, ConflictError } from 'domain/entities'
-import { adminModel, instructorModel, studentModel } from '@models/.'
+import { Admin } from '@entities'
+import { AdminRepository } from '@repositories'
+import { CastError, ConflictError } from '@errors'
+import { Document, isValidObjectId, ObjectId } from 'mongoose'
+import { adminModel, instructorModel, studentModel } from '@models'
 
 interface AdminDocument extends Document {
   _id: ObjectId

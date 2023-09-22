@@ -1,17 +1,12 @@
-import { Router } from 'express'
-import { authMiddleware } from 'applications/middlewares'
-import { LessonController } from 'applications/controllers'
+import { InstructorUseCase, LessonUseCase, StudentUseCase } from '@usecases'
+import { LessonController } from '@controllers'
+import { authMiddleware, verifyToken } from '@middlewares'
 import {
+  MongoInstructorRepository,
   MongoLessonRepository,
-  MongoStudentRepository,
-  MongoInstructorRepository
-} from '@mongo/.'
-import {
-  LessonUseCase,
-  InstructorUseCase,
-  StudentUseCase
-} from 'applications/usecases'
-import { verifyToken } from 'applications/middlewares/verifyTokenMiddleware'
+  MongoStudentRepository
+} from '@mongo'
+import { Router } from 'express'
 
 const instructorRepository = new MongoInstructorRepository()
 const instructorUseCase = new InstructorUseCase(instructorRepository)

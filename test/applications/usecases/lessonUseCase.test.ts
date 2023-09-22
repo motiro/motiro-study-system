@@ -1,9 +1,10 @@
-import { LessonRepoTest } from './lessonRepoTest'
-import { InstructorRepoTest, dateId } from './instructorRepoTest'
-import { StudentRepoTest } from './studentRepoTest'
-import { Lesson } from '@entities/.'
-import { LessonUseCase, InstructorUseCase, StudentUseCase } from '@usecases/.'
+import { Lesson } from '@entities'
+import { InstructorUseCase, LessonUseCase, StudentUseCase } from '@usecases'
 import { UploadedFile } from 'express-fileupload'
+
+import { dateId, InstructorRepoTest } from './instructorRepoTest'
+import { LessonRepoTest } from './lessonRepoTest'
+import { StudentRepoTest } from './studentRepoTest'
 
 const instructorUseCase = new InstructorUseCase(new InstructorRepoTest())
 const studentUseCase = new StudentUseCase(new StudentRepoTest())
