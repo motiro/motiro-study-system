@@ -218,54 +218,6 @@
                 }
               }
             }
-          },
-          "401": {
-            "description": "Error: Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "error": {
-                    "type": "string"
-                  }
-                },
-                "examples": {
-                  "Not logged in": {
-                    "value": {
-                      "error": "Not logged in"
-                    }
-                  },
-                  "Session expired": {
-                    "value": {
-                      "error": "Session expired"
-                    }
-                  },
-                  "Unauthorized": {
-                    "value": {
-                      "error": "Invalid authentication"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Error: Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "error": {
-                    "type": "string"
-                  }
-                },
-                "examples": {
-                  "Access denied": {
-                    "value": {
-                      "error": "Access denied"
-                    }
-                  }
-                }
-              }
-            }
           }
         }
       }
