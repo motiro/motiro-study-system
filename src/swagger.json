@@ -658,6 +658,25 @@
               }
             }
           },
+          "409": {
+            "description": "Error: Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Conflict": {
+                    "value": {
+                      "error": "Provided email is already registered"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "500": {
             "description": "Error",
             "content": {
@@ -1243,6 +1262,25 @@
               }
             }
           },
+          "409": {
+            "description": "Error: Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Conflict": {
+                    "value": {
+                      "error": "Provided email is already registered"
+                    }
+                  }
+                }
+              }
+            }
+          },
           "500": {
             "description": "Error",
             "content": {
@@ -1792,6 +1830,25 @@
                   "Not found": {
                     "value": {
                       "error": "Student not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Error: Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Conflict": {
+                    "value": {
+                      "error": "Provided email is already registered"
                     }
                   }
                 }
