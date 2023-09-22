@@ -1,8 +1,8 @@
 import { Admin } from 'domain/entities/admin'
 import { AdminRepository } from 'domain/repositories/adminRepository'
 import { Document, ObjectId, isValidObjectId } from 'mongoose'
-import { adminModel } from '../models'
-import { CastError } from 'domain/entities'
+import { CastError, ConflictError } from 'domain/entities'
+import { adminModel, instructorModel, studentModel } from '@models/.'
 
 interface AdminDocument extends Document {
   _id: ObjectId
@@ -57,6 +57,15 @@ export class MongoAdminRepository implements AdminRepository {
   }
   async update(admin: Admin): Promise<void> {
     const { password, ...user } = admin
+
+    if (user.email) {
+      const instructorExists = await instructorModel.findOne({
+        email: user.email
+      })
+      const studentExists = await studentModel.findOne({ email: user.email })
+      if (instructorExists || studentExists)
+        throw new ConflictError('Provided email is already registered')
+    }
 
     await adminModel
       .findOneAndUpdate({ _id: admin.id }, user, { runValidators: true })
