@@ -1,5 +1,5 @@
-import { AdminRepository } from 'domain/repositories/adminRepository'
-import { Admin } from 'domain/entities/admin'
+import { AdminRepository } from '@repositories'
+import { Admin } from '@entities'
 
 const users: Admin[] = [
   {

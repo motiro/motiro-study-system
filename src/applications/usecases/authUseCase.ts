@@ -1,17 +1,13 @@
-import { Request } from 'express'
-import { Admin, Instructor, Student, ENTITIES } from 'domain/entities'
-import { jwt, User } from '@jwt/.'
+import { Admin, ENTITIES, Instructor, Student } from '@entities'
 import {
   BadRequestError,
-  UnauthorizedError,
   ForbiddenError,
+  UnauthorizedError,
   ConflictError
-} from 'domain/entities/error'
-import {
-  AdminUseCase,
-  InstructorUseCase,
-  StudentUseCase
-} from 'applications/usecases'
+} from '@errors'
+import { jwt, User } from '@jwt'
+import { AdminUseCase, InstructorUseCase, StudentUseCase } from '@usecases'
+import { Request } from 'express'
 
 type userUseCase = AdminUseCase | InstructorUseCase | StudentUseCase
 

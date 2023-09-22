@@ -1,6 +1,6 @@
 import { StudentRepoTest } from './studentRepoTest'
-import { StudentUseCase } from '@usecases/.'
-import { Student } from '@entities/.'
+import { StudentUseCase } from '@usecases'
+import { Student } from '@entities'
 
 const studentUseCase = new StudentUseCase(new StudentRepoTest())
 let studentRepo: StudentRepoTest

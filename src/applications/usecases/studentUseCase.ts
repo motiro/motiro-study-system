@@ -1,6 +1,6 @@
-import { StudentRepository } from 'domain/repositories/studentRepository'
-import { Student } from 'domain/entities/students'
-import { NotFoundError } from 'domain/entities/error'
+import { Student } from '@entities'
+import { NotFoundError } from '@errors'
+import { StudentRepository } from '@repositories'
 
 export class StudentUseCase {
   constructor(private studentRepository: StudentRepository) {}

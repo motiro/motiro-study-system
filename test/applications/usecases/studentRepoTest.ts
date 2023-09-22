@@ -1,5 +1,5 @@
-import { StudentRepository } from 'domain/repositories/studentRepository'
-import { Student } from 'domain/entities/students'
+import { StudentRepository } from '@repositories'
+import { Student } from '@entities'
 
 const users: Student[] = [
   {

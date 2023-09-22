@@ -1,4 +1,4 @@
-import { Lesson } from 'domain/entities/lessons'
+import { Lesson } from '@entities'
 
 export interface LessonRepository {
   findById(id: string): Promise<Lesson | null>

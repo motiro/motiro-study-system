@@ -1,18 +1,18 @@
-import path from 'path'
-import { UploadedFile } from 'express-fileupload'
-import { InstructorUseCase, StudentUseCase } from '.'
-import { MongoLessonRepository } from '@mongo/.'
-import { ObjectId } from 'mongoose'
 import {
+  BadRequestError,
   Instructor,
-  Schedule,
-  Student,
   Lesson,
   LessonFile,
-  BadRequestError,
   NotFoundError,
-  ConflictError
-} from 'domain/entities'
+  ConflictError,
+  Schedule,
+  Student
+} from '@entities'
+import { MongoLessonRepository } from '@mongo'
+import { InstructorUseCase, StudentUseCase } from '@usecases'
+import { UploadedFile } from 'express-fileupload'
+import { ObjectId } from 'mongoose'
+import path from 'path'
 
 interface LessonProps {
   instructor: Instructor

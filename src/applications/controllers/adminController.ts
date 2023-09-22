@@ -1,5 +1,5 @@
+import { AdminUseCase } from '@usecases'
 import { Request, Response } from 'express'
-import { AdminUseCase } from 'applications/usecases/adminUseCase'
 
 export class AdminController {
   constructor(private useCase: AdminUseCase) {}

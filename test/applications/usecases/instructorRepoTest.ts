@@ -1,5 +1,5 @@
-import { InstructorRepository } from 'domain/repositories/instructorRepository'
-import { Instructor, Schedule } from 'domain/entities/instructor'
+import { InstructorRepository } from '@repositories'
+import { Instructor, Schedule } from '@entities'
 import { Types } from 'mongoose'
 
 export const dateId = new Types.ObjectId()
@@ -102,8 +102,7 @@ export class InstructorRepoTest implements InstructorRepository {
   }
   async comparePassword(id: string, password: string): Promise<boolean> {
     for (const user of users) {
-      if (user.id === id ) return user.password === password
-
+      if (user.id === id) return user.password === password
     }
     return false
   }

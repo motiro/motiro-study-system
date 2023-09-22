@@ -1,6 +1,6 @@
+import { authMiddleware } from '@middlewares'
+import { StudentUseCase } from '@usecases'
 import { Request, Response } from 'express'
-import { authMiddleware } from 'applications/middlewares/authMiddleware'
-import { StudentUseCase } from 'applications/usecases/studentUseCase'
 
 export class StudentController {
   constructor(private useCase: StudentUseCase) {}

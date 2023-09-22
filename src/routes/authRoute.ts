@@ -1,21 +1,24 @@
-import { Router } from 'express'
-import { AuthController } from 'applications/controllers'
-import { AuthUseCase } from 'applications/usecases'
 import {
   AdminUseCase,
+  AuthUseCase,
   InstructorUseCase,
   StudentUseCase
-} from 'applications/usecases'
+} from '@usecases'
+import { AuthController } from '@controllers'
+import {
+  MongoAdminRepository,
+  MongoInstructorRepository,
+  MongoStudentRepository
+} from '@mongo'
 
-import { MongoAdminRepository } from '@mongo/mongoAdminRepository'
+import { Router } from 'express'
+
 const mongoAdmRepository = new MongoAdminRepository()
 const adminUseCase = new AdminUseCase(mongoAdmRepository)
 
-import { MongoInstructorRepository } from '@mongo/mongoInstructorRepository'
 const mongoInstRepository = new MongoInstructorRepository()
 const instructorUseCase = new InstructorUseCase(mongoInstRepository)
 
-import { MongoStudentRepository } from '@mongo/mongoStudentRepository'
 const mongoStuRepository = new MongoStudentRepository()
 const studentUseCase = new StudentUseCase(mongoStuRepository)
 

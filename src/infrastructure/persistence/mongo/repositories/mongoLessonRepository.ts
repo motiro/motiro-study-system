@@ -1,6 +1,6 @@
-import { LessonRepository } from 'domain/repositories/lessonRepository'
-import { Lesson, LessonFile } from 'domain/entities/lessons'
-import { lessonModel } from '../models'
+import { Lesson, LessonFile } from '@entities'
+import { lessonModel } from '@models'
+import { LessonRepository } from '@repositories'
 import { Document, ObjectId } from 'mongoose'
 
 interface LessonDocument extends Document {
@@ -30,7 +30,7 @@ export class MongoLessonRepository implements LessonRepository {
         instructorId: result.instructorId,
         studentId: result.studentId,
         dateId: result.dateId,
-        files: result.files,
+        files: result.files
       },
       result.id
     )

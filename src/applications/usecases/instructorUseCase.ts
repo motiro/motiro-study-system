@@ -1,6 +1,6 @@
-import { InstructorRepository } from 'domain/repositories/instructorRepository'
-import { Instructor, Schedule } from 'domain/entities/instructor'
-import { NotFoundError } from 'domain/entities/error'
+import { Instructor, Schedule } from '@entities'
+import { NotFoundError } from '@errors'
+import { InstructorRepository } from '@repositories'
 
 export class InstructorUseCase {
   constructor(private instructorRepository: InstructorRepository) {}

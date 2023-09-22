@@ -1,6 +1,6 @@
+import { jwt } from '@jwt'
+import { AuthUseCase } from '@usecases'
 import { Request, Response } from 'express'
-import { AuthUseCase } from 'applications/usecases'
-import { jwt } from '@jwt/.'
 
 export class AuthController {
   constructor(private authUseCase: AuthUseCase) {}
