@@ -75,6 +75,11 @@
                     "value": {
                       "error": "Invalid role"
                     }
+                  },
+                  "Validation error": {
+                    "value": {
+                      "error": "Validator failed for path `email` with value `noahgmail.com`"
+                    }
                   }
                 }
               }
