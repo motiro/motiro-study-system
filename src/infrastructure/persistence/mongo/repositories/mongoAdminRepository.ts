@@ -1,8 +1,8 @@
-import { Admin } from 'domain/entities/admin'
-import { AdminRepository } from 'domain/repositories/adminRepository'
-import { Document, ObjectId, isValidObjectId } from 'mongoose'
-import { adminModel } from '../models'
-import { CastError } from 'domain/entities'
+import { Admin } from '@entities'
+import { AdminRepository } from '@repositories'
+import { CastError, ConflictError } from '@errors'
+import { Document, isValidObjectId, ObjectId } from 'mongoose'
+import { adminModel, instructorModel, studentModel } from '@models'
 
 interface AdminDocument extends Document {
   _id: ObjectId
@@ -58,13 +58,24 @@ export class MongoAdminRepository implements AdminRepository {
   async update(admin: Admin): Promise<void> {
     const { password, ...user } = admin
 
-    await adminModel.findOneAndUpdate({ _id: admin.id }, user).then(user => {
-      if (user && password) {
-        user.markModified('password')
-        user.set({ password: password })
-        user.save()
-      }
-    })
+    if (user.email) {
+      const instructorExists = await instructorModel.findOne({
+        email: user.email
+      })
+      const studentExists = await studentModel.findOne({ email: user.email })
+      if (instructorExists || studentExists)
+        throw new ConflictError('Provided email is already registered')
+    }
+
+    await adminModel
+      .findOneAndUpdate({ _id: admin.id }, user, { runValidators: true })
+      .then(user => {
+        if (user && password) {
+          user.markModified('password')
+          user.set({ password: password })
+          user.save()
+        }
+      })
   }
   async delete(id: string): Promise<void> {
     await adminModel.deleteOne().where({ _id: id })

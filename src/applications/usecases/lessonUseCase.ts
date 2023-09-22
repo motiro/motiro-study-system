@@ -1,17 +1,18 @@
-import path from 'path'
-import { UploadedFile } from 'express-fileupload'
-import { InstructorUseCase, StudentUseCase } from '.'
-import { MongoLessonRepository } from '@mongo/.'
-import { ObjectId } from 'mongoose'
 import {
+  BadRequestError,
   Instructor,
-  Schedule,
-  Student,
   Lesson,
   LessonFile,
-  BadRequestError,
-  NotFoundError
-} from 'domain/entities'
+  NotFoundError,
+  ConflictError,
+  Schedule,
+  Student
+} from '@entities'
+import { MongoLessonRepository } from '@mongo'
+import { InstructorUseCase, StudentUseCase } from '@usecases'
+import { UploadedFile } from 'express-fileupload'
+import { ObjectId } from 'mongoose'
+import path from 'path'
 
 interface LessonProps {
   instructor: Instructor
@@ -19,7 +20,7 @@ interface LessonProps {
   date: Schedule
 }
 
-interface LessonResponse {
+export interface LessonResponse {
   id: string
   instructor: { id: string; name: string }
   student: { id: string; name: string }
@@ -47,16 +48,17 @@ export class LessonUseCase {
     textFile: UploadedFile,
     userId: string
   ): Promise<LessonFile> {
+    enum allowedMimeTypes {
+      'application/pdf',
+      'application/msword',
+      'application/vnd.oasis.opendocument.text',
+      'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+    }
 
     if (
-      !textFile.mimetype.startsWith('text') &&
-      !textFile.mimetype.startsWith('application/pdf') &&
-      !textFile.mimetype.startsWith('application/msword') &&
-      !textFile.mimetype.startsWith(
-        'application/vnd.oasis.opendocument.text'
-      ) &&
-      !textFile.mimetype.startsWith(
-        'application/vnd.openxmlformats-officedocument.wordprocessingml.document'
+      !(
+        textFile.mimetype.startsWith('text') ||
+        Object.values(allowedMimeTypes).includes(textFile.mimetype)
       )
     )
       throw new BadRequestError('Not a text file')
@@ -85,7 +87,7 @@ export class LessonUseCase {
       throw new BadRequestError('Mismatch in provided IDs')
 
     if (date.busy)
-      throw new BadRequestError(
+      throw new ConflictError(
         'A lesson is already booked for the requested schedule'
       )
 

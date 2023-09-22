@@ -1,5 +1,6 @@
 import { Schema, model } from 'mongoose'
 import { UserSchema } from '.'
+import isEmail from 'validator/lib/isEmail'
 import bcrypt from 'bcrypt'
 
 const AdminSchema = new Schema(
@@ -15,7 +16,8 @@ const AdminSchema = new Schema(
       type: String,
       trim: true,
       required: true,
-      unique: true
+      unique: true,
+      validate: isEmail
     },
     password: {
       type: String,

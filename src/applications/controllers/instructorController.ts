@@ -1,6 +1,6 @@
+import { authMiddleware } from '@middlewares'
+import { InstructorUseCase } from '@usecases'
 import { Request, Response } from 'express'
-import { InstructorUseCase } from 'applications/usecases/instructorUseCase'
-import { authMiddleware } from 'applications/middlewares'
 
 export class InstructorController {
   constructor(private useCase: InstructorUseCase) {}

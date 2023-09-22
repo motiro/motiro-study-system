@@ -6,11 +6,12 @@ import {
   ApiError,
   BadRequestError,
   UnauthorizedError,
-  NotFoundError,
-  ForbiddenError,
+  TokenExpiredError,
   CastError,
   ValidationError,
-  TokenExpiredError
+  ForbiddenError,
+  NotFoundError,
+  ConflictError
 } from './error'
 
 export enum ENTITIES {
@@ -29,9 +30,10 @@ export {
   ApiError,
   BadRequestError,
   UnauthorizedError,
-  NotFoundError,
-  ForbiddenError,
+  TokenExpiredError,
   CastError,
   ValidationError,
-  TokenExpiredError
+  ForbiddenError,
+  NotFoundError,
+  ConflictError
 }

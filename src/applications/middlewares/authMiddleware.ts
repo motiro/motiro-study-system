@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express'
-import { jwt, User } from '@jwt/.'
+import { jwt, User } from '@jwt'
 import { Types } from 'mongoose'
 import { UnauthorizedError, ForbiddenError } from 'domain/entities'
 

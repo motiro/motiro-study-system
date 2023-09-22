@@ -1,4 +1,4 @@
-import { Admin } from 'domain/entities/admin'
+import { Admin } from '@entities'
 
 export interface AdminRepository {
   findById(id: string): Promise<Admin | null>
