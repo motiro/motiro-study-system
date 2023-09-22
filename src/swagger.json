@@ -52,9 +52,9 @@
                 "examples": {
                   "Register": {
                     "value": {
+                      "id": "650394f4ed4d999ac948ba0f",
                       "name": "Noah Doe",
-                      "role": "admin",
-                      "id": "650394f4ed4d999ac948ba0f"
+                      "role": "admin"
                     }
                   }
                 }
@@ -74,6 +74,11 @@
                   "Invalid role": {
                     "value": {
                       "error": "Invalid role"
+                    }
+                  },
+                  "Validation error": {
+                    "value": {
+                      "error": "Validator failed for path `email` with value `noahgmail.com`"
                     }
                   }
                 }
@@ -181,9 +186,9 @@
                 "examples": {
                   "Login": {
                     "value": {
+                      "id": "650394f4ed4d999ac948ba0f",
                       "name": "Noah Doe",
-                      "role": "admin",
-                      "id": "650394f4ed4d999ac948ba0f"
+                      "role": "admin"
                     }
                   }
                 }
@@ -200,62 +205,14 @@
                   }
                 },
                 "examples": {
-                  "Bad Request": {
+                  "Missing credentials": {
                     "value": {
                       "error": "Missing credentials"
                     }
                   },
-                  "Incorrect Credentials": {
+                  "Incorrect credentials": {
                     "value": {
                       "error": "The email or password is invalid"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Error: Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "error": {
-                    "type": "string"
-                  }
-                },
-                "examples": {
-                  "Not logged in": {
-                    "value": {
-                      "error": "Not logged in"
-                    }
-                  },
-                  "Session expired": {
-                    "value": {
-                      "error": "Session expired"
-                    }
-                  },
-                  "Unauthorized": {
-                    "value": {
-                      "error": "Invalid authentication"
-                    }
-                  }
-                }
-              }
-            }
-          },
-          "403": {
-            "description": "Error: Forbidden",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "error": {
-                    "type": "string"
-                  }
-                },
-                "examples": {
-                  "Access denied": {
-                    "value": {
-                      "error": "Access denied"
                     }
                   }
                 }
@@ -619,12 +576,11 @@
                 "$ref": "#/components/schemas/Admin"
               },
               "examples": {
-                "Instructor": {
+                "Admin": {
                   "value": {
-                    "name": "Lucas Dionizio",
-                    "email": "lucas@gmail.com",
-                    "password": "1S2G4Jds98",
-                    "role": ["admin"]
+                    "name": "Admin User",
+                    "email": "admin@gmail.com",
+                    "password": "1S2G4Jds98"
                   }
                 }
               }
@@ -633,15 +589,7 @@
         },
         "responses": {
           "200": {
-            "description": "Admin updated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type:": "object",
-                  "$ref": "#/components/schemas/Admin"
-                }
-              }
-            }
+            "description": "Admin updated"
           },
           "401": {
             "description": "Error: Unauthorized",
@@ -704,6 +652,25 @@
                   "Not found": {
                     "value": {
                       "error": "Admin not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Error: Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Conflict": {
+                    "value": {
+                      "error": "Provided email is already registered"
                     }
                   }
                 }
@@ -1202,7 +1169,7 @@
                 "$ref": "#/components/schemas/Instructor"
               },
               "examples": {
-                "instructor": {
+                "Instructor": {
                   "value": {
                     "name": "Peter Doe",
                     "email": "peter@gmail.com",
@@ -1217,8 +1184,7 @@
                         "date": "2023-10-28 19:00",
                         "busy": true
                       }
-                    ],
-                    "role": ["instructor"]
+                    ]
                   }
                 }
               }
@@ -1290,6 +1256,25 @@
                   "Not found": {
                     "value": {
                       "error": "Instructor not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Error: Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Conflict": {
+                    "value": {
+                      "error": "Provided email is already registered"
                     }
                   }
                 }
@@ -1769,12 +1754,11 @@
                 "$ref": "#/components/schemas/Student"
               },
               "examples": {
-                "instructor": {
+                "Student": {
                   "value": {
                     "name": "Lucas Dionizio",
                     "email": "lucas@gmail.com",
-                    "password": "1S2G4Jds98",
-                    "role": ["student"]
+                    "password": "1S2G4Jds98"
                   }
                 }
               }
@@ -1783,15 +1767,7 @@
         },
         "responses": {
           "200": {
-            "description": "Student updated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type:": "object",
-                  "$ref": "#/components/schemas/Student"
-                }
-              }
-            }
+            "description": "Student updated"
           },
           "401": {
             "description": "Error: Unauthorized",
@@ -1854,6 +1830,25 @@
                   "Not found": {
                     "value": {
                       "error": "Student not found"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Error: Conflict",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "error": {
+                    "type": "string"
+                  }
+                },
+                "examples": {
+                  "Conflict": {
+                    "value": {
+                      "error": "Provided email is already registered"
                     }
                   }
                 }
