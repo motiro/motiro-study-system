@@ -1,8 +1,8 @@
 import { Instructor, Schedule } from '@entities'
-import { CastError } from '@errors'
-import { instructorModel } from '@models'
 import { InstructorRepository } from '@repositories'
+import { CastError, ConflictError } from '@errors'
 import { Document, isValidObjectId, ObjectId } from 'mongoose'
+import { adminModel, instructorModel, studentModel } from '@models'
 
 interface InstructorDocument extends Document {
   _id: ObjectId
@@ -63,8 +63,17 @@ export class MongoInstructorRepository implements InstructorRepository {
   async update(instructor: Instructor): Promise<void> {
     const { password, ...user } = instructor
 
+    if (user.email) {
+      const adminExists = await adminModel.findOne({ email: user.email })
+      const studentExists = await studentModel.findOne({
+        email: user.email
+      })
+      if (adminExists || studentExists)
+        throw new ConflictError('Provided email is already registered')
+    }
+
     await instructorModel
-      .findOneAndUpdate({ _id: instructor.id }, user)
+      .findOneAndUpdate({ _id: instructor.id }, user, { runValidators: true })
       .then(user => {
         if (user && password) {
           user.markModified('password')
